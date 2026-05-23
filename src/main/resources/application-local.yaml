@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: assistant
+  datasource:
+    password: secret
+    username: myuser
+    url: "jdbc:postgresql://localhost:5432/mydatabase"
+
+  ai:
+    google:
+      genai:
+        chat:
+          options:
+            model: gemini-3.1-flash-lite
+        api-key: ${GEMINI_API_KEY}
+        embedding:
+          api-key: ${GEMINI_API_KEY}
+          options:
+            model: text-embedding-004
+    vectorstore:
+      pgvector:
+        dimensions: 768
+        initialize-schema: true
