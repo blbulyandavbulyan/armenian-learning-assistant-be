@@ -1,10 +1,15 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
-import com.blbulyandavbulyan.larm.phrase.*;
+import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
+import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesResult;
+import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
+import com.blbulyandavbulyan.larm.phrase.IPhraseStoringService;
+import com.blbulyandavbulyan.larm.phrase.PageParameters;
+import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
+import com.blbulyandavbulyan.larm.phrase.PhraseResource;
+import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
-import com.blbulyandavbulyan.larm.phrase.service.BatchSavePhrasesResult;
-import com.blbulyandavbulyan.larm.phrase.service.BatchSavePhrasesParameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,7 +25,7 @@ import java.util.stream.StreamSupport;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PhraseService implements IPhraseService {
+public class PhraseStoringService implements IPhraseStoringService {
     private final PhraseRepository phraseRepository;
     private final PhraseMapper phraseMapper;
     private final IsoLanguageValidator isoLanguageValidator;
@@ -29,7 +34,6 @@ public class PhraseService implements IPhraseService {
     @Override
     public BatchSavePhrasesResult batchSavePhrases(BatchSavePhrasesParameters parameters) {
         validate(parameters);
-
 
         Set<String> alreadySavedPhrases = phraseRepository.findExistingPhrases(parameters.phrases());
 

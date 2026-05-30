@@ -1,6 +1,5 @@
-package com.blbulyandavbulyan.larm.phrase.service;
+package com.blbulyandavbulyan.larm.phrase;
 
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import lombok.Builder;
 
 import java.util.List;

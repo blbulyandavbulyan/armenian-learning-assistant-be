@@ -1,11 +1,7 @@
 package com.blbulyandavbulyan.larm.ai.tools;
 
 import com.blbulyandavbulyan.larm.ai.common.ScopedValues;
-import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
-import com.blbulyandavbulyan.larm.phrase.IPhraseService;
-import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
-import com.blbulyandavbulyan.larm.phrase.service.BatchSavePhrasesParameters;
-import com.blbulyandavbulyan.larm.phrase.service.BatchSavePhrasesResult;
+import com.blbulyandavbulyan.larm.phrase.*;
 import com.blbulyandavbulyan.larm.phrase.service.InvalidIsoLanguageCodeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +14,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class SavePhrasesTool {
-    private final IPhraseService phraseService;
+    private final IPhraseStoringService phraseService;
 
     @Tool(name = "batch_save_phrases", description = "Saves phrases in batch")
     public BatchSavePhraseToolResult batchSavePhrases(BatchSavePhrasesToolParameters batchSavePhrasesToolParameters) {
