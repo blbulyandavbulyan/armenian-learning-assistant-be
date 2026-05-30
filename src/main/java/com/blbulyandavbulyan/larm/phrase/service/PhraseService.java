@@ -49,7 +49,7 @@ public class PhraseService implements IPhraseService {
 
     @Override
     public PagedPhraseResource findAll(PageParameters pageParameters) {
-        Pageable pageable = Pageable.ofSize(pageParameters.pageSize()).withPage(pageParameters.pageNumber() + 1);
+        Pageable pageable = Pageable.ofSize(pageParameters.pageSize()).withPage(pageParameters.pageNumber() - 1);
         Page<Phrase> phrasePage = phraseRepository.findAll(pageable);
         return PagedPhraseResource.builder()
                 .page(PagedPhraseResource.Page.builder().pageNumber(phrasePage.getNumber() + 1)

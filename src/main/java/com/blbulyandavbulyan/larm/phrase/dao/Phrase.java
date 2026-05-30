@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
@@ -33,6 +34,12 @@ public record Phrase(
         @Transient
         boolean isNewFlag // Used purely for Spring Data JDBC row state detection
 ) implements Persistable<UUID> {
+
+    @PersistenceCreator
+    public Phrase(UUID id, PhraseStatus status, String isoLanguageCode, String phrase,
+                  String transcription, Set<Translation> translations, Set<Media> mediaSet) {
+        this(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet, false);
+    }
 
     @Override
     public UUID getId() {

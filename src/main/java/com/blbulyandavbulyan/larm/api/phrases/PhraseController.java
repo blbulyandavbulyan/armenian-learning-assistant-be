@@ -4,6 +4,7 @@ import com.blbulyandavbulyan.larm.phrase.IPhraseService;
 import com.blbulyandavbulyan.larm.phrase.PageParameters;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/phrases")
 @RequiredArgsConstructor
+@Validated
 public class PhraseController {
     private final IPhraseService phraseService;
     private final PhraseResponseMapper phraseResponseMapper;

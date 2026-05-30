@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.ai.config;
 
+import com.blbulyandavbulyan.larm.ai.tools.SavePhrasesTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -21,10 +22,13 @@ public class ChatClientConfiguration {
     }
 
     @Bean
-    public ChatClient armenianPhrasesGeneratorChatClient(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
+    public ChatClient armenianPhrasesGeneratorChatClient(
+            ChatClient.Builder chatClientBuilder,
+            ChatMemory chatMemory,
+            SavePhrasesTool savePhrasesTool) {
         return chatClientBuilder
                 .defaultSystem(new ClassPathResource("prompts/ARMENIAN-PHRASES-GENERATOR.md"))
-                .defaultToolNames("batch_save_phrases")
+                .defaultTools(savePhrasesTool)
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }

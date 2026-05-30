@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Builder
-@Table("audios")
+@Table("medias")
 public record Media(
         @Id UUID id,
         StorageProvider storageProvider,

@@ -42,6 +42,8 @@ public class PhraseMapper {
     public PhraseResource mapFromPhrase(Phrase phrase) {
         return PhraseResource.builder()
                 .id(phrase.id())
+                .phrase(phrase.phrase())
+                .iso2LanguageCode(phrase.isoLanguageCode())
                 .transcription(phrase.transcription())
                 .translations(phrase.translations().stream().map(PhraseMapper::translationToResource).toList())
                 .build();
