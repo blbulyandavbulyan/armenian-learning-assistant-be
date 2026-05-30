@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PhraseController {
     private final IPhraseService phraseService;
-    private final PhraseMapper phraseMapper;
+    private final PhraseResponseMapper phraseResponseMapper;
 
 
     @GetMapping
@@ -23,6 +23,6 @@ public class PhraseController {
                 .pageSize(pageRequest.pageSize())
                 .build());
 
-        return phraseMapper.mapToResponse(phraseResource);
+        return phraseResponseMapper.mapToResponse(phraseResource);
     }
 }
