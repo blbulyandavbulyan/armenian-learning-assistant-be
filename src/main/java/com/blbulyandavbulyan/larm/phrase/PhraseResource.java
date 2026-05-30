@@ -11,7 +11,6 @@ public record PhraseResource(
         String phrase,
         String iso2LanguageCode,
         String transcription,
-        List<TranslationResource> translations,
-        List<MediaResource> audios) {
+        List<TranslationResource> translations) {
 
 }
