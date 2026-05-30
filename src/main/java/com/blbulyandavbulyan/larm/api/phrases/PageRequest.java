@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Validated
-public record PageRequest(
+record PageRequest(
         @RequestParam(defaultValue = "1")
         @Min(1)
         int pageNumber,

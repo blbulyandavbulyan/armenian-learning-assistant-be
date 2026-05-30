@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/phrases")
 @RequiredArgsConstructor
 @Validated
-public class PhraseController {
+class PhraseController {
     private final IPhraseService phraseService;
     private final PhraseResponseMapper phraseResponseMapper;
 

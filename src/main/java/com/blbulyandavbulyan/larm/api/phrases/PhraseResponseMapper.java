@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class PhraseResponseMapper {
+class PhraseResponseMapper {
     PhrasesResponse mapToResponse(PagedPhraseResource resource) {
         return PhrasesResponse.builder()
                 .page(mapToPageResponse(resource.page()))

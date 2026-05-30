@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record PhrasesResponse(List<PhraseResponse> phrases, PageResponse page) {
+record PhrasesResponse(List<PhraseResponse> phrases, PageResponse page) {
 }

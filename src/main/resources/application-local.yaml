@@ -21,3 +21,6 @@ spring:
       pgvector:
         dimensions: 768
         initialize-schema: true
+logging:
+  level:
+    com.blbulyandavbulyan.larm: DEBUG

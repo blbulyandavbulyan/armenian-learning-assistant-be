@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.ai.tools;
 
+import com.blbulyandavbulyan.larm.ai.common.ScopedValues;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.IPhraseService;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
@@ -21,7 +22,11 @@ public class SavePhrasesTool {
 
     @Tool(name = "batch_save_phrases", description = "Saves phrases in batch")
     public BatchSavePhraseToolResult batchSavePhrases(BatchSavePhrasesToolParameters batchSavePhrasesToolParameters) {
-        log.debug("Tool was called with the following parameters: {}", batchSavePhrasesToolParameters);
+//        TODO, such workflow is not reliable enough to use in production
+//         when AI isn't prompted to not call the tool unless approved -> it calls immediately, when it is prompted so -> it could skip the tool call
+//         so we have to redesign workflow, only structured response should be left, and maybe some other tool which checks if the phrase already exists in the db
+//         and then, separate api endpoint should be created, like POST /phrases -> and this endpoint should be responsible for saving the phrases, generating embeddings, generating audio and so on
+        log.debug("Tool was called with the following parameters: {}, for chat id: {}", batchSavePhrasesToolParameters, ScopedValues.CONVERSATION_ID.get());
         try {
             //TODO we only saved here phrase to the database
             // Next steps:

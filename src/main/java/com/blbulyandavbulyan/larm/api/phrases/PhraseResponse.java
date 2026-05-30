@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Builder
-public record PhraseResponse(
+record PhraseResponse(
         UUID id,
         String phrase,
         String iso2LanguageCode,
