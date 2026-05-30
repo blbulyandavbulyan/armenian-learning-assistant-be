@@ -32,6 +32,8 @@ class PhraseController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreatePhrasesResponse savePhrases(@RequestBody CreatePhrasesRequest request) {
+        //TODO most probably you have to handle validation errors here (like invalid iso2Language codes and so on)
+        //TODO most probably you have to check if at least one phrase is a duplicate -> return error and don't save anything
         BatchSavePhrasesResult batchSavePhrasesResult = phraseService.batchSavePhrases(phraseRequestMapper.mapToBatchPhrasesParameters(request));
 
         return new CreatePhrasesResponse(phraseResponseMapper.mapToCreatePhrasesResponse(batchSavePhrasesResult));

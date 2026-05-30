@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.ai.config;
 
-import com.blbulyandavbulyan.larm.ai.tools.SavePhrasesTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -24,11 +23,12 @@ public class ChatClientConfiguration {
     @Bean
     public ChatClient armenianPhrasesGeneratorChatClient(
             ChatClient.Builder chatClientBuilder,
-            ChatMemory chatMemory,
-            SavePhrasesTool savePhrasesTool) {
+            ChatMemory chatMemory) {
         return chatClientBuilder
                 .defaultSystem(new ClassPathResource("prompts/ARMENIAN-PHRASES-GENERATOR.md"))
-                .defaultTools(savePhrasesTool)
+                // TODO most probably we need here the tool which checks the existing phrases in the database
+                //  probably it should check 'exact match' and 'similar' phrases
+//                .defaultTools()
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }
