@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.api;
+package com.blbulyandavbulyan.larm.api.chat;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;

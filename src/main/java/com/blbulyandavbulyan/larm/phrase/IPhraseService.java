@@ -7,4 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface IPhraseService {
     @Transactional
     BatchSavePhrasesResult batchSavePhrases(BatchSavePhrasesParameters parameters);
+
+    PagedPhraseResource findAll(PageParameters build);
 }

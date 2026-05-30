@@ -1,15 +1,14 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
-import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
-import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
-import com.blbulyandavbulyan.larm.phrase.IPhraseService;
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
+import com.blbulyandavbulyan.larm.phrase.*;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
 import com.blbulyandavbulyan.larm.phrase.service.BatchSavePhrasesResult;
 import com.blbulyandavbulyan.larm.phrase.service.BatchSavePhrasesParameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +44,19 @@ public class PhraseService implements IPhraseService {
         return BatchSavePhrasesResult.builder()
                 .existingPhrases(alreadySavedPhrases)
                 .savedPhrases(mappedSavedPhrases)
+                .build();
+    }
+
+    @Override
+    public PagedPhraseResource findAll(PageParameters pageParameters) {
+        Pageable pageable = Pageable.ofSize(pageParameters.pageSize()).withPage(pageParameters.pageNumber() + 1);
+        Page<Phrase> phrasePage = phraseRepository.findAll(pageable);
+        return PagedPhraseResource.builder()
+                .page(PagedPhraseResource.Page.builder().pageNumber(phrasePage.getNumber() + 1)
+                        .totalPages(phrasePage.getTotalPages())
+                        .pageSize(phrasePage.getSize())
+                        .build())
+                .phrases(phrasePage.stream().map(phraseMapper::mapFromPhrase).toList())
                 .build();
     }
 
