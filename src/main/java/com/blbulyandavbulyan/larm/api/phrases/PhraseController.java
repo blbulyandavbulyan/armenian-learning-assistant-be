@@ -19,7 +19,7 @@ public class PhraseController {
 
 
     @GetMapping
-    public PhrasesResponse getPhrases(PageRequest pageRequest) {
+    public PhrasesResponse getPhrases(@Validated PageRequest pageRequest) {
         PagedPhraseResource phraseResource = phraseService.findAll(PageParameters.builder()
                 .pageNumber(pageRequest.pageNumber())
                 .pageSize(pageRequest.pageSize())
