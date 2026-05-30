@@ -1,11 +1,13 @@
 CREATE TABLE phrases
 (
     id            UUID PRIMARY KEY,
-    language         CHAR(2) NOT NULL CHECK (language ~ '^[a-z]{2}$') DEFAULT 'am',
+    iso_language_code         CHAR(2) NOT NULL CHECK (iso_language_code ~ '^[a-z]{2}$') DEFAULT 'am',
     phrase        TEXT NOT NULL,
+    status VARCHAR(25) NOT NULL,
     transcription TEXT,
     audio_file_id TEXT,
     embedding     vector(1536),
+    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_phrase UNIQUE (phrase)
 );
 
@@ -13,12 +15,12 @@ CREATE TABLE translations
 (
     id               UUID PRIMARY KEY,
     phrase_id        UUID    NOT NULL REFERENCES phrases (id),
-    language         CHAR(2) NOT NULL CHECK (language ~ '^[a-z]{2}$'),
+    iso_language_code         CHAR(2) NOT NULL CHECK (iso_language_code ~ '^[a-z]{2}$'),
     translation_text TEXT    NOT NULL,
-    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE audio_files
+CREATE TABLE medias
 (
     id               UUID PRIMARY KEY,
     phrase_id        UUID         NOT NULL REFERENCES phrases (id),

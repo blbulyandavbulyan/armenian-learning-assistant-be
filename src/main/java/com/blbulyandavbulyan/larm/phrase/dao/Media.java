@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.phrase.internal;
+package com.blbulyandavbulyan.larm.phrase.dao;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
@@ -9,8 +9,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Builder
-@Table("audio_files")
-public record AudioFile(
+@Table("audios")
+public record Media(
         @Id UUID id,
         StorageProvider storageProvider,
         String storageBucket,
@@ -22,10 +22,4 @@ public record AudioFile(
         String voiceIdentifier,
         Instant createdAt) {
 
-    public static AudioFileBuilder defaultBuilderForLocal() {
-        return builder()
-                .id(UUID.randomUUID())
-                .storageProvider(StorageProvider.LOCAL)
-                .createdAt(Instant.now());
-    }
 }

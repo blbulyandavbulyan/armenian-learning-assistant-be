@@ -1,21 +1,26 @@
-package com.blbulyandavbulyan.larm.phrase.internal;
+package com.blbulyandavbulyan.larm.phrase.dao;
 
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
 @Builder
 @Table("phrases")
 public record Phrase(
-        @Id UUID id,
-        String language,
+        @Id
+        UUID id,
+
+        PhraseStatus status,
+
+        @Column("iso_language_code")
+        String isoLanguageCode,
         String phrase,
         String transcription,
 
@@ -23,19 +28,11 @@ public record Phrase(
         Set<Translation> translations,
         
         @MappedCollection(idColumn = "phrase_id")
-        Set<AudioFile> audioFiles,
+        Set<Media> mediaSet,
 
         @Transient
         boolean isNewFlag // Used purely for Spring Data JDBC row state detection
 ) implements Persistable<UUID> {
-
-    public static PhraseBuilder defaultBuilder() {
-        return Phrase.builder()
-                .id(UUID.randomUUID())
-                .language("am")
-                .audioFiles(Collections.emptySet())
-                .isNewFlag(true);
-    }
 
     @Override
     public UUID getId() {
