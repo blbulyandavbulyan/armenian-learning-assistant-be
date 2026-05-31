@@ -30,9 +30,8 @@ wget https://huggingface.co/davit312/piper-TTS-Armenian/resolve/main/v3/hy_AM-go
 
 # Download the Structure Config Map
 wget https://huggingface.co/davit312/piper-TTS-Armenian/resolve/main/v3/hy_AM-gor-medium.onnx.json -O hy_AM-medium.onnx.json
-```
 
-Then Run `text-to-speech-test.py`:
-```bash
+# To test your setup
 python3 text-to-speech-test.py
 ```
+
