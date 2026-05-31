@@ -17,10 +17,21 @@ spring:
           api-key: ${GEMINI_API_KEY}
           options:
             model: text-embedding-004
+
+    elevenlabs:
+      api-key: ${ELEVEN_LABS_API_KEY}
+      tts:
+        options:
+          model-id: eleven_v3
+
     vectorstore:
       pgvector:
         dimensions: 768
         initialize-schema: true
+storage:
+  local:
+    folder-name: /home/david/arm-learn-files
+
 logging:
   level:
     com.blbulyandavbulyan.larm: DEBUG

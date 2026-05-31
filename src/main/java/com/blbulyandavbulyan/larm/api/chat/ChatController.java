@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
-import com.blbulyandavbulyan.larm.ai.DraftPhraseResource;
-import com.blbulyandavbulyan.larm.ai.PhrasesChatService;
-import com.blbulyandavbulyan.larm.ai.StructuredPhrasesResource;
+import com.blbulyandavbulyan.larm.ai.IPhrasesChatService;
+import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
+import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 class ChatController {
-    private final PhrasesChatService phrasesChatService;
+    private final IPhrasesChatService phrasesChatService;
 
     @PostMapping("/phrases")
     public PhraseChatResponse chat(@RequestBody ChatRequest request) {
@@ -27,15 +27,15 @@ class ChatController {
                 .build();
     }
 
-    private static PhraseResponse mapPhrase(DraftPhraseResource p) {
-        return PhraseResponse.builder()
+    private static DraftPhraseResponse mapPhrase(DraftPhraseResource p) {
+        return DraftPhraseResponse.builder()
                 .phrase(p.phrase())
                 .transcription(p.transcription())
                 .translations(p.translations().stream().map(ChatController::mapTranslation).toList())
                 .build();
     }
 
-    private static PhraseResponse.TranslationResponse mapTranslation(DraftPhraseResource.DraftTranslationResource t) {
-        return PhraseResponse.TranslationResponse.builder().translationText(t.translationText()).iso2LanguageCode(t.iso2LanguageCode()).build();
+    private static DraftPhraseResponse.TranslationResponse mapTranslation(DraftPhraseResource.DraftTranslationResource t) {
+        return DraftPhraseResponse.TranslationResponse.builder().translationText(t.translationText()).iso2LanguageCode(t.iso2LanguageCode()).build();
     }
 }

@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.ai;
+package com.blbulyandavbulyan.larm.ai.chat;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 

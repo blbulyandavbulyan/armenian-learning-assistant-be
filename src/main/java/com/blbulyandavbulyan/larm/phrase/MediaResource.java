@@ -1,16 +1,15 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.phrase;
 
+import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 @Builder
-@Table("medias")
-public record Media(
+public record MediaResource(
         @Id UUID id,
         UUID phraseId,
         StorageProvider storageProvider,
@@ -21,5 +20,4 @@ public record Media(
         String aiModelUsed,
         String voiceIdentifier,
         Instant createdAt) {
-
 }

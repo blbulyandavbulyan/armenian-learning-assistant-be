@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.api.phrases;
 
-import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesResult;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.TranslationResource;
@@ -47,7 +46,7 @@ class PhraseResponseMapper {
                 .build();
     }
 
-    public List<PhraseResponse> mapToCreatePhrasesResponse(BatchSavePhrasesResult batchSavePhrasesResult) {
-        return batchSavePhrasesResult.savedPhrases().stream().map(this::mapToPhraseResponse).toList();
+    public List<PhraseResponse> mapToCreatePhrasesResponse(List<PhraseResource> savedPhrases) {
+        return savedPhrases.stream().map(this::mapToPhraseResponse).toList();
     }
 }

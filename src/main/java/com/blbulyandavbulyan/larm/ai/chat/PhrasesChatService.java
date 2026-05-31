@@ -1,6 +1,7 @@
-package com.blbulyandavbulyan.larm.ai;
+package com.blbulyandavbulyan.larm.ai.chat;
 
-import com.blbulyandavbulyan.larm.ai.common.ScopedValues;
+import com.blbulyandavbulyan.larm.ai.IPhrasesChatService;
+import com.blbulyandavbulyan.larm.ai.chat.common.ScopedValues;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -10,9 +11,10 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class PhrasesChatService {
+public class PhrasesChatService implements IPhrasesChatService {
     private final ChatClient armenianPhrasesGeneratorChatClient;
 
+    @Override
     public StructuredPhrasesResource chat(String message, UUID chatId) {
         return ScopedValue.where(ScopedValues.CONVERSATION_ID, chatId)
                 .call(() -> chatInternal(message, chatId));

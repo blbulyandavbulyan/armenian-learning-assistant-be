@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-record PhraseChatResponse(String message, List<PhraseResponse> phrases) {
+record PhraseChatResponse(String message, List<DraftPhraseResponse> phrases) {
 }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record PhraseResponse(
+public record DraftPhraseResponse(
         String phrase,
         String transcription,
         List<TranslationResponse> translations) {

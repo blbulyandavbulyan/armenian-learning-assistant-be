@@ -32,8 +32,7 @@ CREATE TABLE medias
 
 -- Useful Universal Metadata
     content_type     VARCHAR(100) NOT NULL,          -- 'audio/mpeg', 'audio/wav'
-    file_size_bytes  BIGINT NOT NULL,
-    duration_seconds DECIMAL(5, 2) NOT NULL,         -- Essential for UI players to show track length
+    file_size_bytes  INT NOT NULL,
 
     ai_model_used    VARCHAR(100),          -- 'Gemini-1.5-Flash', 'ElevenLabs-v2'
     voice_identifier VARCHAR(100),          -- 'male-eastern-1', 'female-western-2'

@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.ai.common;
+package com.blbulyandavbulyan.larm.ai.chat.common;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

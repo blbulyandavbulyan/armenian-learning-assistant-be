@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.ai.config;
+package com.blbulyandavbulyan.larm.ai.chat.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;

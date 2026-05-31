@@ -1,15 +1,9 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
-import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
-import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesResult;
-import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
-import com.blbulyandavbulyan.larm.phrase.IPhraseStoringService;
-import com.blbulyandavbulyan.larm.phrase.PageParameters;
-import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
-import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
+import com.blbulyandavbulyan.larm.phrase.*;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
+import com.blbulyandavbulyan.larm.validation.IsoLanguageValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,23 +26,25 @@ public class PhraseStoringService implements IPhraseStoringService {
 
     @Transactional
     @Override
-    public BatchSavePhrasesResult batchSavePhrases(BatchSavePhrasesParameters parameters) {
+    public List<PhraseResource> batchSavePhrases(BatchSavePhrasesParameters parameters) {
         validate(parameters);
 
-        Set<String> alreadySavedPhrases = phraseRepository.findExistingPhrases(parameters.phrases());
+        checkAndThrowIfSomePhrasesAlreadySaved(parameters);
 
-        List<SavePhraseParameters> newPhrases = parameters.satisfyingPredicate(resource -> !alreadySavedPhrases.contains(resource.phrase()));
+        List<SavePhraseParameters> newPhrases = parameters.phraseResources();
 
         Iterable<Phrase> savedPhrases = phraseRepository.saveAll(newPhrases.parallelStream().map(phraseMapper::mapToPhrase).toList());
 
-        List<PhraseResource> mappedSavedPhrases = StreamSupport.stream(savedPhrases.spliterator(), true)
+        return StreamSupport.stream(savedPhrases.spliterator(), true)
                 .map(phraseMapper::mapFromPhrase)
                 .toList();
+    }
 
-        return BatchSavePhrasesResult.builder()
-                .existingPhrases(alreadySavedPhrases)
-                .savedPhrases(mappedSavedPhrases)
-                .build();
+    private void checkAndThrowIfSomePhrasesAlreadySaved(BatchSavePhrasesParameters parameters) {
+        Set<String> alreadySavedPhrases = phraseRepository.findExistingPhrases(parameters.phrases());
+        if (!alreadySavedPhrases.isEmpty()) {
+            throw new PhrasesAlreadyExistException(alreadySavedPhrases);
+        }
     }
 
     @Override
@@ -66,17 +62,21 @@ public class PhraseStoringService implements IPhraseStoringService {
 
     private void validate(BatchSavePhrasesParameters batchParameters) {
         final List<CreateTranslationParameters> invalidTranslationParameters = new ArrayList<>();
+        final List<SavePhraseParameters> invalidPhrases = new ArrayList<>();
 
         for (SavePhraseParameters phraseResource : batchParameters.phraseResources()) {
+            if (isoLanguageValidator.isNotValid(phraseResource.isoLanguageCode())) {
+                invalidPhrases.add(phraseResource);
+            }
             for (CreateTranslationParameters translation : phraseResource.translations()) {
-                if(!isoLanguageValidator.isValid(translation.isoLanguageCode())){
+                if(isoLanguageValidator.isNotValid(translation.isoLanguageCode())){
                     invalidTranslationParameters.add(translation);
                 }
             }
         }
 
-        if (!invalidTranslationParameters.isEmpty()) {
-            throw new InvalidIsoLanguageCodeException(invalidTranslationParameters);
+        if (!invalidTranslationParameters.isEmpty() || !invalidPhrases.isEmpty()) {
+            throw new InvalidIsoLanguageCodeException(invalidTranslationParameters, invalidPhrases);
         }
     }
 
