@@ -7,6 +7,7 @@ import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
 import com.blbulyandavbulyan.larm.storage.StoredObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class PhraseOrchestrator {
     private final TextToSpeechService textToSpeechService;
     private final ObjectStorageService objectStorageService;
 
+    @Transactional //TODO dumb way, maybe we have to reconsider it
     public List<PhraseResource> savePhrases(BatchSavePhrasesParameters batchSavePhrasesParameters) {
         List<PhraseResource> phraseResources = phraseStoringService.batchSavePhrases(batchSavePhrasesParameters);
 

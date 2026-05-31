@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 @Service
 @RequiredArgsConstructor
 class LocalObjectStorageService implements ObjectStorageService {
-    @Value("storage.local.folder-name")
+    @Value("${storage.local.folder-name}")
     private final String storageFolder;
 
     @Override

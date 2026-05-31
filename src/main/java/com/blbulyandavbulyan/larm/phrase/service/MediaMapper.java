@@ -23,6 +23,7 @@ class MediaMapper {
                 .aiModelUsed(createMediaResource.aiModelUsed())
                 .voiceIdentifier(createMediaResource.voiceIdentifier())
                 .createdAt(Instant.now())
+                .isNewFlag(true)
                 .build();
     }
 

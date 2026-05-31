@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS vector;
 CREATE TABLE phrases
 (
     id            UUID PRIMARY KEY,

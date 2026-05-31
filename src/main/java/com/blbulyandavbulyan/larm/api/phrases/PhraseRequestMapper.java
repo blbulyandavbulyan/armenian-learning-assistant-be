@@ -21,7 +21,7 @@ class PhraseRequestMapper {
         return SavePhraseParameters.builder()
                 .phrase(request.phrase())
                 .transcription(request.transcription())
-                .isoLanguageCode("am")
+                .isoLanguageCode("hy")
                 .translations(mapTranslations(request.translations()))
                 .build();
     }

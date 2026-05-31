@@ -3,6 +3,9 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+hy_AM-medium.onnx
+hy_AM-medium.onnx.json
+welcome.wav
 
 ### STS ###
 .apt_generated
