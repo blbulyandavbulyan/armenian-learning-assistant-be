@@ -1,4 +1,20 @@
-## 🎙️ Text-to-Speech (TTS) Setup & Troubleshooting
+# armenian-learning-assistant-be
+This is the backend for Armenian language learning assistant.
+
+Tech stack:
+* Spring Boot 4
+* Java 25
+* Spring AI
+* python3 + piper (for text to speech)
+* Gemini model for phrases generation
+## Running locally
+Make sure you have maven installed.
+You also need python (you should follow the instructions below to set up piper)
+When you run the application locally you have to provide:
+* `local` as your Spring Boot Profile
+* `GEMINI_API_KEY` as environment variable, with your gemini api key
+
+### 🎙️ Text-to-Speech (TTS) Setup & Troubleshooting
 ```bash
 # 1. Initialize the virtual environment
 python3 -m venv myenv
