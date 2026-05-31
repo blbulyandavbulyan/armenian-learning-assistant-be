@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: assistant
   datasource:
     password: secret
     username: myuser
