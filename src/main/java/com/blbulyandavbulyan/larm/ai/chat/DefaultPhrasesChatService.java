@@ -1,17 +1,17 @@
 package com.blbulyandavbulyan.larm.ai.chat;
 
-import com.blbulyandavbulyan.larm.ai.IPhrasesChatService;
+import java.util.UUID;
+
+import com.blbulyandavbulyan.larm.ai.PhrasesChatService;
 import com.blbulyandavbulyan.larm.ai.chat.common.ScopedValues;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
-public class PhrasesChatService implements IPhrasesChatService {
+public class DefaultPhrasesChatService implements PhrasesChatService {
     private final ChatClient armenianPhrasesGeneratorChatClient;
 
     @Override

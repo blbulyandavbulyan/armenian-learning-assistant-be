@@ -1,10 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import lombok.Builder;
-
 import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
+
+import lombok.Builder;
 
 @Builder
 public record SavePhraseParameters(

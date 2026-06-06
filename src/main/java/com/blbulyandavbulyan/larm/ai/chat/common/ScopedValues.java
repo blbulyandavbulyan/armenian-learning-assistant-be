@@ -1,10 +1,9 @@
 package com.blbulyandavbulyan.larm.ai.chat.common;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScopedValues {

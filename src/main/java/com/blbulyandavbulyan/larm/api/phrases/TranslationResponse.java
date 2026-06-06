@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.api.phrases;
 
-import lombok.Builder;
-
 import java.util.UUID;
+
+import lombok.Builder;
 
 @Builder
 record TranslationResponse(

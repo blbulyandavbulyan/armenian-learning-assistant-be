@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.ai.chat;
 
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 public record DraftPhraseResource(
         @JsonPropertyDescription("The phrase, which will be saved")

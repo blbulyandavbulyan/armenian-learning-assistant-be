@@ -1,9 +1,9 @@
 package com.blbulyandavbulyan.larm.api.advice;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 import java.util.Map;
+
+import lombok.Builder;
 
 @Builder
 public record ValidationErrorResponse(

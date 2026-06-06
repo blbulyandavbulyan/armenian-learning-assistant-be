@@ -1,10 +1,5 @@
 package com.blbulyandavbulyan.larm.ai.tts;
 
-import com.blbulyandavbulyan.larm.ai.SpeechResource;
-import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,6 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import com.blbulyandavbulyan.larm.ai.SpeechResource;
+import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +21,14 @@ public class PiperTextToSpeechService implements TextToSpeechService {
     private static final String CONTENT_TYPE = "audio/wav";
     private static final String FILE_EXTENSION = "wav";
 
-
     private final PiperConfigurationProperties piperConfigurationProperties;
 
     @Override
     public SpeechResource convert(String text, String iso2LanguageCode) {
         // Enforce Armenian constraint for this specific model configuration
         if (!"hy".equalsIgnoreCase(iso2LanguageCode)) {
-            throw new IllegalArgumentException("Unsupported language code: " + iso2LanguageCode + ". This service currently only supports 'hy' (Armenian).");
+            throw new IllegalArgumentException("Unsupported language code: %s. This service currently only supports 'hy' (Armenian)."
+                    .formatted(iso2LanguageCode));
         }
 
         // Validate that the model exists where we expect it to

@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @SpringBootApplication
 public class ArmenianLearningAssistantApplication {
 
-	static void main(String[] args) {
-		SpringApplication.run(ArmenianLearningAssistantApplication.class, args);
-	}
+    static void main(String[] args) {
+        SpringApplication.run(ArmenianLearningAssistantApplication.class, args);
+    }
 
 }

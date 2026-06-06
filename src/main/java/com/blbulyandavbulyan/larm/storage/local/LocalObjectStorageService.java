@@ -1,17 +1,17 @@
 package com.blbulyandavbulyan.larm.storage.local;
 
-import com.blbulyandavbulyan.larm.storage.StoredObject;
-import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
-import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
+import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
+import com.blbulyandavbulyan.larm.storage.StoredObject;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

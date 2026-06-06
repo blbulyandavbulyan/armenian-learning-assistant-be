@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.UUID;
+
+import org.springframework.data.repository.CrudRepository;
 
 public interface MediaRepository extends CrudRepository<Media, UUID> {
 }

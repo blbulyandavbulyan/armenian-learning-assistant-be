@@ -1,9 +1,8 @@
 package com.blbulyandavbulyan.larm.ai.chat;
 
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-
-import java.util.List;
 
 public record StructuredPhrasesResource(
         @JsonPropertyDescription("Should contain the response description")

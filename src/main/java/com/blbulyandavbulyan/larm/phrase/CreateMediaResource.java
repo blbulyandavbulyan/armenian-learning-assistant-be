@@ -1,9 +1,9 @@
 package com.blbulyandavbulyan.larm.phrase;
 
+import java.util.UUID;
+
 import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
 import lombok.Builder;
-
-import java.util.UUID;
 
 @Builder
 public record CreateMediaResource(

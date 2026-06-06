@@ -1,6 +1,19 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
-import com.blbulyandavbulyan.larm.phrase.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.StreamSupport;
+
+import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
+import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
+import com.blbulyandavbulyan.larm.phrase.InvalidIsoLanguageCodeException;
+import com.blbulyandavbulyan.larm.phrase.PageParameters;
+import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
+import com.blbulyandavbulyan.larm.phrase.PhraseResource;
+import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
+import com.blbulyandavbulyan.larm.phrase.PhrasesAlreadyExistException;
+import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
 import com.blbulyandavbulyan.larm.validation.IsoLanguageValidator;
@@ -11,15 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.StreamSupport;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PhraseStoringService implements IPhraseStoringService {
+public class DefaultPhraseStoringService implements PhraseStoringService {
     private final PhraseRepository phraseRepository;
     private final PhraseMapper phraseMapper;
     private final IsoLanguageValidator isoLanguageValidator;
@@ -69,7 +77,7 @@ public class PhraseStoringService implements IPhraseStoringService {
                 invalidPhrases.add(phraseResource);
             }
             for (CreateTranslationParameters translation : phraseResource.translations()) {
-                if(isoLanguageValidator.isNotValid(translation.isoLanguageCode())){
+                if (isoLanguageValidator.isNotValid(translation.isoLanguageCode())) {
                     invalidTranslationParameters.add(translation);
                 }
             }
@@ -79,6 +87,5 @@ public class PhraseStoringService implements IPhraseStoringService {
             throw new InvalidIsoLanguageCodeException(invalidTranslationParameters, invalidPhrases);
         }
     }
-
 
 }

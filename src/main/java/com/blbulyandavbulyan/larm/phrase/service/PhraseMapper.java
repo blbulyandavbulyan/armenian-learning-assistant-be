@@ -1,18 +1,18 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
-import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseResource;
+import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import com.blbulyandavbulyan.larm.phrase.TranslationResource;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseStatus;
 import com.blbulyandavbulyan.larm.phrase.dao.Translation;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
-import java.util.Collections;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class PhraseMapper {

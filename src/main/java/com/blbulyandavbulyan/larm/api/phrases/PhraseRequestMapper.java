@@ -1,11 +1,11 @@
 package com.blbulyandavbulyan.larm.api.phrases;
 
+import java.util.List;
+
+import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
-import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 class PhraseRequestMapper {

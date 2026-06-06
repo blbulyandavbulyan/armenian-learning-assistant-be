@@ -1,9 +1,9 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import lombok.Builder;
-
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Builder;
 
 @Builder(toBuilder = true)
 public record PhraseResource(

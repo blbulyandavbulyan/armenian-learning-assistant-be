@@ -1,19 +1,19 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import lombok.Getter;
-
 import java.util.Collections;
 import java.util.List;
+
+import lombok.Getter;
 
 @Getter
 public class InvalidIsoLanguageCodeException extends IllegalArgumentException {
     /**
-     * Translations with invalid iso language code
+     * Translations with invalid iso language code.
      */
     private final List<CreateTranslationParameters> invalidTranslations;
 
     /**
-     * Phrases with invalid iso language code
+     * Phrases with invalid iso language code.
      */
     private final List<SavePhraseParameters> invalidPhrases;
 

@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import lombok.Builder;
-
 import java.util.List;
+
+import lombok.Builder;
 
 @Builder
 public record PagedPhraseResource(List<PhraseResource> phrases, Page page) {

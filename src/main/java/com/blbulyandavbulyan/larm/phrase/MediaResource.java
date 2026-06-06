@@ -1,12 +1,11 @@
 package com.blbulyandavbulyan.larm.phrase;
 
+import java.time.Instant;
+import java.util.UUID;
+
 import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.UUID;
 
 @Builder
 public record MediaResource(

@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
-import lombok.Builder;
-
 import java.util.List;
+
+import lombok.Builder;
 
 @Builder
 public record DraftPhraseResponse(

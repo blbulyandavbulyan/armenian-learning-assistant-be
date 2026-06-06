@@ -1,9 +1,9 @@
 package com.blbulyandavbulyan.larm.ai;
 
-import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
-
 import java.util.UUID;
 
-public interface IPhrasesChatService {
+import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
+
+public interface PhrasesChatService {
     StructuredPhrasesResource chat(String message, UUID chatId);
 }

@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import lombok.Getter;
-
 import java.util.Set;
+
+import lombok.Getter;
 
 @Getter
 public class PhrasesAlreadyExistException extends RuntimeException {

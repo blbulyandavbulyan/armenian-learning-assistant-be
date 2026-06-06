@@ -1,5 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
+import java.util.Set;
+import java.util.UUID;
+
 import lombok.Builder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
@@ -8,9 +11,6 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
-
-import java.util.Set;
-import java.util.UUID;
 
 @Builder
 @Table("phrases")

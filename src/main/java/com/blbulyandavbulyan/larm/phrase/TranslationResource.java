@@ -1,8 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import lombok.Builder;
-
 import java.util.UUID;
+
+import lombok.Builder;
 
 @Builder
 public record TranslationResource(UUID id, String iso2LanguageCode, String translationText) {

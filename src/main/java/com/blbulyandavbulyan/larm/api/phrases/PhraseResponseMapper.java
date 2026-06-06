@@ -1,11 +1,11 @@
 package com.blbulyandavbulyan.larm.api.phrases;
 
+import java.util.List;
+
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.TranslationResource;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 class PhraseResponseMapper {

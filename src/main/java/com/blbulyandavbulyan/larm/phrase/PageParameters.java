@@ -3,7 +3,8 @@ package com.blbulyandavbulyan.larm.phrase;
 import lombok.Builder;
 
 /**
- * Provides page parameters
+ * Provides page parameters.
+ *
  * @param pageNumber page number, first page starts with 1
  * @param pageSize page size
  */

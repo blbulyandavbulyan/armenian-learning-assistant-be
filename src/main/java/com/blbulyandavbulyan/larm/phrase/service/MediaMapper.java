@@ -1,12 +1,12 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
+import java.time.Instant;
+import java.util.UUID;
+
 import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
 import com.blbulyandavbulyan.larm.phrase.MediaResource;
 import com.blbulyandavbulyan.larm.phrase.dao.Media;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
-import java.util.UUID;
 
 @Component
 class MediaMapper {

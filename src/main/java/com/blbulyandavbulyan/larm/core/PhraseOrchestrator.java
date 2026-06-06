@@ -1,31 +1,36 @@
 package com.blbulyandavbulyan.larm.core;
 
-import com.blbulyandavbulyan.larm.ai.SpeechResource;
-import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
-import com.blbulyandavbulyan.larm.phrase.*;
-import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
-import com.blbulyandavbulyan.larm.storage.StoredObject;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.blbulyandavbulyan.larm.ai.SpeechResource;
+import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
+import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
+import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
+import com.blbulyandavbulyan.larm.phrase.MediaResource;
+import com.blbulyandavbulyan.larm.phrase.PhraseMediaService;
+import com.blbulyandavbulyan.larm.phrase.PhraseResource;
+import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
+import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
+import com.blbulyandavbulyan.larm.storage.StoredObject;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class PhraseOrchestrator {
-    //TODO most probably we should move this guy somewhere, maybe in the phrase package
+    // TODO most probably we should move this guy somewhere, maybe in the phrase package
 
-    private final IPhraseStoringService phraseStoringService;
-    private final IPhraseMediaService phraseMediaService;
+    private final PhraseStoringService phraseStoringService;
+    private final PhraseMediaService phraseMediaService;
     private final TextToSpeechService textToSpeechService;
     private final ObjectStorageService objectStorageService;
 
-    @Transactional //TODO dumb way, maybe we have to reconsider it
+    @Transactional // TODO dumb way, maybe we have to reconsider it
     public List<PhraseResource> savePhrases(BatchSavePhrasesParameters batchSavePhrasesParameters) {
         List<PhraseResource> phraseResources = phraseStoringService.batchSavePhrases(batchSavePhrasesParameters);
 

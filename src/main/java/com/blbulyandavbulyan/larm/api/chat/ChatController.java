@@ -1,6 +1,6 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
-import com.blbulyandavbulyan.larm.ai.IPhrasesChatService;
+import com.blbulyandavbulyan.larm.ai.PhrasesChatService;
 import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 class ChatController {
-    private final IPhrasesChatService phrasesChatService;
+    private final PhrasesChatService phrasesChatService;
 
     @PostMapping("/phrases")
     public PhraseChatResponse chat(@RequestBody ChatRequest request) {
