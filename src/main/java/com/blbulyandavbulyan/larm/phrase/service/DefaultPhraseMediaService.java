@@ -1,6 +1,8 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
@@ -25,4 +27,11 @@ class DefaultPhraseMediaService implements PhraseMediaService {
                 .map(mediaMapper::fromMedia)
                 .toList();
     }
+
+    @Override
+    public Optional<MediaResource> findById(UUID mediaId) {
+        return mediaRepository.findById(mediaId)
+                .map(mediaMapper::fromMedia);
+    }
+
 }

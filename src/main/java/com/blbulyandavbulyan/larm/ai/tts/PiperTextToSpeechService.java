@@ -7,18 +7,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import com.blbulyandavbulyan.larm.ai.SpeechResource;
 import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PiperTextToSpeechService implements TextToSpeechService {
@@ -45,7 +51,7 @@ public class PiperTextToSpeechService implements TextToSpeechService {
                 piperConfigurationProperties.executablePath(),
                 "--model", modelPath,
                 "--debug",
-                "--output-raw" // Instant unbuffered chunk flushing
+                "--output-raw"
         };
 
         try {
@@ -53,6 +59,19 @@ public class PiperTextToSpeechService implements TextToSpeechService {
             this.processStdin = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), StandardCharsets.UTF_8));
             this.processStdout = process.getInputStream();
             this.processStderr = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
+
+            // WARMUP BLOCK: Wait for Piper to finish loading the model into RAM before accepting requests
+            log.info("Warming up Piper engine...");
+            String line;
+            while ((line = processStderr.readLine()) != null) {
+                log.debug("[Piper Init] {}", line);
+                // Piper outputs this when it is initialized and listening for stdin lines
+                if (line.contains("DEBUG:piper.voice:Guessing voice config path:")) {
+                    break;
+                }
+            }
+            log.info("Piper engine warmed up and ready.");
+
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize continuous Piper engine.", e);
         }
@@ -75,8 +94,7 @@ public class PiperTextToSpeechService implements TextToSpeechService {
             ByteArrayOutputStream pcmOutputStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[4096];
 
-            // Instead of racing available(), loop and read blocks blocking-style until
-            // Piper signals on stderr that generation for this line is finished.
+            // Loop until the end marker is found in stderr
             while (process.isAlive()) {
                 // Read whatever audio blocks are ready right now
                 while (processStdout.available() > 0) {
@@ -89,16 +107,23 @@ public class PiperTextToSpeechService implements TextToSpeechService {
                 // Check stderr for Piper's operational completion signature
                 if (processStderr.ready()) {
                     String logLine = processStderr.readLine();
-                    // Piper outputs performance metrics text when a line finishes synthesizing
-                    if (logLine != null && logLine.contains("DEBUG:piper.voice:text")) {
-                        // Capture any final straggling trailing bytes remaining in the stream pipe buffer
-                        while (processStdout.available() > 0) {
-                            int bytesRead = processStdout.read(buffer);
-                            if (bytesRead > 0) {
-                                pcmOutputStream.write(buffer, 0, bytesRead);
+                    if (logLine != null) {
+                        log.debug("[Piper Runtime] {}", logLine);
+                        // Piper outputs synthesis stats when a line finishes processing
+                        if (logLine.contains("DEBUG:piper.voice:text")) {
+                            // Give a tiny micro-sleep to ensure the OS finishes flushing bytes to stdout pipe
+                            // TODO fixing heisenbugs by sleep, NICE AI
+                            Thread.sleep(10);
+
+                            // Capture any final straggling trailing bytes remaining in the stream pipe buffer
+                            while (processStdout.available() > 0) {
+                                int bytesRead = processStdout.read(buffer);
+                                if (bytesRead > 0) {
+                                    pcmOutputStream.write(buffer, 0, bytesRead);
+                                }
                             }
+                            break; // Generation complete!
                         }
-                        break; // Generation complete!
                     }
                 }
 
@@ -122,7 +147,10 @@ public class PiperTextToSpeechService implements TextToSpeechService {
                     .fileExtension(FILE_EXTENSION)
                     .build();
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             throw new RuntimeException("Failed to communicate with continuous Piper process.", e);
         }
     }
@@ -167,16 +195,39 @@ public class PiperTextToSpeechService implements TextToSpeechService {
         return wavStream.toByteArray();
     }
 
+    @FunctionalInterface
+    private interface ThrowingRunnable {
+        void run() throws Throwable;
+    }
+
+    private static Optional<Throwable> executeStatement(ThrowingRunnable runnable) {
+        try {
+            runnable.run();
+            return Optional.empty();
+        } catch (Throwable e) {
+            return Optional.of(e);
+        }
+    }
+
     @PreDestroy
     public void cleanup() {
-        try {
-            if (processStdin != null) processStdin.close();
-            if (processStdout != null) processStdout.close();
-            if (processStderr != null) processStderr.close();
-        } catch (IOException ignored) {}
+        List<Throwable> exceptions = new ArrayList<>();
+        if (processStdin != null) {
+            executeStatement(() -> processStdin.close()).ifPresent(exceptions::add);
+        }
+        if (processStdout != null) {
+            executeStatement(() -> processStdout.close()).ifPresent(exceptions::add);
+        }
+        if (processStderr != null) {
+            executeStatement(() -> processStderr.close()).ifPresent(exceptions::add);
+        }
 
         if (process != null && process.isAlive()) {
             process.destroy();
         }
+
+        final var exception = new RuntimeException("Failed during the cleanup");
+        exceptions.forEach(exception::addSuppressed);
+        throw exception;
     }
 }

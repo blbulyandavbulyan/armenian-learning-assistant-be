@@ -6,7 +6,6 @@ CREATE TABLE phrases
     phrase        TEXT NOT NULL,
     status VARCHAR(25) NOT NULL,
     transcription TEXT,
-    audio_file_id TEXT,
     embedding     vector(1536),
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_phrase UNIQUE (phrase)

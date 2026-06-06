@@ -12,10 +12,13 @@ import com.blbulyandavbulyan.larm.phrase.TranslationResource;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseStatus;
 import com.blbulyandavbulyan.larm.phrase.dao.Translation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class PhraseMapper {
+    private final MediaMapper mediaMapper;
 
     public Phrase mapToPhrase(SavePhraseParameters resource) {
         return Phrase.builder()
@@ -46,6 +49,7 @@ public class PhraseMapper {
                 .iso2LanguageCode(phrase.isoLanguageCode())
                 .transcription(phrase.transcription())
                 .translations(phrase.translations().stream().map(PhraseMapper::translationToResource).toList())
+                .media(phrase.mediaSet().stream().map(mediaMapper::fromMedia).toList())
                 .build();
     }
 

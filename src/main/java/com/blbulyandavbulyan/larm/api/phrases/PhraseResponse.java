@@ -6,10 +6,14 @@ import java.util.UUID;
 import lombok.Builder;
 
 @Builder
-record PhraseResponse(
+public record PhraseResponse(
         UUID id,
         String phrase,
         String iso2LanguageCode,
         String transcription,
-        List<TranslationResponse> translations) {
+        List<TranslationResponse> translations,
+        List<Asset> assets) {
+
+    public record Asset(String contentType, String url) {
+    }
 }
