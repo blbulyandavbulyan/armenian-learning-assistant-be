@@ -1,3 +1,19 @@
 spring:
   application:
     name: armenian-learning-assistant
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # Exposes the metrics and prometheus endpoints over HTTP
+        include: "health,metrics,prometheus"
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      # Optional: Automatically tags all metrics with your application name
+      application: ${spring.application.name:armenian-learning-assistant}

@@ -16,6 +16,7 @@ import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
 import com.blbulyandavbulyan.larm.storage.StoredObject;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class PhraseOrchestrator {
     private final ObjectStorageService objectStorageService;
 
     @Transactional // TODO dumb way, maybe we have to reconsider it
+    @Timed(value = "save.phrases.total-time", description = "Includes total time for saving phrases including additional stuff like text-to-speach")
     public List<PhraseResource> savePhrases(BatchSavePhrasesParameters batchSavePhrasesParameters) {
         List<PhraseResource> phraseResources = phraseStoringService.batchSavePhrases(batchSavePhrasesParameters);
 

@@ -24,8 +24,8 @@ storage:
   local:
     folder-name: /home/david/arm-learn-files
 piper:
-  executable-path: ./myenv/bin/piper
-  model-path: ./hy_AM-medium.onnx
+  url: http://localhost:5000
+  # TODO hardcoding these properties here might not be the best choice to be honest, maybe we should get them from the webserver which we use here
   model-name: hy_AM-medium
   voice-identifier: gor-medium
 logging:

@@ -24,6 +24,7 @@ source myenv/bin/activate
 
 # 4. Install the Piper TTS binary wrapper
 pip install piper-tts
+pip install 'piper-tts[http]'
 
 # Download the Neural Weights
 wget https://huggingface.co/davit312/piper-TTS-Armenian/resolve/main/v3/hy_AM-gor-medium.onnx -O hy_AM-medium.onnx
@@ -33,5 +34,10 @@ wget https://huggingface.co/davit312/piper-TTS-Armenian/resolve/main/v3/hy_AM-go
 
 # To test your setup
 python3 text-to-speech-test.py
+
+# Run the piper API server locally
+python3 -m piper.http_server -m hy_AM-medium.onnx
 ```
 
+#### Running the Piper API server locally
+This is essential step in the setup
