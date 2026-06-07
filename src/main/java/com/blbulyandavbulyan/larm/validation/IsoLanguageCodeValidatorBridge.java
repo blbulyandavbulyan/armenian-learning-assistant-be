@@ -4,13 +4,13 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class Iso2LanguageCodeValidatorBridge implements ConstraintValidator<ValidIso2LanguageCode, String> {
+public class IsoLanguageCodeValidatorBridge implements ConstraintValidator<ValidIsoLanguageCode, String> {
 
     private final IsoLanguageValidator isoLanguageValidator;
 
     // Spring will automatically inject your component here
     @Autowired
-    public Iso2LanguageCodeValidatorBridge(IsoLanguageValidator isoLanguageValidator) {
+    public IsoLanguageCodeValidatorBridge(IsoLanguageValidator isoLanguageValidator) {
         this.isoLanguageValidator = isoLanguageValidator;
     }
 

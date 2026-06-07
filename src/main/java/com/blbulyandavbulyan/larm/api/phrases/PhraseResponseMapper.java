@@ -30,7 +30,7 @@ class PhraseResponseMapper {
                 .id(phraseResource.id())
                 .phrase(phraseResource.phrase())
                 .transcription(phraseResource.transcription())
-                .iso2LanguageCode(phraseResource.iso2LanguageCode())
+                .isoLanguageCode(phraseResource.isoLanguageCode())
                 .translations(phraseResource.translations().stream().map(this::mapToTranslationResponse).toList())
                 .assets(mapToAssets(phraseResource.media()))
                 .build();
@@ -54,7 +54,7 @@ class PhraseResponseMapper {
         return TranslationResponse.builder()
                 .id(translationResource.id())
                 .translationText(translationResource.translationText())
-                .iso2LanguageCode(translationResource.iso2LanguageCode())
+                .isoLanguageCode(translationResource.isoLanguageCode())
                 .build();
     }
 

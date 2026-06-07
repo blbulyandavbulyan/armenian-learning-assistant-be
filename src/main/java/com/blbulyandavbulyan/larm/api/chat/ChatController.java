@@ -36,6 +36,6 @@ class ChatController {
     }
 
     private static DraftPhraseResponse.TranslationResponse mapTranslation(DraftPhraseResource.DraftTranslationResource t) {
-        return DraftPhraseResponse.TranslationResponse.builder().translationText(t.translationText()).iso2LanguageCode(t.iso2LanguageCode()).build();
+        return DraftPhraseResponse.TranslationResponse.builder().translationText(t.translationText()).isoLanguageCode(t.isoLanguageCode()).build();
     }
 }

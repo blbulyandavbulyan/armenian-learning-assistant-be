@@ -49,7 +49,7 @@ public class PhraseMapper {
         return PhraseResource.builder()
                 .id(phrase.id())
                 .phrase(phrase.phrase())
-                .iso2LanguageCode(phrase.isoLanguageCode())
+                .isoLanguageCode(phrase.isoLanguageCode())
                 .transcription(phrase.transcription())
                 .translations(phrase.translations().stream().map(PhraseMapper::translationToResource).toList())
                 .media(phrase.mediaSet().stream().map(mediaMapper::fromMedia).toList())
@@ -60,7 +60,7 @@ public class PhraseMapper {
         return TranslationResource.builder()
                 .id(translation.id())
                 .translationText(translation.translationText())
-                .iso2LanguageCode(translation.isoLanguageCode())
+                .isoLanguageCode(translation.isoLanguageCode())
                 .build();
     }
 }

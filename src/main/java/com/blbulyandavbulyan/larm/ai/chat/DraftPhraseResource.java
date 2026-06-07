@@ -20,6 +20,6 @@ public record DraftPhraseResource(
             String translationText,
 
             @JsonPropertyDescription("iso2 language code of the translationText")
-            String iso2LanguageCode) {
+            String isoLanguageCode) {
     }
 }

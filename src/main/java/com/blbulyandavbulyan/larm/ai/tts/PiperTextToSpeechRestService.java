@@ -24,9 +24,9 @@ public class PiperTextToSpeechRestService implements TextToSpeechService {
 
     @Override
     @Timed(value = "tts.convert.piper.latency", description = "Time taken to synthesize text via Piper REST API")
-    public SpeechResource convert(String text, String iso2LanguageCode) {
-        if (!"hy".equalsIgnoreCase(iso2LanguageCode)) {
-            throw new IllegalArgumentException("Unsupported language code: " + iso2LanguageCode);
+    public SpeechResource convert(String text, String isoLanguageCode) {
+        if (!"hy".equalsIgnoreCase(isoLanguageCode)) {
+            throw new IllegalArgumentException("Unsupported language code: " + isoLanguageCode);
         }
 
         String singleLineText = text.replaceAll("\\s+", " ").trim();

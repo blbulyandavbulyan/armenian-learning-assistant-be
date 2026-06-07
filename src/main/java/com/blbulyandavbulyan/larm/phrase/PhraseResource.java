@@ -9,7 +9,7 @@ import lombok.Builder;
 public record PhraseResource(
         UUID id,
         String phrase,
-        String iso2LanguageCode,
+        String isoLanguageCode,
         String transcription,
         List<TranslationResource> translations,
         List<MediaResource> media) {

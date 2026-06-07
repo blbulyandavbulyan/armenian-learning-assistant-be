@@ -2,5 +2,5 @@ package com.blbulyandavbulyan.larm.ai;
 
 public interface TextToSpeechService {
 
-    SpeechResource convert(String text, String iso2LanguageCode);
+    SpeechResource convert(String text, String isoLanguageCode);
 }

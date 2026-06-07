@@ -10,13 +10,13 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = Iso2LanguageCodeValidatorBridge.class)
+@Constraint(validatedBy = IsoLanguageCodeValidatorBridge.class)
 @Target({ElementType.TYPE, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidIso2LanguageCode {
+public @interface ValidIsoLanguageCode {
     
     // The default error message when validation fails
-    String message() default "Invalid ISO-2 language code";
+    String message() default "Invalid ISO 639-1 language code";
 
     // Required by the Jakarta Validation spec
     Class<?>[] groups() default {};

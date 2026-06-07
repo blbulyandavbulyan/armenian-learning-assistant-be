@@ -31,7 +31,7 @@ class PhraseRequestMapper {
     private static CreateTranslationParameters mapTranslation(CreatePhraseRequest.CreateTranslationRequest translation) {
         return CreateTranslationParameters.builder()
                 .translationText(translation.translationText())
-                .isoLanguageCode(translation.iso2LanguageCode())
+                .isoLanguageCode(translation.isoLanguageCode())
                 .build();
     }
 }

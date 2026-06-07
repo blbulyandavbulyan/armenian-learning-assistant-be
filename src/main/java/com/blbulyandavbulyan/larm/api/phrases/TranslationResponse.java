@@ -7,6 +7,6 @@ import lombok.Builder;
 @Builder
 record TranslationResponse(
         UUID id,
-        String iso2LanguageCode,
+        String isoLanguageCode,
         String translationText) {
 }
