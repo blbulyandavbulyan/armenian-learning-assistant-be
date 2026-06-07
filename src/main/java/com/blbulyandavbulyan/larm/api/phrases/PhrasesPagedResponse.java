@@ -7,5 +7,10 @@ import lombok.Builder;
 
 @Schema(name = "Phrases Paged Response")
 @Builder
-record PhrasesPagedResponse(List<PhraseResponse> phrases, PageResponse page) {
+record PhrasesPagedResponse(
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        List<PhraseResponse> phrases,
+
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        PageResponse page) {
 }

@@ -10,12 +10,12 @@ import lombok.Builder;
 @Schema(name = "Phrase Translation")
 @Builder
 record TranslationResponse(
-        @Schema(description = Descriptions.TRANSLATION_ID, example = Examples.TRANSLATION_ID)
+        @Schema(description = Descriptions.TRANSLATION_ID, example = Examples.TRANSLATION_ID, requiredMode = Schema.RequiredMode.REQUIRED)
         UUID id,
 
-        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)
+        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE, requiredMode = Schema.RequiredMode.REQUIRED)
         String isoLanguageCode,
 
-        @Schema(description = Descriptions.APPROVED_TRANSLATION_TEXT, example = Examples.TRANSLATION_TEXT)
+        @Schema(description = Descriptions.APPROVED_TRANSLATION_TEXT, example = Examples.TRANSLATION_TEXT, requiredMode = Schema.RequiredMode.REQUIRED)
         String translationText) {
 }

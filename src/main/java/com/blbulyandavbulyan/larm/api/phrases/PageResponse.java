@@ -9,12 +9,12 @@ import lombok.Builder;
 @Builder
 record PageResponse(
 
-        @Schema(description = Descriptions.PAGE_NUMBER, defaultValue = "1", example = Examples.PAGE_NUMBER)
+        @Schema(description = Descriptions.PAGE_NUMBER, defaultValue = "1", example = Examples.PAGE_NUMBER, requiredMode = Schema.RequiredMode.REQUIRED)
         int pageNumber,
 
-        @Schema(description = Descriptions.PAGE_SIZE, defaultValue = "10", example = Examples.PAGE_SIZE)
+        @Schema(description = Descriptions.PAGE_SIZE, defaultValue = "10", example = Examples.PAGE_SIZE, requiredMode = Schema.RequiredMode.REQUIRED)
         int pageSize,
 
-        @Schema(description = Descriptions.TOTAL_PAGES, example = Examples.TOTAL_PAGES)
+        @Schema(description = Descriptions.TOTAL_PAGES, example = Examples.TOTAL_PAGES, requiredMode = Schema.RequiredMode.REQUIRED)
         int totalPages) {
 }

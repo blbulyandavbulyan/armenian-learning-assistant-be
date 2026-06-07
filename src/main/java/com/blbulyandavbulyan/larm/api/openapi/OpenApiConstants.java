@@ -20,6 +20,11 @@ public interface OpenApiConstants {
         String PAGE_NUMBER = "Page number (starting from 1)";
         String PAGE_SIZE = "Page size in [10; 100]";
         String TOTAL_PAGES = "Total pages";
+        String TIMESTAMP_OF_THE_ERROR = "Timestamp of the error";
+        String HTTP_STATUS_CODE = "HTTP status code";
+        String ERROR_TYPE_SUMMARY = "Error type summary";
+        String ERROR_PATH = "The path where the error occurred";
+        String ERROR_MESSAGES_MAP = "Map of field names to their validation error messages";
     }
 
     interface Examples {
@@ -39,5 +44,9 @@ public interface OpenApiConstants {
         String PAGE_SIZE = "10";
         String TOTAL_PAGES = "5";
         String PHRASE_ISO_LANGUAGE_CODE = "hy";
+        String TIMESTAMP_OF_THE_ERROR = "2023-10-27T10:00:00";
+        String HTTP_STATUS_CODE = "400";
+        String ERROR_TYPE_SUMMARY = "Validation Failed";
+        String ERROR_PATH = "/phrases";
     }
 }
