@@ -1,7 +1,6 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,10 +25,14 @@ public class PhraseMapper {
                 .phrase(resource.phrase())
                 .transcription(resource.transcription())
                 .isoLanguageCode(resource.isoLanguageCode())
-                .translations(resource.translations().stream().map(this::mapToTranslation).collect(Collectors.toSet()))
+                .translations(resource.translations().stream()
+                        .map(this::mapToTranslation)
+                        .collect(Collectors.toSet()))
                 .status(PhraseStatus.DRAFT)
-                .mediaSet(Collections.emptySet())
                 .isNewFlag(true)
+                .mediaSet(resource.mediaResources().stream()
+                        .map(mediaMapper::toMedia)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 

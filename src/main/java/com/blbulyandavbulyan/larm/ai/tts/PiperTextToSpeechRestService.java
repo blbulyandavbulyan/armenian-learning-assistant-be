@@ -17,7 +17,7 @@ public class PiperTextToSpeechRestService implements TextToSpeechService {
 
     public PiperTextToSpeechRestService(PiperConfigurationProperties piperConfigurationProperties) {
         this.piperConfigurationProperties = piperConfigurationProperties;
-        this.restClient = RestClient.builder() //TODO is it worth extracting into configuration class?
+        this.restClient = RestClient.builder()
                 .baseUrl(piperConfigurationProperties.url())
                 .build();
     }

@@ -41,6 +41,7 @@ class AssetsControllerIT {
 
     @ServiceConnection
     @SuppressWarnings("unused")
+    @Container
     static PostgreSQLContainer postgres = new PostgreSQLContainer("pgvector/pgvector:pg17");
 
     @DynamicPropertySource
