@@ -11,16 +11,20 @@ import lombok.Builder;
 @Schema(name = "Phrase Response")
 @Builder
 public record PhraseResponse(
-        @Schema(description = Descriptions.PHRASE_ID, example = Examples.PHRASE_ID, requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = Descriptions.PHRASE_ID, example = Examples.PHRASE_ID,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         UUID id,
 
-        @Schema(description = Descriptions.APPROVED_PHRASE, example = Examples.PHRASE, requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = Descriptions.APPROVED_PHRASE, example = Examples.PHRASE,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String phrase,
 
-        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.PHRASE_ISO_LANGUAGE_CODE, requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.PHRASE_ISO_LANGUAGE_CODE,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String isoLanguageCode,
 
-        @Schema(description = Descriptions.APPROVED_TRANSCRIPTION, example = Examples.TRANSCRIPTION, requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = Descriptions.APPROVED_TRANSCRIPTION, example = Examples.TRANSCRIPTION,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String transcription,
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
@@ -31,10 +35,12 @@ public record PhraseResponse(
 
     @Schema(name = "Asset Of Phrase Response")
     public record Asset(
-            @Schema(description = Descriptions.CONTENT_TYPE, example = Examples.CONTENT_TYPE, requiredMode = Schema.RequiredMode.REQUIRED)
+            @Schema(description = Descriptions.CONTENT_TYPE, example = Examples.CONTENT_TYPE,
+                    requiredMode = Schema.RequiredMode.REQUIRED)
             String contentType,
 
-            @Schema(description = Descriptions.ASSET_URL, example = Examples.ASSET_URL, requiredMode = Schema.RequiredMode.REQUIRED)
+            @Schema(description = Descriptions.ASSET_URL, example = Examples.ASSET_URL,
+                    requiredMode = Schema.RequiredMode.REQUIRED)
             String url) {
     }
 }
