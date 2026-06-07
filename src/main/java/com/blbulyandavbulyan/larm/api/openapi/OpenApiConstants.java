@@ -13,7 +13,7 @@ public interface OpenApiConstants {
         String APPROVED_TRANSLATION_TEXT = "Approved translation text";
         String APPROVED_TRANSCRIPTION = "Approved transcription";
         String APPROVED_PHRASE = "Approved phrase";
-        String PHRAE_ID = "Id of the phrase";
+        String PHRASE_ID = "Id of the phrase";
         String CONTENT_TYPE = "Content type";
         String ASSET_URL = "Asset URL";
         String TRANSLATION_ID = "Translation ID";
@@ -28,7 +28,7 @@ public interface OpenApiConstants {
         String CHAT_ID = "5d9e3e04-c848-44a0-8d25-103aaecf1856";
         String PHRASE = "Որտե՞ղ է հացի բաժինը:";
         String TRANSCRIPTION = "Vortegh e hatsi bazhiny?";
-        String ISO_LANGUAGE_CODE = "ru";
+        String TRANSLATION_ISO_LANGUAGE_CODE = "ru";
         String TRANSLATION_TEXT = "Где находится отдел хлеба?";
         String PHRASE_CHAT_RESPONSE_MESSAGE = "Here are the phrases for grocery store";
         String PHRASE_ID = "54c6f12c-4201-48fc-80e4-299bae5b75db";
@@ -38,5 +38,6 @@ public interface OpenApiConstants {
         String PAGE_NUMBER = "1";
         String PAGE_SIZE = "10";
         String TOTAL_PAGES = "5";
+        String PHRASE_ISO_LANGUAGE_CODE = "hy";
     }
 }

@@ -23,12 +23,13 @@ record CreatePhraseRequest(
         @NotEmpty
         List<@NotNull CreateTranslationRequest> translations) {
 
+    @Schema(name = "Phrase Create Translation Request")
     public record CreateTranslationRequest(
             @Schema(description = Descriptions.APPROVED_TRANSLATION_TEXT, example = Examples.TRANSLATION_TEXT)
             @NotBlank
             String translationText,
 
-            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.ISO_LANGUAGE_CODE)
+            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)
             @NotBlank
             @ValidIsoLanguageCode
             String isoLanguageCode) {

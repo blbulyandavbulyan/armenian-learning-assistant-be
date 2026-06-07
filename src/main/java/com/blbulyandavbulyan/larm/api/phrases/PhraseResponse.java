@@ -11,13 +11,13 @@ import lombok.Builder;
 @Schema(name = "Phrase Response")
 @Builder
 public record PhraseResponse(
-        @Schema(description = Descriptions.PHRAE_ID, example = Examples.PHRASE_ID)
+        @Schema(description = Descriptions.PHRASE_ID, example = Examples.PHRASE_ID)
         UUID id,
 
         @Schema(description = Descriptions.APPROVED_PHRASE, example = Examples.PHRASE)
         String phrase,
 
-        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.ISO_LANGUAGE_CODE)
+        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.PHRASE_ISO_LANGUAGE_CODE)
         String isoLanguageCode,
 
         @Schema(description = Descriptions.APPROVED_TRANSCRIPTION, example = Examples.TRANSCRIPTION)

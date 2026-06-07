@@ -13,9 +13,9 @@ record TranslationResponse(
         @Schema(description = Descriptions.TRANSLATION_ID, example = Examples.TRANSLATION_ID)
         UUID id,
 
-        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.ISO_LANGUAGE_CODE)
+        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)
         String isoLanguageCode,
 
-        @Schema(description = Descriptions.APPROVED_TRANSLATION_TEXT, example = Examples.ISO_LANGUAGE_CODE)
+        @Schema(description = Descriptions.APPROVED_TRANSLATION_TEXT, example = Examples.TRANSLATION_TEXT)
         String translationText) {
 }

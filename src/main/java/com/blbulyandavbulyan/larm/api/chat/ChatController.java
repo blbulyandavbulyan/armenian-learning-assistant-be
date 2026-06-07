@@ -5,20 +5,16 @@ import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/chat")
 @RequiredArgsConstructor
 @Validated
-class ChatController {
+class ChatController implements ChatApi {
     private final PhrasesChatService phrasesChatService;
 
-    @PostMapping("/phrases")
-    public PhraseChatResponse chat(@RequestBody ChatRequest request) {
+    @Override
+    public PhraseChatResponse chat(ChatRequest request) {
         final StructuredPhrasesResource structuredPhrasesResource = phrasesChatService.chat(request.message(), request.chatId());
 
         return PhraseChatResponse.builder()

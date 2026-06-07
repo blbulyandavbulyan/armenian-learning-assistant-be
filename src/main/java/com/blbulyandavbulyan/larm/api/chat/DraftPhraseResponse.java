@@ -24,7 +24,7 @@ public record DraftPhraseResponse(
             @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.TRANSLATION_TEXT)
             String translationText,
 
-            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.ISO_LANGUAGE_CODE)
+            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)
             String isoLanguageCode) {
     }
 }
