@@ -70,6 +70,11 @@
         <property name="onCommentFormat" value='.'/>
     </module>
     <module name="TreeWalker">
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+            <message key="name.invalidPattern"
+                     value="Interface constants and static final fields must be UPPER_CASE_SNAKE_CASE (found: ''{0}'')."/>
+        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
         <module name="OuterTypeFilename"/>
@@ -331,8 +336,19 @@
         </module>
 
         <module name="AbbreviationAsWordInName">
+            <property name="id" value="AbbreviationAsWordInNameProduction"/>
             <property name="ignoreFinal" value="false"/>
             <property name="allowedAbbreviationLength" value="0"/>
+            <property name="tokens"
+                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
+                    PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,
+                    RECORD_COMPONENT_DEF"/>
+        </module>
+        <module name="AbbreviationAsWordInName">
+            <property name="id" value="AbbreviationAsWordInNameTest"/>
+            <property name="ignoreFinal" value="false"/>
+            <property name="allowedAbbreviationLength" value="2"/>
+            <property name="allowedAbbreviations" value="IT"/>
             <property name="tokens"
                       value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
                     PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,
@@ -482,5 +498,14 @@
             <!-- The check is suppressed in the next line of code after the comment -->
             <property name="influenceFormat" value="1"/>
         </module>
+    </module>
+    <module name="SuppressionSingleFilter">
+        <property name="id" value="AbbreviationAsWordInNameProduction"/>
+        <property name="files" value="[\\/]src[\\/]test[\\/]java[\\/]"/>
+    </module>
+
+    <module name="SuppressionSingleFilter">
+        <property name="id" value="AbbreviationAsWordInNameTest"/>
+        <property name="files" value="[\\/]src[\\/]main[\\/]java[\\/]"/>
     </module>
 </module>

@@ -6,6 +6,7 @@ import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.Descriptions;
 import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.Examples;
 import com.blbulyandavbulyan.larm.validation.ValidIsoLanguageCode;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ record CreatePhraseRequest(
         String transcription,
 
         @NotEmpty
-        List<@NotNull CreateTranslationRequest> translations) {
+        List<@NotNull @Valid CreateTranslationRequest> translations) {
 
     @Schema(name = "Phrase Create Translation Request")
     public record CreateTranslationRequest(

@@ -12,15 +12,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class PhrasesControllerIT extends BaseIT {
-
-    interface RequestMapping {
-        String GET_PHRASES = "/phrases";
-    }
+public class PhrasesControllerGetPhrasesIT extends BaseIT {
 
     @Test
     @Sql(scripts = "/sql-test-scripts/insert-phrases.sql")
-    void getPhrases_returnsPagedPhrases() throws Exception {
+    void getPhrases_firstPage() throws Exception {
         String expectedResponse = TestUtils.readResourceToString("responses/get-phrases-success.json");
 
         mockMvc.perform(get(RequestMapping.GET_PHRASES)
@@ -33,7 +29,7 @@ class PhrasesControllerIT extends BaseIT {
 
     @Test
     @Sql(scripts = "/sql-test-scripts/insert-phrases.sql")
-    void getPhrases_withCustomPagination() throws Exception {
+    void getPhrases_secondPage() throws Exception {
         String expectedResponse = TestUtils.readResourceToString("responses/get-phrases-empty-page.json");
 
         mockMvc.perform(get(RequestMapping.GET_PHRASES)
@@ -44,7 +40,7 @@ class PhrasesControllerIT extends BaseIT {
     }
 
     @Test
-    void getPhrases_invalidPageNumber_returnsBadRequest() throws Exception {
+    void getPhrases_invalidPageNumber() throws Exception {
         mockMvc.perform(get(RequestMapping.GET_PHRASES)
                         .param("pageNumber", "0")
                         .param("pageSize", "10"))
@@ -53,7 +49,7 @@ class PhrasesControllerIT extends BaseIT {
     }
 
     @Test
-    void getPhrases_pageSizeTooSmall_returnsBadRequest() throws Exception {
+    void getPhrases_pageSizeTooSmall() throws Exception {
         mockMvc.perform(get(RequestMapping.GET_PHRASES)
                         .param("pageNumber", "1")
                         .param("pageSize", "5"))
@@ -62,7 +58,7 @@ class PhrasesControllerIT extends BaseIT {
     }
 
     @Test
-    void getPhrases_pageSizeTooLarge_returnsBadRequest() throws Exception {
+    void getPhrases_pageSizeTooLarge() throws Exception {
         mockMvc.perform(get(RequestMapping.GET_PHRASES)
                         .param("pageNumber", "1")
                         .param("pageSize", "101"))
