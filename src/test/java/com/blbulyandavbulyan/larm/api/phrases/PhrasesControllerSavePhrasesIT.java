@@ -38,13 +38,14 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
         final UUID translationId = TranslationMother.DefaultTranslation.ID;
         final UUID mediaId = MediaMother.DefaultMedia.ID;
 
+        final byte[] expectedMediaBinaryContent = {1, 2, 3, 4};
         wireMockServer.stubFor(WireMock.post("/")
                 .withHeader("Content-Type", WireMock.equalTo("application/json"))
                 .withRequestBody(equalToJson("{\"text\":\"Որտե՞ղ է հացի բաժինը:\"}"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "audio/wav")
-                        .withBody(new byte[]{1, 2, 3, 4})));
+                        .withBody(expectedMediaBinaryContent)));
 
         try (
                 var uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.CALLS_REAL_METHODS);
@@ -65,6 +66,7 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
             Mockito.verify(phraseOrchestrator, times(1)).savePhrases(anyList());
 
             assertThat(phraseRepository.findById(phraseId))
+                    .as("Checking saved phrase in the database")
                     .isPresent()
                     .get()
                     .isEqualTo(PhraseMother.DefaultPhrase.builder()
@@ -72,6 +74,11 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
                                     .withStorageBucket(TEMP_DIR.toString())
                                     .build())
                             .build());
+
+            assertThat(TEMP_DIR.resolve(MediaMother.DefaultMedia.STORAGE_KEY).toFile())
+                    .as("Checking the saved media file")
+                    .exists()
+                    .hasBinaryContent(expectedMediaBinaryContent);
 
         }
     }
