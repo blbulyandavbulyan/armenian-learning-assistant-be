@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record CreateMediaResource(
+        UUID id,
         UUID phraseId,
         StorageProvider storageProvider,
         String storageBucket,

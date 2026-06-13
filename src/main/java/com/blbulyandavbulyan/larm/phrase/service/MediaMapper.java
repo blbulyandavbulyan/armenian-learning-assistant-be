@@ -1,7 +1,6 @@
 package com.blbulyandavbulyan.larm.phrase.service;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
 import com.blbulyandavbulyan.larm.phrase.MediaResource;
@@ -13,7 +12,7 @@ class MediaMapper {
 
     public Media toMedia(CreateMediaResource createMediaResource) {
         return Media.builder()
-                .id(UUID.randomUUID())
+                .id(createMediaResource.id())
                 .phraseId(createMediaResource.phraseId())
                 .storageProvider(createMediaResource.storageProvider())
                 .storageBucket(createMediaResource.storageBucket())

@@ -37,10 +37,12 @@ public class PhraseOrchestrator {
 
     private SavePhraseParameters processPhrase(NewCreatePhraseParameters parameters) {
         final var phraseId = UUID.randomUUID();
+        final var mediaId = UUID.randomUUID();
         final SpeechResource speechResource = textToSpeechService.convert(parameters.phrase(), parameters.isoLanguageCode());
-        final var objectName = phraseId.toString() + UUID.randomUUID() + ".%s".formatted(speechResource.fileExtension());
+        final var objectName = phraseId.toString() + mediaId + ".%s".formatted(speechResource.fileExtension());
         final StoredObject storedObject = objectStorageService.storeObject(speechResource.bytes(), objectName);
         final var mediaResource = CreateMediaResource.builder()
+                .id(mediaId)
                 .phraseId(phraseId)
                 .aiModelUsed(speechResource.modelName())
                 .sizeInBytes(speechResource.sizeInBytes())

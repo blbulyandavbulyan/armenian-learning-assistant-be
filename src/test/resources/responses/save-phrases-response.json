@@ -1,0 +1,23 @@
+{
+  "phrases": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "phrase": "Որտե՞ղ է հացի բաժինը:",
+      "isoLanguageCode": "hy",
+      "transcription": "Vortegh e hatsi bazhiny?",
+      "translations": [
+        {
+          "id": "bc5333d4-c70b-4121-8bdc-4b94547de419",
+          "isoLanguageCode": "en",
+          "translationText": "Where is the bread section?"
+        }
+      ],
+      "assets": [
+        {
+          "contentType": "audio/wav",
+          "url": "http://localhost/assets/49340802-1f6a-46f1-a620-e9c5d48be0bb"
+        }
+      ]
+    }
+  ]
+}
