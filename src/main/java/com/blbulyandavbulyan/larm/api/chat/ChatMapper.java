@@ -36,13 +36,15 @@ class ChatMapper {
         return DialogueChatResponse.builder()
                 .message(structuredDialogueResource.message())
                 .info(mapDialogueInfo(structuredDialogueResource.info()))
+                .speakers(structuredDialogueResource.speakers().stream().map(this::mapSpeaker).toList())
                 .dialoguePhrases(structuredDialogueResource.dialoguePhrases().stream().map(this::mapDialoguePhrase).toList())
                 .build();
     }
 
     private DialogueChatResponse.DialogueTitleResponse mapDialogueInfo(StructuredDialogueResource.DialogueTitleResource resource) {
-        return  DialogueChatResponse.DialogueTitleResponse.builder()
+        return DialogueChatResponse.DialogueTitleResponse.builder()
                 .title(resource.title())
+                .transcription(resource.transcription())
                 .translations(
                         resource.translations().stream()
                                 .map(t -> DialogueChatResponse.DialogueTitleResponse.TranslationResponse.builder()
@@ -56,12 +58,13 @@ class ChatMapper {
     private DialoguePhraseResponse mapDialoguePhrase(StructuredDialogueResource.DialoguePhrase p) {
         return DialoguePhraseResponse.builder()
                 .phrase(mapPhrase(p.phrase()))
-                .speaker(mapSpeaker(p.speaker()))
+                .speakerId(p.speakerId())
                 .build();
     }
 
-    private SpeakerResponse mapSpeaker(StructuredDialogueResource.DialoguePhrase.SpeakerResource speaker) {
+    private SpeakerResponse mapSpeaker(StructuredDialogueResource.SpeakerResource speaker) {
         return SpeakerResponse.builder()
+                .id(speaker.id())
                 .title(speaker.title())
                 .transcription(speaker.transcription())
                 .translations(speaker.translations().stream().map(this::mapSpeakerTranslation).toList())
