@@ -2,8 +2,8 @@ package com.blbulyandavbulyan.larm.api.chat;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import com.blbulyandavbulyan.larm.ai.PhrasesChatService;
 import com.blbulyandavbulyan.larm.ai.StructuredDialogueResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResource;
@@ -11,9 +11,14 @@ import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
 import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,8 +29,9 @@ class ChatControllerIT extends BaseIT {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @MockitoBean
-    private PhrasesChatService phrasesChatService;
+    private ChatClient armenianPhrasesGeneratorChatClient;
 
+    @SuppressWarnings("unchecked")
     @Test
     void phrasesChat_success() throws Exception {
         UUID chatId = UUID.randomUUID();
@@ -43,7 +49,15 @@ class ChatControllerIT extends BaseIT {
                 List.of(phrase)
         );
 
-        when(phrasesChatService.phrasesChat(message, chatId)).thenReturn(serviceResponse);
+        ChatClient.ChatClientRequestSpec promptSpec = mock(ChatClient.ChatClientRequestSpec.class);
+        ChatClient.CallResponseSpec callResponseSpec = mock(ChatClient.CallResponseSpec.class);
+
+        when(armenianPhrasesGeneratorChatClient.prompt()).thenReturn(promptSpec);
+        when(promptSpec.system(any(ClassPathResource.class))).thenReturn(promptSpec);
+        when(promptSpec.user(anyString())).thenReturn(promptSpec);
+        when(promptSpec.advisors(any(Consumer.class))).thenReturn(promptSpec);
+        when(promptSpec.call()).thenReturn(callResponseSpec);
+        when(callResponseSpec.entity(StructuredPhrasesResource.class)).thenReturn(serviceResponse);
 
         ChatRequest request = new ChatRequest(message, chatId);
 
@@ -71,6 +85,7 @@ class ChatControllerIT extends BaseIT {
                 .andExpect(jsonPath("$.errors.chatId").exists());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void dialogueChat_success() throws Exception {
         UUID chatId = UUID.randomUUID();
@@ -108,7 +123,15 @@ class ChatControllerIT extends BaseIT {
                 List.of(dialoguePhrase)
         );
 
-        when(phrasesChatService.dialogueChat(message, chatId)).thenReturn(serviceResponse);
+        ChatClient.ChatClientRequestSpec promptSpec = mock(ChatClient.ChatClientRequestSpec.class);
+        ChatClient.CallResponseSpec callResponseSpec = mock(ChatClient.CallResponseSpec.class);
+
+        when(armenianPhrasesGeneratorChatClient.prompt()).thenReturn(promptSpec);
+        when(promptSpec.system(any(ClassPathResource.class))).thenReturn(promptSpec);
+        when(promptSpec.user(anyString())).thenReturn(promptSpec);
+        when(promptSpec.advisors(any(Consumer.class))).thenReturn(promptSpec);
+        when(promptSpec.call()).thenReturn(callResponseSpec);
+        when(callResponseSpec.entity(StructuredDialogueResource.class)).thenReturn(serviceResponse);
 
         ChatRequest request = new ChatRequest(message, chatId);
 
