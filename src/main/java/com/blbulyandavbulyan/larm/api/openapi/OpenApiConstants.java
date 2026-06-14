@@ -26,6 +26,8 @@ public interface OpenApiConstants {
         String ERROR_PATH = "The path where the error occurred";
         String ERROR_MESSAGES_MAP = "Map of field names to their validation error messages";
         String SPEAKER_TITLE = "Speaker title";
+        String DIALOGUE_TITLE = "Dialogue title";
+        String SPEAKER_ID = "Identifier linking a phrase to a specific speaker";
     }
 
     interface Examples {
@@ -52,5 +54,8 @@ public interface OpenApiConstants {
         String SPEAKER_TITLE = "Գնորդ";
         String SPEAKER_TRANSCRIPTION = "Gnord";
         String SPEAKER_TRANSLATION_TEXT = "Покупатель";
+        String DIALOGUE_TITLE = "Խանութում";
+        String DIALOGUE_TRANSCRIPTION = "Khanutum";
+        String SPEAKER_ID = "speaker-1";
     }
 }
