@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/chat")
-@Tag(name = "Chat", description = "Endpoints for interacting with AI to generate phrases and content")
+@Tag(name = "Chat", description = "Endpoints for interacting with AI to generate dialoguePhrases and content")
 interface ChatApi {
     @PostMapping(value = "/phrases", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
@@ -41,5 +41,9 @@ interface ChatApi {
                     )
             }
     )
-    PhraseChatResponse chat(@RequestBody ChatRequest request);
+    PhraseChatResponse phrasesChat(@RequestBody ChatRequest request);
+
+    @PostMapping("/dialugue")
+    //TODO write the open api docs here
+    DialogueChatResponse dialogueChat(@RequestBody ChatRequest request);
 }
