@@ -17,13 +17,18 @@ public record DialogueChatResponse(
 
         DialogueTitleResponse info,
 
+        List<SpeakerResponse> speakers,
+
         List<DialoguePhraseResponse> dialoguePhrases) {
 
     @Schema(name = "Dialogue Title Response")
     @Builder
-    record DialogueTitleResponse(
-            @Schema(description = Descriptions.SPEAKER_TITLE, example = Examples.SPEAKER_TITLE)
+    public record DialogueTitleResponse(
+            @Schema(description = Descriptions.DIALOGUE_TITLE, example = Examples.DIALOGUE_TITLE)
             String title,
+
+            @Schema(description = Descriptions.GENERATED_TRANSCRIPTION, example = Examples.DIALOGUE_TRANSCRIPTION)
+            String transcription,
 
             List<TranslationResponse> translations) {
 

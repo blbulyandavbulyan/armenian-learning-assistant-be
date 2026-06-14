@@ -10,12 +10,14 @@ import lombok.Builder;
 @Builder
 @Schema(name = "Speakers Response")
 public record SpeakerResponse(
+        @Schema(description = Descriptions.SPEAKER_ID, example = Examples.SPEAKER_ID)
+        String id,
+
         @Schema(description = Descriptions.SPEAKER_TITLE, example = Examples.SPEAKER_TITLE)
         String title,
 
         @Schema(description = Descriptions.GENERATED_TRANSCRIPTION, example = Examples.SPEAKER_TRANSCRIPTION)
         String transcription,
-
 
         List<TranslationResponse> translations) {
 
