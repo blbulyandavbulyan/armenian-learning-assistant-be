@@ -8,6 +8,11 @@ import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.google.genai.GoogleGenAiEmbeddingConnectionDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -75,4 +80,16 @@ public abstract class BaseIT {
 
     @MockitoSpyBean
     protected PhraseOrchestrator phraseOrchestrator;
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseIT.class);
+
+    @BeforeEach
+    protected void logTestStart(TestInfo testInfo) {
+        LOG.info("Starting test: {}", testInfo);
+    }
+
+    @AfterEach
+    protected void logTestEnd(TestInfo testInfo) {
+        LOG.info("Finished test: {}", testInfo);
+    }
 }

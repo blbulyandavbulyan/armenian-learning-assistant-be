@@ -1,0 +1,42 @@
+{
+  "message": "Dialogue generated",
+  "info": {
+    "title": "Խանութում",
+    "transcription": "Khanutum",
+    "translations": [
+      {
+        "translationText": "В магазине",
+        "isoLanguageCode": "ru"
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "id": "speaker-1",
+      "title": "Գնորդ",
+      "transcription": "Gnord",
+      "translations": [
+        {
+          "translationText": "Покупатель",
+          "isoLanguageCode": "ru"
+        }
+      ]
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerId": "speaker-1",
+      "phrase": {
+        "phrase": "Բարև ձեզ",
+        "isoLanguageCode": "hy",
+        "transcription": "Barev dzez",
+        "translations": [
+          {
+            "translationText": "Здравствуйте",
+            "isoLanguageCode": "ru"
+          }
+        ]
+      }
+    }
+  ]
+}
