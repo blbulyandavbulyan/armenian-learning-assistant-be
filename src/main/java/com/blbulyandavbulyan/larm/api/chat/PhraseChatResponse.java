@@ -10,7 +10,7 @@ import lombok.Builder;
 @Schema(name = "Phrase Chat Response")
 @Builder
 record PhraseChatResponse(
-        @Schema(description = Descriptions.PHRASE_CHAT_RESPONSE_MESSAGE, example = Examples.PHRASE_CHAT_RESPONSE_MESSAGE,
+        @Schema(description = Descriptions.CHAT_RESPONSE_MESSAGE, example = Examples.CHAT_RESPONSE_MESSAGE,
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String message,
 

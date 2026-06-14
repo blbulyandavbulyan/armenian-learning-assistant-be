@@ -9,7 +9,7 @@ public interface OpenApiConstants {
         String GENERATED_PHRASE = "Generated phrase";
         String GENERATED_TRANSCRIPTION = "Generated transcription (in English letters)";
         String GENERATED_TRANSLATION_TEXT = "Generated translation text";
-        String PHRASE_CHAT_RESPONSE_MESSAGE = "Response message (description of the results) from AI model";
+        String CHAT_RESPONSE_MESSAGE = "Response message (description of the results) from AI model";
         String APPROVED_TRANSLATION_TEXT = "Approved translation text";
         String APPROVED_TRANSCRIPTION = "Approved transcription";
         String APPROVED_PHRASE = "Approved phrase";
@@ -25,6 +25,7 @@ public interface OpenApiConstants {
         String ERROR_TYPE_SUMMARY = "Error type summary";
         String ERROR_PATH = "The path where the error occurred";
         String ERROR_MESSAGES_MAP = "Map of field names to their validation error messages";
+        String SPEAKER_TITLE = "Speaker title";
     }
 
     interface Examples {
@@ -35,7 +36,7 @@ public interface OpenApiConstants {
         String TRANSCRIPTION = "Vortegh e hatsi bazhiny?";
         String TRANSLATION_ISO_LANGUAGE_CODE = "ru";
         String TRANSLATION_TEXT = "Где находится отдел хлеба?";
-        String PHRASE_CHAT_RESPONSE_MESSAGE = "Here are the phrases for grocery store";
+        String CHAT_RESPONSE_MESSAGE = "Here are the phrases for grocery store";
         String PHRASE_ID = "54c6f12c-4201-48fc-80e4-299bae5b75db";
         String CONTENT_TYPE = "audio/wav";
         String ASSET_URL = "http://localhost:8080/assets/c9b251f7-0824-4675-854d-354c063f8045";
@@ -48,5 +49,8 @@ public interface OpenApiConstants {
         String HTTP_STATUS_CODE = "400";
         String ERROR_TYPE_SUMMARY = "Validation Failed";
         String ERROR_PATH = "/phrases";
+        String SPEAKER_TITLE = "Գնորդ";
+        String SPEAKER_TRANSCRIPTION = "Gnord";
+        String SPEAKER_TRANSLATION_TEXT = "Покупатель";
     }
 }

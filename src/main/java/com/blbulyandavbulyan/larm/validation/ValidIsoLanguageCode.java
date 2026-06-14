@@ -23,4 +23,11 @@ public @interface ValidIsoLanguageCode {
 
     // Required by the Jakarta Validation spec
     Class<? extends Payload>[] payload() default {};
+
+    /**
+     * Supported languages for validation.
+     *
+     * @return supported languages, if empty all languages are supported
+     */
+    String[] supportedLanguages() default {};
 }
