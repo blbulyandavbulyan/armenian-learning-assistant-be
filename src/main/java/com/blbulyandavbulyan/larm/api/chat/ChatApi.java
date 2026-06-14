@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +45,7 @@ interface ChatApi {
                     )
             }
     )
-    PhraseChatResponse phrasesChat(@RequestBody ChatRequest request);
+    PhraseChatResponse phrasesChat(@Valid @RequestBody ChatRequest request);
 
     @PostMapping(value = "/dialogue", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
@@ -65,5 +66,5 @@ interface ChatApi {
                     )
             }
     )
-    DialogueChatResponse dialogueChat(@RequestBody ChatRequest request);
+    DialogueChatResponse dialogueChat(@Valid @RequestBody ChatRequest request);
 }
