@@ -54,7 +54,7 @@ There should be some kind of smart learning algorithm for repeating phrases and 
 - [ ] Image generation for visual mnemonics per phrase/dialogue (AI-generated visuals)
 
 ### Security authentication, authorization
-This is just in case, in case if this idea becomes huges and stonks, in this case I have to have this too in the application.
+This is just in case, in case if this idea becomes huge and stonks, in this case I have to have this too in the application.
 It is the lowest priority, cause there are zero core features which are useful at this moment, meaning that focusing on it right now would just burn the initiative.
 But it probably has to be added at some point.
 Probably it might be also related to the 'tracking user progress', cause in this case we have to know 'who the user is'
