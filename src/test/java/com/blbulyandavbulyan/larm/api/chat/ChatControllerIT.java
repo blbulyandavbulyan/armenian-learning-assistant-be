@@ -36,7 +36,7 @@ class ChatControllerIT extends BaseIT {
 
     @SuppressWarnings("unchecked")
     @Test
-    void phrasesChat_success() throws Exception {
+    void phrasesChat() throws Exception {
         StructuredPhrasesResource serviceResponse = StructuredPhrasesResourceMother.DefaultStructuredPhrasesResource.build();
 
         ChatClient.ChatClientRequestSpec promptSpec = mock(ChatClient.ChatClientRequestSpec.class);
@@ -72,7 +72,7 @@ class ChatControllerIT extends BaseIT {
 
     @SuppressWarnings("unchecked")
     @Test
-    void dialogueChat_success() throws Exception {
+    void dialogueChat() throws Exception {
         StructuredDialogueResource serviceResponse = StructuredDialogueResourceMother.DefaultStructuredDialogueResource.build();
 
         ChatClient.ChatClientRequestSpec promptSpec = mock(ChatClient.ChatClientRequestSpec.class);
