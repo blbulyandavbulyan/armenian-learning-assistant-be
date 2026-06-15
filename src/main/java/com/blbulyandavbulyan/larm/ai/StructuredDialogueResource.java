@@ -57,6 +57,7 @@ public record StructuredDialogueResource(
             @NotBlank
             String title,
 
+            @JsonPropertyDescription("The transcription of the speaker title in English letters")
             @NotBlank
             String transcription,
 

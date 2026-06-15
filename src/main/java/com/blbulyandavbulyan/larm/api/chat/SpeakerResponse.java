@@ -8,26 +8,32 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-@Schema(name = "Speakers Response")
+@Schema(name = "Speaker Response")
 public record SpeakerResponse(
-        @Schema(description = Descriptions.SPEAKER_ID, example = Examples.SPEAKER_ID)
+        @Schema(description = Descriptions.SPEAKER_ID, example = Examples.SPEAKER_ID,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String id,
 
-        @Schema(description = Descriptions.SPEAKER_TITLE, example = Examples.SPEAKER_TITLE)
+        @Schema(description = Descriptions.SPEAKER_TITLE, example = Examples.SPEAKER_TITLE,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String title,
 
-        @Schema(description = Descriptions.GENERATED_TRANSCRIPTION, example = Examples.SPEAKER_TRANSCRIPTION)
+        @Schema(description = Descriptions.GENERATED_TRANSCRIPTION, example = Examples.SPEAKER_TRANSCRIPTION,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String transcription,
 
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<TranslationResponse> translations) {
 
     @Schema(name = "Speaker Translation Response")
     @Builder
     public record TranslationResponse(
-            @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.SPEAKER_TRANSLATION_TEXT)
+            @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.SPEAKER_TRANSLATION_TEXT,
+                    requiredMode = Schema.RequiredMode.REQUIRED)
             String translationText,
 
-            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)
+            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE,
+                    requiredMode = Schema.RequiredMode.REQUIRED)
             String isoLanguageCode) {
     }
 }

@@ -8,7 +8,10 @@ import lombok.Builder;
 @Builder
 @Schema(name = "Dialogue Phrase Response")
 public record DialoguePhraseResponse(
-        @Schema(description = Descriptions.SPEAKER_ID, example = Examples.SPEAKER_ID)
+        @Schema(description = Descriptions.SPEAKER_ID, example = Examples.SPEAKER_ID,
+                requiredMode = Schema.RequiredMode.REQUIRED)
         String speakerId,
+
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         DraftPhraseResponse phrase) {
 }
