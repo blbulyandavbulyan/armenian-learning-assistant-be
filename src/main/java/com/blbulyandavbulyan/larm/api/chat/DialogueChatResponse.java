@@ -22,33 +22,4 @@ public record DialogueChatResponse(
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<DialoguePhraseResponse> dialoguePhrases) {
-
-    @Schema(name = "Dialogue Title Response")
-    @Builder
-    public record DialogueTitleResponse(
-            @Schema(description = Descriptions.DIALOGUE_TITLE, example = Examples.DIALOGUE_TITLE,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
-            String title,
-
-            @Schema(description = Descriptions.GENERATED_TRANSCRIPTION, example = Examples.DIALOGUE_TRANSCRIPTION,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
-            String transcription,
-
-            @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-            List<TranslationResponse> translations) {
-
-        @Schema(name = "Dialogue Title Translation Response")
-        @Builder
-        public record TranslationResponse(
-                @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT,
-                        example = Examples.DIALOGUE_TRANSLATION_TEXT,
-                        requiredMode = Schema.RequiredMode.REQUIRED)
-                String translationText,
-
-                @Schema(description = Descriptions.ISO_LANGUAGE_CODE,
-                        example = Examples.TRANSLATION_ISO_LANGUAGE_CODE,
-                        requiredMode = Schema.RequiredMode.REQUIRED)
-                String isoLanguageCode) {
-        }
-    }
 }

@@ -41,16 +41,16 @@ class ChatMapper {
                 .build();
     }
 
-    private DialogueChatResponse.DialogueTitleResponse mapDialogueInfo(StructuredDialogueResource.DialogueTitleResource resource) {
-        return DialogueChatResponse.DialogueTitleResponse.builder()
+    private DialogueTitleResponse mapDialogueInfo(StructuredDialogueResource.DialogueTitleResource resource) {
+        return DialogueTitleResponse.builder()
                 .title(resource.title())
                 .transcription(resource.transcription())
                 .translations(resource.translations().stream().map(this::mapDialogueTranslationResponse).toList())
                 .build();
     }
 
-    private DialogueChatResponse.DialogueTitleResponse.TranslationResponse mapDialogueTranslationResponse(DraftTranslationResource t) {
-        return DialogueChatResponse.DialogueTitleResponse.TranslationResponse.builder()
+    private DialogueTitleResponse.TranslationResponse mapDialogueTranslationResponse(DraftTranslationResource t) {
+        return DialogueTitleResponse.TranslationResponse.builder()
                 .translationText(t.translationText())
                 .isoLanguageCode(t.isoLanguageCode())
                 .build();
