@@ -66,8 +66,8 @@ class ChatControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.message").exists())
-                .andExpect(jsonPath("$.errors.chatId").exists());
+                .andExpect(jsonPath("$.errors.message").isNotEmpty())
+                .andExpect(jsonPath("$.errors.chatId").isNotEmpty());
     }
 
     @SuppressWarnings("unchecked")
@@ -101,7 +101,7 @@ class ChatControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(readResourceToString("responses/dialogue-chat-invalid-request.json")))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.message").exists())
-                .andExpect(jsonPath("$.errors.chatId").exists());
+                .andExpect(jsonPath("$.errors.message").isNotEmpty())
+                .andExpect(jsonPath("$.errors.chatId").isNotEmpty());
     }
 }
