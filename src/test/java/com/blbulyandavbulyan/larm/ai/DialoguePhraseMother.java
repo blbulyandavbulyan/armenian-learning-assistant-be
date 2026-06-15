@@ -20,6 +20,21 @@ public interface DialoguePhraseMother {
         }
     }
 
+    interface SellerDialoguePhrase {
+        String SPEAKER_ID = "speaker-2";
+        DraftPhraseResource PHRASE = DraftPhraseResourceMother.SellerDialoguePhrase.build();
+
+        static Builder builder() {
+            return DialoguePhraseMother.builder()
+                    .withSpeakerId(SPEAKER_ID)
+                    .withPhrase(PHRASE);
+        }
+
+        static StructuredDialogueResource.DialoguePhrase build() {
+            return SellerDialoguePhrase.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }

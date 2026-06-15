@@ -42,6 +42,25 @@ public interface DraftPhraseResourceMother {
         }
     }
 
+    interface SellerDialoguePhrase {
+        String PHRASE = "Բարև ձեզ, ինչո՞վ կարող եմ օգնել:";
+        String ISO_LANGUAGE_CODE = "hy";
+        String TRANSCRIPTION = "Barev dzez, inchov karogh yem ognel?";
+        List<DraftTranslationResource> TRANSLATIONS = List.of(DraftTranslationResourceMother.SellerDialoguePhraseTranslation.build());
+
+        static Builder builder() {
+            return DraftPhraseResourceMother.builder()
+                    .withPhrase(PHRASE)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TRANSLATIONS);
+        }
+
+        static DraftPhraseResource build() {
+            return SellerDialoguePhrase.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }

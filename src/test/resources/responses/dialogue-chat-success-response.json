@@ -21,6 +21,17 @@
           "isoLanguageCode": "ru"
         }
       ]
+    },
+    {
+      "id": "speaker-2",
+      "title": "Վաճառող",
+      "transcription": "Vacharogh",
+      "translations": [
+        {
+          "translationText": "Продавец",
+          "isoLanguageCode": "ru"
+        }
+      ]
     }
   ],
   "dialoguePhrases": [
@@ -33,6 +44,20 @@
         "translations": [
           {
             "translationText": "Здравствуйте",
+            "isoLanguageCode": "ru"
+          }
+        ]
+      }
+    },
+    {
+      "speakerId": "speaker-2",
+      "phrase": {
+        "phrase": "Բարև ձեզ, ինչո՞վ կարող եմ օգնել:",
+        "isoLanguageCode": "hy",
+        "transcription": "Barev dzez, inchov karogh yem ognel?",
+        "translations": [
+          {
+            "translationText": "Здравствуйте, чем я могу помочь?",
             "isoLanguageCode": "ru"
           }
         ]

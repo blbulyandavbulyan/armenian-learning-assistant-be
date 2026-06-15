@@ -28,6 +28,27 @@ public interface SpeakerResourceMother {
         }
     }
 
+    interface SellerSpeaker {
+        String ID = "speaker-2";
+        String TITLE = "Վաճառող";
+        String TRANSCRIPTION = "Vacharogh";
+        List<DraftTranslationResource> TRANSLATIONS = List.of(
+                DraftTranslationResourceMother.SellerSpeakerTranslation.build()
+        );
+
+        static Builder builder() {
+            return SpeakerResourceMother.builder()
+                    .withId(ID)
+                    .withTitle(TITLE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TRANSLATIONS);
+        }
+
+        static StructuredDialogueResource.SpeakerResource build() {
+            return SellerSpeaker.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }

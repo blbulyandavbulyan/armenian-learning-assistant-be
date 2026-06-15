@@ -62,6 +62,36 @@ public interface DraftTranslationResourceMother {
         }
     }
 
+    interface SellerSpeakerTranslation {
+        String TRANSLATION_TEXT = "Продавец";
+        String ISO_LANGUAGE_CODE = "ru";
+
+        static Builder builder() {
+            return DraftTranslationResourceMother.builder()
+                    .withTranslationText(TRANSLATION_TEXT)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE);
+        }
+
+        static DraftTranslationResource build() {
+            return SellerSpeakerTranslation.builder().build();
+        }
+    }
+
+    interface SellerDialoguePhraseTranslation {
+        String TRANSLATION_TEXT = "Здравствуйте, чем я могу помочь?";
+        String ISO_LANGUAGE_CODE = "ru";
+
+        static Builder builder() {
+            return DraftTranslationResourceMother.builder()
+                    .withTranslationText(TRANSLATION_TEXT)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE);
+        }
+
+        static DraftTranslationResource build() {
+            return SellerDialoguePhraseTranslation.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }

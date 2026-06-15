@@ -7,8 +7,14 @@ public interface StructuredDialogueResourceMother {
     interface DefaultStructuredDialogueResource {
         String MESSAGE = "Dialogue generated";
         StructuredDialogueResource.DialogueTitleResource INFO = DialogueTitleResourceMother.DefaultDialogueTitle.build();
-        List<StructuredDialogueResource.SpeakerResource> SPEAKERS = List.of(SpeakerResourceMother.DefaultSpeaker.build());
-        List<StructuredDialogueResource.DialoguePhrase> DIALOGUE_PHRASES = List.of(DialoguePhraseMother.DefaultDialoguePhrase.build());
+        List<StructuredDialogueResource.SpeakerResource> SPEAKERS = List.of(
+                SpeakerResourceMother.DefaultSpeaker.build(),
+                SpeakerResourceMother.SellerSpeaker.build()
+        );
+        List<StructuredDialogueResource.DialoguePhrase> DIALOGUE_PHRASES = List.of(
+                DialoguePhraseMother.DefaultDialoguePhrase.build(),
+                DialoguePhraseMother.SellerDialoguePhrase.build()
+        );
 
         static Builder builder() {
             return StructuredDialogueResourceMother.builder()
