@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.ai;
 
 import java.util.List;
+
 import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResourceMother;
 

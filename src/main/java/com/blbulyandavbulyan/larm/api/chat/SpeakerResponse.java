@@ -24,12 +24,10 @@ public record SpeakerResponse(
     @Schema(name = "Speaker Translation Response")
     @Builder
     public record TranslationResponse(
-            @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.SPEAKER_TRANSLATION_TEXT,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
+            @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.SPEAKER_TRANSLATION_TEXT)
             String translationText,
 
-            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
+            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)
             String isoLanguageCode) {
     }
 }

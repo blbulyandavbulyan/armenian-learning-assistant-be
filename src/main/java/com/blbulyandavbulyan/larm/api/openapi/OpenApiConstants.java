@@ -57,5 +57,6 @@ public interface OpenApiConstants {
         String DIALOGUE_TITLE = "Խանութում";
         String DIALOGUE_TRANSCRIPTION = "Khanutum";
         String SPEAKER_ID = "speaker-1";
+        String DIALOGUE_TRANSLATION_TEXT = "В магазине";
     }
 }

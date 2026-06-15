@@ -14,20 +14,22 @@ import lombok.Builder;
 @Builder
 @Valid
 public record StructuredDialogueResource(
+        @JsonPropertyDescription("Should contain the response description")
+        @NotBlank
+        String message,
+
         @NotNull
         @Valid
         @JsonPropertyDescription("The info of the dialogue")
         DialogueTitleResource info,
 
-        @JsonPropertyDescription("Should contain the response description")
-        @NotBlank
-        String message,
-
         @JsonPropertyDescription("The list of speakers participating in the dialogue")
-        @NotEmpty List<@NotNull @Valid SpeakerResource> speakers,
+        @NotEmpty
+        List<@NotNull @Valid SpeakerResource> speakers,
 
         @JsonPropertyDescription("The sequential phrases forming the dialogue")
-        @NotEmpty List<@NotNull @Valid DialoguePhrase> dialoguePhrases) {
+        @NotEmpty
+        List<@NotNull @Valid DialoguePhrase> dialoguePhrases) {
 
     @Valid
     public record DialogueTitleResource(
@@ -40,7 +42,8 @@ public record StructuredDialogueResource(
             String transcription,
 
             @JsonPropertyDescription("Translations of the title")
-            @NotEmpty List<@NotNull @Valid DraftTranslationResource> translations) {
+            @NotEmpty
+            List<@NotNull @Valid DraftTranslationResource> translations) {
 
     }
 
@@ -58,7 +61,8 @@ public record StructuredDialogueResource(
             String transcription,
 
             @JsonPropertyDescription("translations for the speaker title")
-            @NotEmpty List<@NotNull @Valid DraftTranslationResource> translations) {
+            @NotEmpty
+            List<@NotNull @Valid DraftTranslationResource> translations) {
 
     }
 
@@ -69,6 +73,7 @@ public record StructuredDialogueResource(
             String speakerId,
 
             @Valid
+            @NotNull
             DraftPhraseResource phrase) {
     }
 

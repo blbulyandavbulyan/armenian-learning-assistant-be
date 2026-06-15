@@ -10,9 +10,7 @@ import lombok.Builder;
 @Builder
 @Schema(name = "Dialogue Chat Response")
 public record DialogueChatResponse(
-        @Schema(description = Descriptions.CHAT_RESPONSE_MESSAGE,
-            example = Examples.CHAT_RESPONSE_MESSAGE,
-            requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = Descriptions.CHAT_RESPONSE_MESSAGE, example = Examples.CHAT_RESPONSE_MESSAGE)
         String message,
 
         DialogueTitleResponse info,
@@ -35,7 +33,7 @@ public record DialogueChatResponse(
         @Schema(name = "Dialogue Title Translation Response")
         @Builder
         public record TranslationResponse(
-                @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.TRANSLATION_TEXT)
+                @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.DIALOGUE_TRANSLATION_TEXT)
                 String translationText,
 
                 @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE)

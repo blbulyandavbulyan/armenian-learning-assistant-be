@@ -54,7 +54,7 @@ public interface StructuredDialogueResourceMother {
         }
 
         public StructuredDialogueResource build() {
-            return new StructuredDialogueResource(info, message, speakers, dialoguePhrases);
+            return new StructuredDialogueResource(message, info, speakers, dialoguePhrases);
         }
     }
 }

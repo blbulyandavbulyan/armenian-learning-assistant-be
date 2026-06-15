@@ -45,13 +45,14 @@ class ChatMapper {
         return DialogueChatResponse.DialogueTitleResponse.builder()
                 .title(resource.title())
                 .transcription(resource.transcription())
-                .translations(
-                        resource.translations().stream()
-                                .map(t -> DialogueChatResponse.DialogueTitleResponse.TranslationResponse.builder()
-                                        .translationText(t.translationText())
-                                        .isoLanguageCode(t.isoLanguageCode())
-                                        .build())
-                                .toList())
+                .translations(resource.translations().stream().map(this::mapDialogueTranslationResponse).toList())
+                .build();
+    }
+
+    private DialogueChatResponse.DialogueTitleResponse.TranslationResponse mapDialogueTranslationResponse(DraftTranslationResource t) {
+        return DialogueChatResponse.DialogueTitleResponse.TranslationResponse.builder()
+                .translationText(t.translationText())
+                .isoLanguageCode(t.isoLanguageCode())
                 .build();
     }
 
