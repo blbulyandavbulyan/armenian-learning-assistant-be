@@ -16,20 +16,19 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("dialogues")
 public record Dialogue(
         @Id UUID id,
-        String title,
-        String transcription,
+        UUID titlePhraseId,
         Instant createdAt,
         @MappedCollection(idColumn = "dialogue_id")
-        Set<DialogueTitleTranslation> translations,
+        Set<DialogueSpeaker> speakers,
         @MappedCollection(idColumn = "dialogue_id")
         Set<DialoguePhrase> dialoguePhrases,
         @Transient boolean isNewFlag
 ) implements Persistable<UUID> {
 
     @PersistenceCreator
-    public Dialogue(UUID id, String title, String transcription, Instant createdAt,
-                    Set<DialogueTitleTranslation> translations, Set<DialoguePhrase> dialoguePhrases) {
-        this(id, title, transcription, createdAt, translations, dialoguePhrases, false);
+    public Dialogue(UUID id, UUID titlePhraseId, Instant createdAt, Set<DialogueSpeaker> speakers,
+                    Set<DialoguePhrase> dialoguePhrases) {
+        this(id, titlePhraseId, createdAt, speakers, dialoguePhrases, false);
     }
 
     @Override

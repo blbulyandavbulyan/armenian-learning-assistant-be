@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.dialogue.service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,18 +11,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.blbulyandavbulyan.larm.core.NewCreatePhraseParameters;
-import com.blbulyandavbulyan.larm.core.PhraseProcessor;
 import com.blbulyandavbulyan.larm.dialogue.DialogueSavingService;
-import com.blbulyandavbulyan.larm.dialogue.SaveDialogueParameters;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
+import com.blbulyandavbulyan.larm.dialogue.StoreDialogueParameters;
 import com.blbulyandavbulyan.larm.dialogue.dao.Dialogue;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialoguePhrase;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueRepository;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueSpeaker;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueSpeakerRepository;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueSpeakerTranslation;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueTitleTranslation;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
@@ -34,72 +30,62 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DefaultDialogueSavingService implements DialogueSavingService {
 
-    private final PhraseProcessor phraseProcessor;
-    private final PhraseStoringService phraseStoringService;
-    private final DialogueSpeakerRepository dialogueSpeakerRepository;
     private final DialogueRepository dialogueRepository;
+    private final PhraseStoringService phraseStoringService;
 
     @Override
     @Transactional
-    public SavedDialogueResource saveDialogue(SaveDialogueParameters parameters) {
-        // 1. Process TTS for each phrase and persist them
-        List<SavePhraseParameters> processedPhrases = parameters.dialoguePhrases().stream()
-                .map(dp -> phraseProcessor.process(
-                        NewCreatePhraseParameters.builder()
-                                .phrase(dp.phrase())
-                                .isoLanguageCode(dp.isoLanguageCode())
-                                .transcription(dp.transcription())
-                                .translations(dp.translations())
-                                .build()))
-                .toList();
+    public SavedDialogueResource saveDialogue(StoreDialogueParameters parameters) {
+        final UUID dialogueId = UUID.randomUUID();
+        final Instant dialogueCreatedAt = Instant.now();
+
+        // 1. Save all phrases (title, speakers, dialogue phrases) in this transaction
+        List<SavePhraseParameters> allPhrasesToSave = new ArrayList<>();
+        allPhrasesToSave.add(parameters.titlePhrase());
+        parameters.speakers().forEach(sp -> allPhrasesToSave.add(sp.namePhrase()));
+        parameters.dialoguePhrases().forEach(dp -> allPhrasesToSave.add(dp.phrase()));
 
         List<PhraseResource> savedPhrases = phraseStoringService.batchSavePhrases(
-                new BatchSavePhrasesParameters(processedPhrases));
+                new BatchSavePhrasesParameters(allPhrasesToSave));
 
-        // 2. Persist speakers, mapping speakerRefId -> DB UUID
+        int savedIndex = 0;
+        PhraseResource savedTitle = savedPhrases.get(savedIndex++);
+
+        // 2. Build speakers, mapping speakerRefId -> DB UUID
         Map<String, UUID> speakerRefIdToUuid = new HashMap<>();
-        for (SaveDialogueParameters.SpeakerParameters sp : parameters.speakers()) {
+        Set<DialogueSpeaker> speakers = new LinkedHashSet<>();
+        for (StoreDialogueParameters.StoreSpeakerParameters sp : parameters.speakers()) {
+            PhraseResource savedSpeaker = savedPhrases.get(savedIndex++);
             UUID speakerId = UUID.randomUUID();
-            Instant now = Instant.now();
-            Set<DialogueSpeakerTranslation> translations = sp.translations().stream()
-                    .map(t -> DialogueSpeakerTranslation.builder()
-                            .id(UUID.randomUUID())
-                            .speakerId(speakerId)
-                            .isoLanguageCode(t.isoLanguageCode())
-                            .translationText(t.translationText())
-                            .createdAt(now)
-                            .isNewFlag(true)
-                            .build())
-                    .collect(Collectors.toSet());
-
-            dialogueSpeakerRepository.save(DialogueSpeaker.builder()
+            speakers.add(DialogueSpeaker.builder()
                     .id(speakerId)
+                    .dialogueId(dialogueId)
                     .speakerRefId(sp.speakerRefId())
-                    .title(sp.title())
-                    .transcription(sp.transcription())
-                    .createdAt(now)
-                    .translations(translations)
+                    .namePhraseId(savedSpeaker.id())
+                    .createdAt(dialogueCreatedAt)
                     .isNewFlag(true)
                     .build());
-
             speakerRefIdToUuid.put(sp.speakerRefId(), speakerId);
         }
 
-        // 3. Build ordered dialogue_phrases and title translations
-        UUID dialogueId = UUID.randomUUID();
-        Instant dialogueCreatedAt = Instant.now();
-
-        List<SaveDialogueParameters.DialoguePhraseParameters> dialoguePhraseParams =
+        // 3. Build ordered dialogue_phrases
+        List<StoreDialogueParameters.StoreDialoguePhraseParameters> dialoguePhraseParams =
                 parameters.dialoguePhrases();
         Set<DialoguePhrase> dialoguePhrases = IntStream.range(0, dialoguePhraseParams.size())
                 .mapToObj(i -> {
-                    SaveDialogueParameters.DialoguePhraseParameters dp = dialoguePhraseParams.get(i);
-                    UUID phraseId = savedPhrases.get(i).id();
+                    StoreDialogueParameters.StoreDialoguePhraseParameters dp = dialoguePhraseParams.get(i);
+                    // We need the phrase ID for this specific dialogue phrase.
+                    // However, we cannot access savedIndex from inside the lambda,
+                    // so we map by using the fact that dialogue phrases start at a fixed offset.
+                    // The offset is 1 (title) + speakers.size()
+                    int phraseOffset = 1 + parameters.speakers().size() + i;
+                    PhraseResource savedPhrase = savedPhrases.get(phraseOffset);
+
                     UUID speakerId = speakerRefIdToUuid.get(dp.speakerRefId());
                     return DialoguePhrase.builder()
                             .id(UUID.randomUUID())
                             .dialogueId(dialogueId)
-                            .phraseId(phraseId)
+                            .phraseId(savedPhrase.id())
                             .speakerId(speakerId)
                             .orderIndex(i)
                             .createdAt(dialogueCreatedAt)
@@ -108,24 +94,16 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                 })
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        Set<DialogueTitleTranslation> titleTranslations = parameters.titleTranslations().stream()
-                .map(t -> DialogueTitleTranslation.builder()
-                        .id(UUID.randomUUID())
-                        .dialogueId(dialogueId)
-                        .isoLanguageCode(t.isoLanguageCode())
-                        .translationText(t.translationText())
-                        .createdAt(dialogueCreatedAt)
-                        .isNewFlag(true)
-                        .build())
-                .collect(Collectors.toSet());
-
         // 4. Persist dialogue aggregate
         dialogueRepository.save(Dialogue.builder()
                 .id(dialogueId)
-                .title(parameters.title())
-                .transcription(parameters.transcription())
+                .titlePhraseId(savedTitle.id())
                 .createdAt(dialogueCreatedAt)
-                .translations(titleTranslations)
+                // Spring Data JDBC handles the speakers relation if we set dialogueId on speakers,
+                // but since DialogueSpeaker is its own aggregate root we don't strictly need to
+                // add them to Dialogue's collection before saving. If we save Dialogue aggregate,
+                // it cascades.
+                .speakers(speakers)
                 .dialoguePhrases(dialoguePhrases)
                 .isNewFlag(true)
                 .build());

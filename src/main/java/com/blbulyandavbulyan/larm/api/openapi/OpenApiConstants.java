@@ -64,6 +64,12 @@ public interface OpenApiConstants {
         String DIALOGUE_TITLE_RESPONSE = "Dialogue Title Response";
         String SPEAKER_RESPONSE = "Speaker Response";
         String DRAFT_PHRASES_RESPONSE = "Draft Phrases Response";
+        String SAVE_DIALOGUE_REQUEST = "Save Dialogue Request";
+        String SAVE_DIALOGUE_TITLE_REQUEST = "Save Dialogue Title Request";
+        String SAVE_SPEAKER_REQUEST = "Save Speaker Request";
+        String SAVE_DIALOGUE_PHRASE_REQUEST = "Save Dialogue Phrase Request";
+        String SAVE_DIALOGUE_PHRASE_INNER_REQUEST = "Save Dialogue Phrase Inner Request";
+        String SAVE_DIALOGUE_TRANSLATION_REQUEST = "Save Dialogue Translation Request";
     }
 
     interface PropertyNames {
