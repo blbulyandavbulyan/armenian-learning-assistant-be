@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
-@Schema(name = "Speaker Response")
+@Schema(name = com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.SchemaNames.SPEAKER_RESPONSE)
 public record SpeakerResponse(
         @Schema(description = Descriptions.SPEAKER_ID, example = Examples.SPEAKER_ID,
                 requiredMode = Schema.RequiredMode.REQUIRED)
@@ -24,16 +24,4 @@ public record SpeakerResponse(
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
         List<TranslationResponse> translations) {
-
-    @Schema(name = "Speaker Translation Response")
-    @Builder
-    public record TranslationResponse(
-            @Schema(description = Descriptions.GENERATED_TRANSLATION_TEXT, example = Examples.SPEAKER_TRANSLATION_TEXT,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
-            String translationText,
-
-            @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.TRANSLATION_ISO_LANGUAGE_CODE,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
-            String isoLanguageCode) {
-    }
 }

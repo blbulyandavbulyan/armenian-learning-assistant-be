@@ -25,8 +25,8 @@ class ChatMapper {
                 .build();
     }
 
-    private DraftPhraseResponse.TranslationResponse mapTranslation(DraftTranslationResource t) {
-        return DraftPhraseResponse.TranslationResponse.builder()
+    private TranslationResponse mapTranslation(DraftTranslationResource t) {
+        return TranslationResponse.builder()
                 .translationText(t.translationText())
                 .isoLanguageCode(t.isoLanguageCode())
                 .build();
@@ -49,8 +49,8 @@ class ChatMapper {
                 .build();
     }
 
-    private DialogueTitleResponse.TranslationResponse mapDialogueTranslationResponse(DraftTranslationResource t) {
-        return DialogueTitleResponse.TranslationResponse.builder()
+    private TranslationResponse mapDialogueTranslationResponse(DraftTranslationResource t) {
+        return TranslationResponse.builder()
                 .translationText(t.translationText())
                 .isoLanguageCode(t.isoLanguageCode())
                 .build();
@@ -72,8 +72,8 @@ class ChatMapper {
                 .build();
     }
 
-    private SpeakerResponse.TranslationResponse mapSpeakerTranslation(DraftTranslationResource t) {
-        return SpeakerResponse.TranslationResponse.builder()
+    private TranslationResponse mapSpeakerTranslation(DraftTranslationResource t) {
+        return TranslationResponse.builder()
                 .translationText(t.translationText())
                 .isoLanguageCode(t.isoLanguageCode())
                 .build();

@@ -13,5 +13,3 @@ The student knows English and Russian.
      - Translations into both English ('en') and Russian ('ru').
 3. **Natural Language**: Use idiomatic Armenian as spoken in everyday life (Eastern Armenian is preferred unless specified otherwise).
 4. **Educational Value**: Ensure the phrases are useful for the given scenario and appropriate for a learner.
-
-

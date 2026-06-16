@@ -59,4 +59,14 @@ public interface OpenApiConstants {
         String SPEAKER_ID = "speaker-1";
         String DIALOGUE_TRANSLATION_TEXT = "В магазине";
     }
+
+    interface SchemaNames {
+        String DIALOGUE_TITLE_RESPONSE = "Dialogue Title Response";
+        String SPEAKER_RESPONSE = "Speaker Response";
+        String DRAFT_PHRASES_RESPONSE = "Draft Phrases Response";
+    }
+
+    interface PropertyNames {
+        String TRANSLATIONS = "translations";
+    }
 }
