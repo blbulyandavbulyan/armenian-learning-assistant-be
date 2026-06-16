@@ -7,7 +7,6 @@ import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class ChatClientConfiguration {
@@ -25,7 +24,6 @@ public class ChatClientConfiguration {
             ChatClient.Builder chatClientBuilder,
             ChatMemory chatMemory) {
         return chatClientBuilder
-                .defaultSystem(new ClassPathResource("prompts/ARMENIAN-PHRASES-GENERATOR.md"))
                 // TODO most probably we need here the tool which checks the existing phrases in the database
                 //  probably it should check 'exact match' and 'similar' phrases
                 // .defaultTools()

@@ -77,3 +77,27 @@ This project is the backend service for the Armenian Learning Assistant. It leve
 - `src/main/java/.../larm/phrase`: Domain logic for phrases, translations, and media.
 - `src/main/java/.../larm/storage`: Abstractions and implementations for object storage.
 - `src/main/resources/prompts`: Markdown files containing system prompts for AI models.
+
+---
+
+## Repository Agent Guidelines
+
+This document outlines the architectural boundaries and engineering standards for this repository. All AI agents must adhere to these baselines.
+
+### 1. General Principles
+- **Idiomatic Code:** Follow standard language conventions (e.g., standard Java/Spring, TypeScript, etc., depending on your project). Do not introduce over-engineered design patterns unless explicitly requested.
+- **Minimalism:** Do not add speculative features, "future-proofing" code, or extra utility methods that aren't requested by the current task.
+- **Error Handling:** Use the existing project exception handling patterns. Do not invent new custom exceptions unless required.
+
+### 2. Testing Strategy & Boundaries
+- **Unit Tests:** Mock all external dependencies and adjacent service layers to isolate the class under test.
+- **Integration Tests (IT):**
+  - When testing controllers or entry points (e.g., `SomeControllerIT`), **do not mock intermediate internal layers, services, or mappers**. The entire internal stack (controller → service → mapper) must run with real components.
+  - Use real components, database test containers, or active application contexts to ensure true integration behavior.
+  - Mock at the **lowest possible external infrastructure boundary** — i.e., the actual outbound call. For Spring AI / Gemini, this means mocking the `ChatClient` bean (which represents the HTTP call to the AI provider), not the service layer on top of it. This ensures you can safely refactor any internal implementation without touching tests, as long as the observable API contract doesn't change.
+  - For database-backed flows, use Testcontainers. For AI-backed flows, mock `ChatClient`. For message brokers, mock the broker client.
+- **Coverage:** Every new feature must include corresponding tests before completion. If a behaviour is fully exercised end-to-end by an IT (controller → service → mapper → response JSON), a separate unit test for each internal layer is **not required** unless the layer has complex logic that is not reachable via the happy path IT.
+
+### 3. Scope of Work (The "Do Not Touch" Rule)
+- Do not refactor unrelated files or change configuration properties unless it is a direct dependency of the task.
+- Leave existing, untouched code exactly as it is to prevent regression.

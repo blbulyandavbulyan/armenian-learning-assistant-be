@@ -7,13 +7,19 @@ import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.Examples;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
-@Schema(name = "Phrase Chat Response")
 @Builder
-record PhraseChatResponse(
+@Schema(name = "Dialogue Chat Response")
+public record DialogueChatResponse(
         @Schema(description = Descriptions.CHAT_RESPONSE_MESSAGE, example = Examples.CHAT_RESPONSE_MESSAGE,
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String message,
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        List<DraftPhraseResponse> phrases) {
+        DialogueTitleResponse info,
+
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        List<SpeakerResponse> speakers,
+
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        List<DialoguePhraseResponse> dialoguePhrases) {
 }

@@ -1,0 +1,16 @@
+{
+  "message": "Here is the phrase",
+  "phrases": [
+    {
+      "phrase": "Որտե՞ղ է հացը:",
+      "isoLanguageCode": "hy",
+      "transcription": "Vortegh e hatsy?",
+      "translations": [
+        {
+          "translationText": "Где находится хлеб?",
+          "isoLanguageCode": "ru"
+        }
+      ]
+    }
+  ]
+}
