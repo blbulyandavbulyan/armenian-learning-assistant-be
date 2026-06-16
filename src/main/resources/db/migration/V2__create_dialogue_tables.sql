@@ -44,3 +44,8 @@ CREATE TABLE dialogue_phrases
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT unique_dialogue_phrase_order UNIQUE (dialogue_id, order_index)
 );
+
+CREATE INDEX idx_dialogue_phrases_phrase_id ON dialogue_phrases (phrase_id);
+CREATE INDEX idx_dialogue_phrases_speaker_id ON dialogue_phrases (speaker_id);
+CREATE INDEX idx_dialogue_title_translations_dialogue_id ON dialogue_title_translations (dialogue_id);
+CREATE INDEX idx_dialogue_speaker_translations_speaker_id ON dialogue_speaker_translations (speaker_id);
