@@ -1,0 +1,136 @@
+{
+  "id": "99999999-9999-9999-9999-999999999999",
+  "title": {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "phrase": "In the bakery",
+    "isoLanguageCode": "am",
+    "transcription": "In the bakery trans",
+    "translations": [
+      {
+        "id": "77777777-1111-1111-1111-111111111111",
+        "translationText": "In the bakery",
+        "isoLanguageCode": "en"
+      }
+    ],
+    "assets": [
+      {
+        "contentType": "audio/wav",
+        "url": "http://localhost/assets/88888888-1111-1111-1111-111111111111"
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "speakerRefId": "speaker1",
+      "name": {
+        "id": "22222222-2222-2222-2222-222222222222",
+        "phrase": "Baker",
+        "isoLanguageCode": "am",
+        "transcription": "Baker trans",
+        "translations": [
+          {
+            "id": "77777777-2222-2222-2222-222222222222",
+            "translationText": "Baker",
+            "isoLanguageCode": "en"
+          }
+        ],
+        "assets": [
+          {
+            "contentType": "audio/wav",
+            "url": "http://localhost/assets/88888888-2222-2222-2222-222222222222"
+          }
+        ]
+      }
+    },
+    {
+      "speakerRefId": "speaker2",
+      "name": {
+        "id": "33333333-3333-3333-3333-333333333333",
+        "phrase": "Customer",
+        "isoLanguageCode": "am",
+        "transcription": "Customer trans",
+        "translations": [
+          {
+            "id": "77777777-3333-3333-3333-333333333333",
+            "translationText": "Customer",
+            "isoLanguageCode": "en"
+          }
+        ],
+        "assets": [
+          {
+            "contentType": "audio/wav",
+            "url": "http://localhost/assets/88888888-3333-3333-3333-333333333333"
+          }
+        ]
+      }
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerRefId": "speaker1",
+      "phrase": {
+        "id": "44444444-4444-4444-4444-444444444444",
+        "phrase": "Բարեւ ձեզ",
+        "isoLanguageCode": "am",
+        "transcription": "Barev dzez",
+        "translations": [
+          {
+            "id": "77777777-4444-4444-4444-444444444444",
+            "translationText": "Hello",
+            "isoLanguageCode": "en"
+          }
+        ],
+        "assets": [
+          {
+            "contentType": "audio/wav",
+            "url": "http://localhost/assets/88888888-4444-4444-4444-444444444444"
+          }
+        ]
+      }
+    },
+    {
+      "speakerRefId": "speaker2",
+      "phrase": {
+        "id": "55555555-5555-5555-5555-555555555555",
+        "phrase": "Բարեւ ձեզ, խնդրում եմ մեկ հաց:",
+        "isoLanguageCode": "am",
+        "transcription": "Barev dzez, khndrum em mek hats",
+        "translations": [
+          {
+            "id": "77777777-5555-5555-5555-555555555555",
+            "translationText": "Hello, one bread please",
+            "isoLanguageCode": "en"
+          }
+        ],
+        "assets": [
+          {
+            "contentType": "audio/wav",
+            "url": "http://localhost/assets/88888888-5555-5555-5555-555555555555"
+          }
+        ]
+      }
+    },
+    {
+      "speakerRefId": "speaker1",
+      "phrase": {
+        "id": "66666666-6666-6666-6666-666666666666",
+        "phrase": "Ահա, խնդրեմ:",
+        "isoLanguageCode": "am",
+        "transcription": "Aha, khndrem",
+        "translations": [
+          {
+            "id": "77777777-6666-6666-6666-666666666666",
+            "translationText": "Here you go",
+            "isoLanguageCode": "en"
+          }
+        ],
+        "assets": [
+          {
+            "contentType": "audio/wav",
+            "url": "http://localhost/assets/88888888-6666-6666-6666-666666666666"
+          }
+        ]
+      }
+    }
+  ]
+}

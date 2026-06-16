@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Component
-class PhraseResponseMapper {
+public class PhraseResponseMapper {
     PhrasesPagedResponse mapToResponse(PagedPhraseResource resource) {
         return PhrasesPagedResponse.builder()
                 .page(mapToPageResponse(resource.page()))
@@ -25,7 +25,7 @@ class PhraseResponseMapper {
         return phrases.stream().map(this::mapToPhraseResponse).toList();
     }
 
-    private PhraseResponse mapToPhraseResponse(PhraseResource phraseResource) {
+    public PhraseResponse mapToPhraseResponse(PhraseResource phraseResource) {
         return PhraseResponse.builder()
                 .id(phraseResource.id())
                 .phrase(phraseResource.phrase())

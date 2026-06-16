@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.api.dialogues;
 
 import java.util.List;
 
+import com.blbulyandavbulyan.larm.api.dialogues.validation.ValidDialogueSpeakers;
 import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -10,7 +11,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
-//TODO validation (probably custom jakarta validation) must be addded which will ensure that dialoguePhrases reference only existing defined speakers, and there are no 'unused' speakers
+@ValidDialogueSpeakers
 @Schema(name = OpenApiConstants.SchemaNames.SAVE_DIALOGUE_REQUEST)
 public record SaveDialogueRequest(
         @Schema(description = "Dialogue title information")

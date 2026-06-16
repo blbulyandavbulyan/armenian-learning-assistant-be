@@ -68,6 +68,13 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
                 .build();
     }
 
+    @Override
+    public List<PhraseResource> getPhrasesByIds(Iterable<java.util.UUID> ids) {
+        return StreamSupport.stream(phraseRepository.findAllById(ids).spliterator(), false)
+                .map(phraseMapper::mapFromPhrase)
+                .toList();
+    }
+
     private void validate(BatchSavePhrasesParameters batchParameters) {
         final List<CreateTranslationParameters> invalidTranslationParameters = new ArrayList<>();
         final List<SavePhraseParameters> invalidPhrases = new ArrayList<>();
