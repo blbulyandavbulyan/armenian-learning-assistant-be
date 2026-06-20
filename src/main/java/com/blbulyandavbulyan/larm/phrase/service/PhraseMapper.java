@@ -18,20 +18,27 @@ public class PhraseMapper {
     private final MediaMapper mediaMapper;
 
     public Phrase mapToPhrase(SavePhraseParameters resource) {
-        return Phrase.builder()
+        Phrase phrase = Phrase.builder()
                 .id(resource.id())
                 .phrase(resource.phrase())
                 .transcription(resource.transcription())
                 .isoLanguageCode(resource.isoLanguageCode())
-                .translations(resource.translations().stream()
-                        .map(this::mapToTranslation)
-                        .collect(Collectors.toSet()))
                 .status(PhraseStatus.DRAFT)
-                .isNewFlag(true)
-                .mediaSet(resource.mediaResources().stream()
-                        .map(mediaMapper::toMedia)
-                        .collect(Collectors.toSet()))
                 .build();
+
+        var translations = resource.translations().stream()
+                .map(this::mapToTranslation)
+                .peek(t -> t.setPhrase(phrase))
+                .collect(Collectors.toSet());
+        phrase.setTranslations(translations);
+
+        var mediaSet = resource.mediaResources().stream()
+                .map(mediaMapper::toMedia)
+                .peek(m -> m.setPhrase(phrase))
+                .collect(Collectors.toSet());
+        phrase.setMediaSet(mediaSet);
+
+        return phrase;
     }
 
     private Translation mapToTranslation(CreateTranslationParameters createTranslationParameters) {

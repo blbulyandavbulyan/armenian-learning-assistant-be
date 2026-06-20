@@ -3,47 +3,59 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.time.Instant;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import org.jspecify.annotations.Nullable;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "medias")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Table("medias")
-public record Media(
-        @Id UUID id,
-        UUID phraseId,
-        StorageProvider storageProvider,
-        String storageBucket,
-        String storageKey,
-        String contentType,
-        @Column("file_size_bytes")
-        int sizeInBytes,
-        String aiModelUsed,
-        String voiceIdentifier,
-        Instant createdAt,
-        @Transient // Used purely for Spring Data JDBC row state detection
-        boolean isNewFlag) implements Persistable<UUID> {
+public class Media {
+    @Id
+    private UUID id;
 
-    @PersistenceCreator
-    public Media(UUID id, UUID phraseId, StorageProvider storageProvider, String storageBucket,
-                 String storageKey, String contentType, int sizeInBytes,
-                 String aiModelUsed, String voiceIdentifier, Instant createdAt) {
-        this(id, phraseId, storageProvider, storageBucket, storageKey, contentType,
-                sizeInBytes, aiModelUsed, voiceIdentifier, createdAt, false);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phrase_id")
+    private Phrase phrase;
 
-    @Override
-    public @Nullable UUID getId() {
-        return id;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "storage_provider")
+    private StorageProvider storageProvider;
 
-    @Override
-    public boolean isNew() {
-        return isNewFlag;
-    }
+    @Column(name = "storage_bucket")
+    private String storageBucket;
+
+    @Column(name = "storage_key")
+    private String storageKey;
+
+    @Column(name = "content_type")
+    private String contentType;
+
+    @Column(name = "file_size_bytes")
+    private int sizeInBytes;
+
+    @Column(name = "ai_model_used")
+    private String aiModelUsed;
+
+    @Column(name = "voice_identifier")
+    private String voiceIdentifier;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+
 }

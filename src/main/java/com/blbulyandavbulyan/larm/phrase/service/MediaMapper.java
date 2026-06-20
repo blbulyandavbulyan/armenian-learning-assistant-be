@@ -12,7 +12,6 @@ class MediaMapper {
     public Media toMedia(CreateMediaResource createMediaResource) {
         return Media.builder()
                 .id(createMediaResource.id())
-                .phraseId(createMediaResource.phraseId())
                 .storageProvider(createMediaResource.storageProvider())
                 .storageBucket(createMediaResource.storageBucket())
                 .storageKey(createMediaResource.storageKey())
@@ -21,7 +20,6 @@ class MediaMapper {
                 .aiModelUsed(createMediaResource.aiModelUsed())
                 .voiceIdentifier(createMediaResource.voiceIdentifier())
                 .createdAt(Instant.now())
-                .isNewFlag(true)
                 .build();
     }
 }

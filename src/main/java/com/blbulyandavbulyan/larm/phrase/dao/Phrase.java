@@ -3,51 +3,47 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.MappedCollection;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "phrases")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Table("phrases")
-public record Phrase(
-        @Id
-        UUID id,
+public class Phrase {
+    @Id
+    private UUID id;
 
-        PhraseStatus status,
+    @Enumerated(EnumType.STRING)
+    private PhraseStatus status;
 
-        @Column("iso_language_code")
-        String isoLanguageCode,
-        String phrase,
-        String transcription,
+    @Column(name = "iso_language_code")
+    private String isoLanguageCode;
 
-        @MappedCollection(idColumn = "phrase_id")
-        Set<Translation> translations,
-        
-        @MappedCollection(idColumn = "phrase_id")
-        Set<Media> mediaSet,
+    private String phrase;
+    private String transcription;
 
-        @Transient
-        boolean isNewFlag // Used purely for Spring Data JDBC row state detection
-) implements Persistable<UUID> {
+    @OneToMany(mappedBy = "phrase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdAt ASC")
+    private Set<Translation> translations;
+    
+    @OneToMany(mappedBy = "phrase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdAt ASC")
+    private Set<Media> mediaSet;
 
-    @PersistenceCreator
-    public Phrase(UUID id, PhraseStatus status, String isoLanguageCode, String phrase,
-                  String transcription, Set<Translation> translations, Set<Media> mediaSet) {
-        this(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet, false);
-    }
-
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return isNewFlag;
-    }
 }

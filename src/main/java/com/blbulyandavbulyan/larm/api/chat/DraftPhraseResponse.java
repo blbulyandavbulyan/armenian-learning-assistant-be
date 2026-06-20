@@ -8,14 +8,14 @@ import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.Examples;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
-@Schema(name = com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.SchemaNames.DRAFT_PHRASES_RESPONSE)
+@Schema(name = OpenApiConstants.SchemaNames.DRAFT_PHRASES_RESPONSE)
 @Builder
 public record DraftPhraseResponse(
         @Schema(description = Descriptions.GENERATED_PHRASE, example = Examples.PHRASE,
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String phrase,
 
-        @Schema(description = OpenApiConstants.Descriptions.ISO_LANGUAGE_CODE, example = Examples.PHRASE_ISO_LANGUAGE_CODE,
+        @Schema(description = Descriptions.ISO_LANGUAGE_CODE, example = Examples.PHRASE_ISO_LANGUAGE_CODE,
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String isoLanguageCode,
 

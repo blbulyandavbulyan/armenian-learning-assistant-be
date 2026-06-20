@@ -19,7 +19,6 @@ public interface MediaMother {
         static Builder builder() {
             return MediaMother.builder()
                     .withId(ID)
-                    .withPhraseId(PHRASE_ID)
                     .withStorageProvider(STORAGE_PROVIDER)
                     .withStorageKey(STORAGE_KEY)
                     .withContentType(CONTENT_TYPE)
@@ -37,7 +36,7 @@ public interface MediaMother {
 
     class Builder {
         private UUID id;
-        private UUID phraseId;
+        private Phrase phrase;
         private StorageProvider storageProvider;
         private String storageBucket;
         private String storageKey;
@@ -52,8 +51,8 @@ public interface MediaMother {
             return this;
         }
 
-        public Builder withPhraseId(UUID phraseId) {
-            this.phraseId = phraseId;
+        public Builder withPhrase(Phrase phrase) {
+            this.phrase = phrase;
             return this;
         }
 
@@ -98,7 +97,7 @@ public interface MediaMother {
         }
 
         public Media build() {
-            return new Media(id, phraseId, storageProvider, storageBucket, storageKey,
+            return new Media(id, phrase, storageProvider, storageBucket, storageKey,
                     contentType, sizeInBytes, aiModelUsed, voiceIdentifier, createdAt);
         }
     }

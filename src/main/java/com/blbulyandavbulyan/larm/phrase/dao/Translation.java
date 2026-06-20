@@ -3,22 +3,41 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.time.Instant;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "translations")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Table("translations")
-public record Translation(
-        @Id UUID id,
+public class Translation {
+    @Id
+    private UUID id;
 
-        @Column("iso_language_code")
-        String isoLanguageCode,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phrase_id")
+    private Phrase phrase;
 
-        @Column("translation_text")
-        String translationText,
+    @Column(name = "iso_language_code")
+    private String isoLanguageCode;
 
-        @Column("created_at")
-        Instant createdAt) {
+    @Column(name = "translation_text")
+    private String translationText;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+
 }

@@ -7,7 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,11 +36,15 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
     @Override
     @Transactional
     public SavedDialogueResource saveDialogue(StoreDialogueParameters parameters) {
-        final UUID dialogueId = UUID.randomUUID();
         final Instant dialogueCreatedAt = Instant.now();
 
         // 1. Save all phrases (title, speakers, dialogue phrases) in this transaction
         DialogueSavedPhrases dialogueSavedPhrases = saveAllPhrases(parameters);
+
+        Dialogue dialogue = Dialogue.builder()
+                .title(dialogueSavedPhrases.titlePhrase())
+                .createdAt(dialogueCreatedAt)
+                .build();
 
         // 2. Build speakers, mapping speakerRefId -> DB UUID
         Map<String, DialogueSpeaker> speakerRefToSpeaker = new HashMap<>();
@@ -50,14 +53,11 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
             StoreDialogueParameters.StoreSpeakerParameters sp = parameters.speakers().get(i);
             Phrase speakerName = dialogueSavedPhrases.speakerNames().get(i);
 
-            UUID speakerId = UUID.randomUUID();
             final var speaker = DialogueSpeaker.builder()
-                    .id(speakerId)
-                    .dialogueId(dialogueId)
+                    .dialogue(dialogue)
                     .speakerRefId(sp.speakerRefId())
                     .namePhrase(speakerName)
                     .createdAt(dialogueCreatedAt)
-                    .isNewFlag(true)
                     .build();
             speakers.add(speaker);
             speakerRefToSpeaker.put(sp.speakerRefId(), speaker);
@@ -72,28 +72,21 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
 
                     DialogueSpeaker speaker = speakerRefToSpeaker.get(dp.speakerRefId());
                     return DialoguePhrase.builder()
-                            .id(UUID.randomUUID())
-                            .dialogueId(dialogueId)
+                            .dialogue(dialogue)
                             .phrase(savedPhrase)
                             .speaker(speaker)
                             .orderIndex(i)
                             .createdAt(dialogueCreatedAt)
-                            .isNewFlag(true)
                             .build();
                 })
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
         // 4. Persist dialogue aggregate
-        dialogueRepository.save(Dialogue.builder()
-                .id(dialogueId)
-                .title(dialogueSavedPhrases.titlePhrase())
-                .createdAt(dialogueCreatedAt)
-                .speakers(speakers)
-                .dialoguePhrases(dialoguePhrases)
-                .isNewFlag(true)
-                .build());
+        dialogue.setSpeakers(speakers);
+        dialogue.setDialoguePhrases(dialoguePhrases);
+        dialogueRepository.save(dialogue);
 
-        return SavedDialogueResource.builder().id(dialogueId).build();
+        return SavedDialogueResource.builder().id(dialogue.getId()).build();
     }
 
     @Builder

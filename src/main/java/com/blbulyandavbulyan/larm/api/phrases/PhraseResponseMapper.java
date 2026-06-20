@@ -28,20 +28,27 @@ public class PhraseResponseMapper {
 
     public PhraseResponse mapToPhraseResponse(Phrase phraseResource) {
         return PhraseResponse.builder()
-                .id(phraseResource.id())
-                .phrase(phraseResource.phrase())
-                .transcription(phraseResource.transcription())
-                .isoLanguageCode(phraseResource.isoLanguageCode())
-                .translations(phraseResource.translations().stream().map(this::mapToTranslationResponse).toList())
-                .assets(mapToAssets(phraseResource.mediaSet()))
+                .id(phraseResource.getId())
+                .phrase(phraseResource.getPhrase())
+                .transcription(phraseResource.getTranscription())
+                .isoLanguageCode(phraseResource.getIsoLanguageCode())
+                .translations(phraseResource.getTranslations().stream().map(this::mapToTranslationResponse).toList())
+                .assets(mapToAssets(phraseResource.getMediaSet()))
                 .build();
     }
 
-    private List<PhraseResponse.Asset> mapToAssets(Set<Media> media) {
-        return Stream.ofNullable(media)
+    private List<AssetResponse> mapToAssets(Set<Media> mediaSet) {
+        return Stream.ofNullable(mediaSet)
                 .flatMap(Collection::stream)
-                .map(m -> new PhraseResponse.Asset(m.contentType(), generateUrl(m.id())))
+                .map(this::mapMediaToAssetResponse)
                 .toList();
+    }
+
+    private AssetResponse mapMediaToAssetResponse(Media media) {
+        return AssetResponse.builder()
+                .contentType(media.getContentType())
+                .url(generateUrl(media.getId()))
+                .build();
     }
 
     private String generateUrl(UUID storageKey) {
@@ -53,9 +60,9 @@ public class PhraseResponseMapper {
 
     private TranslationResponse mapToTranslationResponse(Translation translationResource) {
         return TranslationResponse.builder()
-                .id(translationResource.id())
-                .translationText(translationResource.translationText())
-                .isoLanguageCode(translationResource.isoLanguageCode())
+                .id(translationResource.getId())
+                .translationText(translationResource.getTranslationText())
+                .isoLanguageCode(translationResource.getIsoLanguageCode())
                 .build();
     }
 

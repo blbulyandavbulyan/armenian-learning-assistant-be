@@ -31,16 +31,6 @@ public record PhraseResponse(
         List<TranslationResponse> translations,
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        List<Asset> assets) {
+        List<AssetResponse> assets) {
 
-    @Schema(name = "Asset Of Phrase Response")
-    public record Asset(
-            @Schema(description = Descriptions.CONTENT_TYPE, example = Examples.CONTENT_TYPE,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
-            String contentType,
-
-            @Schema(description = Descriptions.ASSET_URL, example = Examples.ASSET_URL,
-                    requiredMode = Schema.RequiredMode.REQUIRED)
-            String url) {
-    }
 }

@@ -23,11 +23,11 @@ class DefaultAssetService implements AssetService {
         Media media = phraseMediaService.findById(mediaId)
                 .orElseThrow(() -> new AssetNotFoundException("Asset not found in database: " + mediaId));
 
-        Resource resource = storageService.loadAsResource(media.storageKey());
+        Resource resource = storageService.loadAsResource(media.getStorageKey());
 
         return AssetResource.builder()
-                .contentType(media.contentType())
-                .fileName(media.storageKey())
+                .contentType(media.getContentType())
+                .fileName(media.getStorageKey())
                 .resource(resource)
                 .build();
     }

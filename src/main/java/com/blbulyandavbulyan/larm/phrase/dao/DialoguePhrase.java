@@ -3,38 +3,50 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.time.Instant;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceCreator;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "dialogue_phrases")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Table("dialogue_phrases")
-public record DialoguePhrase(
-        @Id UUID id,
-        UUID dialogueId,
-        Phrase phrase,
-        DialogueSpeaker speaker,
-        int orderIndex,
-        Instant createdAt,
-        @Transient boolean isNewFlag
-) implements Persistable<UUID> {
+public class DialoguePhrase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    @PersistenceCreator
-    public DialoguePhrase(UUID id, UUID phraseId, Phrase phrase, DialogueSpeaker speaker,
-                          int orderIndex, Instant createdAt) {
-        this(id, phraseId, phrase, speaker, orderIndex, createdAt, false);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dialogue_id")
+    private Dialogue dialogue;
 
-    @Override
-    public UUID getId() {
-        return id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phrase_id")
+    private Phrase phrase;
 
-    @Override
-    public boolean isNew() {
-        return isNewFlag;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "speaker_id")
+    private DialogueSpeaker speaker;
+
+    @Column(name = "order_index")
+    private int orderIndex;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+
 }
