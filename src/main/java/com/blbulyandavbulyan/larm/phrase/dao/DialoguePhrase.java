@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.dialogue.dao;
+package com.blbulyandavbulyan.larm.phrase.dao;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -11,19 +11,21 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Builder
-@Table("dialogue_speakers")
-public record DialogueSpeaker(
+@Table("dialogue_phrases")
+public record DialoguePhrase(
         @Id UUID id,
         UUID dialogueId,
-        String speakerRefId,
-        UUID namePhraseId,
+        Phrase phrase,
+        DialogueSpeaker speaker,
+        int orderIndex,
         Instant createdAt,
         @Transient boolean isNewFlag
 ) implements Persistable<UUID> {
 
     @PersistenceCreator
-    public DialogueSpeaker(UUID id, UUID dialogueId, String speakerRefId, UUID namePhraseId, Instant createdAt) {
-        this(id, dialogueId, speakerRefId, namePhraseId, createdAt, false);
+    public DialoguePhrase(UUID id, UUID phraseId, Phrase phrase, DialogueSpeaker speaker,
+                          int orderIndex, Instant createdAt) {
+        this(id, phraseId, phrase, speaker, orderIndex, createdAt, false);
     }
 
     @Override

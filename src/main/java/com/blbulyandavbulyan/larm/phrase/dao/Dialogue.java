@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.dialogue.dao;
+package com.blbulyandavbulyan.larm.phrase.dao;
 
 import java.time.Instant;
 import java.util.Set;
@@ -16,7 +16,8 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("dialogues")
 public record Dialogue(
         @Id UUID id,
-        UUID titlePhraseId,
+        @MappedCollection()// <- ??? what column I put here???
+        Phrase title,
         Instant createdAt,
         @MappedCollection(idColumn = "dialogue_id")
         Set<DialogueSpeaker> speakers,
@@ -26,9 +27,9 @@ public record Dialogue(
 ) implements Persistable<UUID> {
 
     @PersistenceCreator
-    public Dialogue(UUID id, UUID titlePhraseId, Instant createdAt, Set<DialogueSpeaker> speakers,
+    public Dialogue(UUID id, Phrase title, Instant createdAt, Set<DialogueSpeaker> speakers,
                     Set<DialoguePhrase> dialoguePhrases) {
-        this(id, titlePhraseId, createdAt, speakers, dialoguePhrases, false);
+        this(id, title, createdAt, speakers, dialoguePhrases, false);
     }
 
     @Override

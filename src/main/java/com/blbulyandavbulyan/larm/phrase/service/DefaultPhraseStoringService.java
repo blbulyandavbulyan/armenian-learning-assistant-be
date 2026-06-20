@@ -10,7 +10,6 @@ import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.InvalidIsoLanguageCodeException;
 import com.blbulyandavbulyan.larm.phrase.PageParameters;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.PhrasesAlreadyExistException;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
@@ -34,7 +33,7 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
 
     @Transactional
     @Override
-    public List<PhraseResource> batchSavePhrases(BatchSavePhrasesParameters parameters) {
+    public List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters) {
         validate(parameters);
 
         checkAndThrowIfSomePhrasesAlreadySaved(parameters);
@@ -44,7 +43,6 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
         Iterable<Phrase> savedPhrases = phraseRepository.saveAll(newPhrases.parallelStream().map(phraseMapper::mapToPhrase).toList());
 
         return StreamSupport.stream(savedPhrases.spliterator(), true)
-                .map(phraseMapper::mapFromPhrase)
                 .toList();
     }
 
@@ -64,15 +62,8 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
                         .totalPages(phrasePage.getTotalPages())
                         .pageSize(phrasePage.getSize())
                         .build())
-                .phrases(phrasePage.stream().map(phraseMapper::mapFromPhrase).toList())
+                .phrases(phrasePage.getContent())
                 .build();
-    }
-
-    @Override
-    public List<PhraseResource> getPhrasesByIds(Iterable<java.util.UUID> ids) {
-        return StreamSupport.stream(phraseRepository.findAllById(ids).spliterator(), false)
-                .map(phraseMapper::mapFromPhrase)
-                .toList();
     }
 
     private void validate(BatchSavePhrasesParameters batchParameters) {

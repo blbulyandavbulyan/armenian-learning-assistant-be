@@ -2,13 +2,14 @@ package com.blbulyandavbulyan.larm.api.phrases;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import com.blbulyandavbulyan.larm.phrase.MediaResource;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
-import com.blbulyandavbulyan.larm.phrase.TranslationResource;
+import com.blbulyandavbulyan.larm.phrase.dao.Media;
+import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
+import com.blbulyandavbulyan.larm.phrase.dao.Translation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,22 +22,22 @@ public class PhraseResponseMapper {
                 .build();
     }
 
-    private List<PhraseResponse> mapToPhrases(List<PhraseResource> phrases) {
+    private List<PhraseResponse> mapToPhrases(List<Phrase> phrases) {
         return phrases.stream().map(this::mapToPhraseResponse).toList();
     }
 
-    public PhraseResponse mapToPhraseResponse(PhraseResource phraseResource) {
+    public PhraseResponse mapToPhraseResponse(Phrase phraseResource) {
         return PhraseResponse.builder()
                 .id(phraseResource.id())
                 .phrase(phraseResource.phrase())
                 .transcription(phraseResource.transcription())
                 .isoLanguageCode(phraseResource.isoLanguageCode())
                 .translations(phraseResource.translations().stream().map(this::mapToTranslationResponse).toList())
-                .assets(mapToAssets(phraseResource.media()))
+                .assets(mapToAssets(phraseResource.mediaSet()))
                 .build();
     }
 
-    private List<PhraseResponse.Asset> mapToAssets(List<MediaResource> media) {
+    private List<PhraseResponse.Asset> mapToAssets(Set<Media> media) {
         return Stream.ofNullable(media)
                 .flatMap(Collection::stream)
                 .map(m -> new PhraseResponse.Asset(m.contentType(), generateUrl(m.id())))
@@ -50,7 +51,7 @@ public class PhraseResponseMapper {
                 .toUriString();
     }
 
-    private TranslationResponse mapToTranslationResponse(TranslationResource translationResource) {
+    private TranslationResponse mapToTranslationResponse(Translation translationResource) {
         return TranslationResponse.builder()
                 .id(translationResource.id())
                 .translationText(translationResource.translationText())
@@ -66,7 +67,7 @@ public class PhraseResponseMapper {
                 .build();
     }
 
-    public List<PhraseResponse> mapToCreatePhrasesResponse(List<PhraseResource> savedPhrases) {
+    public List<PhraseResponse> mapToCreatePhrasesResponse(List<Phrase> savedPhrases) {
         return savedPhrases.stream().map(this::mapToPhraseResponse).toList();
     }
 }

@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.dialogue.DialogueRetrievalService;
-import com.blbulyandavbulyan.larm.dialogue.FullDialogueResource;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueRepository;
+import com.blbulyandavbulyan.larm.phrase.dao.Dialogue;
+import com.blbulyandavbulyan.larm.phrase.dao.DialogueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class DefaultDialogueRetrievalService implements DialogueRetrievalService
     private final DialogueRepository dialogueRepository;
 
     @Override
-    public Optional<FullDialogueResource> getDialogue(UUID id) {
-        return dialogueRepository.findFullById(id);
+    public Optional<Dialogue> getDialogue(UUID id) {
+        return dialogueRepository.findById(id);
     }
 }

@@ -4,12 +4,9 @@ import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
-import com.blbulyandavbulyan.larm.dialogue.dao.Dialogue;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueRepository;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueSpeakerRepository;
+import com.blbulyandavbulyan.larm.dialogue.dao.DialogueDaoMother;
+import com.blbulyandavbulyan.larm.phrase.dao.DialogueRepository;
 import com.blbulyandavbulyan.larm.phrase.dao.MediaRepository;
-import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
-import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -40,13 +37,10 @@ class DialogueControllerIT extends BaseIT {
     private DialogueRepository dialogueRepository;
 
     @Autowired
-    private DialogueSpeakerRepository dialogueSpeakerRepository;
-
-    @Autowired
-    private PhraseRepository phraseRepository;
-
-    @Autowired
     private MediaRepository mediaRepository;
+
+    @Autowired
+    private com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository phraseRepository;
 
     @Test
     void saveDialogue() throws Exception {
@@ -67,45 +61,50 @@ class DialogueControllerIT extends BaseIT {
         String idString = JsonPath.read(responseContent, "$.id");
         UUID dialogueId = UUID.fromString(idString);
 
-        // TODO dumb assert, very week, not all the input data is asserted
-        // Verify DB
-        Dialogue savedDialogue = dialogueRepository.findById(dialogueId)
+        // Fetch the raw dialogue DAO from the database directly
+        var savedDialogue = dialogueRepository.findById(dialogueId)
                 .orElseThrow(() -> new AssertionError("Dialogue not found"));
 
-        // 1. Verify title
-        Phrase titlePhrase = phraseRepository.findById(savedDialogue.titlePhraseId()).orElseThrow();
-        assertThat(titlePhrase.phrase()).isEqualTo("In the bakery");
+        // Assert the dialogue structure (speakers, phrases counts and indexes) without mapping
+        var expectedDialogue = DialogueDaoMother.DefaultDialogue.build();
+        
+        assertThat(savedDialogue).usingRecursiveComparison()
+                .ignoringCollectionOrder()
+                .ignoringFieldsOfTypes(UUID.class, java.time.Instant.class)
+                .ignoringFields("titlePhrase", "dialoguePhrases.phrase", "speakers.namePhrase")
+                .ignoringFieldsMatchingRegexes(".*isNewFlag.*")
+                .isEqualTo(expectedDialogue);
 
-        // 2. Verify speakers
-        assertThat(savedDialogue.speakers()).hasSize(2);
-        long speakerCount = dialogueSpeakerRepository.count();
-        assertThat(speakerCount).isEqualTo(2);
+        assertThat(savedDialogue.title().getId()).isNotNull();
 
-        boolean foundBaker = false;
-        boolean foundCustomer = false;
-        for (var speaker : savedDialogue.speakers()) {
-            Phrase namePhrase = phraseRepository.findById(speaker.namePhraseId()).orElseThrow();
-            if (namePhrase.phrase().equals("Baker")) {
-                foundBaker = true;
-                assertThat(speaker.speakerRefId()).isEqualTo("speaker1");
-            } else if (namePhrase.phrase().equals("Customer")) {
-                foundCustomer = true;
-                assertThat(speaker.speakerRefId()).isEqualTo("speaker2");
-            }
-        }
-        assertThat(foundBaker).isTrue();
-        assertThat(foundCustomer).isTrue();
+        // Ensure all phrases referenced by the dialogue are actually persisted
+        var phraseIdList = savedDialogue.dialoguePhrases().stream()
+                .map(dp -> dp.phrase().getId())
+                .toList();
+        var speakerPhraseIdList = savedDialogue.speakers().stream()
+                .map(ds -> ds.namePhrase().getId())
+                .toList();
+        
+        assertThat(phraseRepository.findById(savedDialogue.title().getId())).isPresent();
+        assertThat(phraseRepository.findAllById(phraseIdList)).hasSize(3);
+        assertThat(phraseRepository.findAllById(speakerPhraseIdList)).hasSize(2);
 
-        // 3. Verify dialogue phrases
-        assertThat(savedDialogue.dialoguePhrases()).hasSize(3);
-
-        // Total phrases = 1 title + 2 speakers + 3 phrases = 6
-        long phraseCount = phraseRepository.count();
-        assertThat(phraseCount).isEqualTo(6);
-
-        // Total media = 6
+        // Verify media count
         long mediaCount = mediaRepository.count();
         assertThat(mediaCount).isEqualTo(6);
+
+        // Verify TTS service was called for each phrase and nothing was skipped
+        verifyTtsCalledWith("In the bakery");
+        verifyTtsCalledWith("Baker");
+        verifyTtsCalledWith("Customer");
+        verifyTtsCalledWith("Բարեւ ձեզ");
+        verifyTtsCalledWith("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
+        verifyTtsCalledWith("Ահա, խնդրեմ:");
+    }
+
+    private void verifyTtsCalledWith(String text) {
+        wireMockServer.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/"))
+                .withRequestBody(WireMock.matchingJsonPath("$.text", WireMock.equalTo(text))));
     }
 
     @Test

@@ -1,7 +1,10 @@
 package com.blbulyandavbulyan.larm.api.dialogues;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 import com.blbulyandavbulyan.larm.api.phrases.PhraseResponseMapper;
-import com.blbulyandavbulyan.larm.dialogue.FullDialogueResource;
+import com.blbulyandavbulyan.larm.phrase.dao.Dialogue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,19 +13,21 @@ import org.springframework.stereotype.Component;
 public class DialogueResponseMapper {
     private final PhraseResponseMapper phraseResponseMapper;
 
-    public GetDialogueResponse toResponse(FullDialogueResource resource) {
+    public GetDialogueResponse toResponse(Dialogue resource) {
         return GetDialogueResponse.builder()
                 .id(resource.id())
                 .title(phraseResponseMapper.mapToPhraseResponse(resource.title()))
-                .speakers(resource.speakers().stream()
+                .speakers(Stream.ofNullable(resource.speakers())
+                        .flatMap(Collection::stream)
                         .map(s -> GetDialogueResponse.DialogueSpeakerResponse.builder()
                                 .speakerRefId(s.speakerRefId())
-                                .name(phraseResponseMapper.mapToPhraseResponse(s.name()))
+                                .name(phraseResponseMapper.mapToPhraseResponse(s.namePhrase()))
                                 .build())
                         .toList())
-                .dialoguePhrases(resource.dialoguePhrases().stream()
+                .dialoguePhrases(Stream.ofNullable(resource.dialoguePhrases())
+                        .flatMap(Collection::stream)
                         .map(p -> GetDialogueResponse.DialoguePhraseResponse.builder()
-                                .speakerRefId(p.speakerRefId())
+                                .speakerRefId(p.speaker().speakerRefId())
                                 .phrase(phraseResponseMapper.mapToPhraseResponse(p.phrase()))
                                 .build())
                         .toList())

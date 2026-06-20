@@ -5,9 +5,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
-import com.blbulyandavbulyan.larm.phrase.TranslationResource;
 import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseStatus;
 import com.blbulyandavbulyan.larm.phrase.dao.Translation;
@@ -42,25 +40,6 @@ public class PhraseMapper {
                 .isoLanguageCode(createTranslationParameters.isoLanguageCode())
                 .translationText(createTranslationParameters.translationText())
                 .createdAt(Instant.now())
-                .build();
-    }
-
-    public PhraseResource mapFromPhrase(Phrase phrase) {
-        return PhraseResource.builder()
-                .id(phrase.id())
-                .phrase(phrase.phrase())
-                .isoLanguageCode(phrase.isoLanguageCode())
-                .transcription(phrase.transcription())
-                .translations(phrase.translations().stream().map(PhraseMapper::translationToResource).toList())
-                .media(phrase.mediaSet().stream().map(mediaMapper::fromMedia).toList())
-                .build();
-    }
-
-    private static TranslationResource translationToResource(Translation translation) {
-        return TranslationResource.builder()
-                .id(translation.id())
-                .translationText(translation.translationText())
-                .isoLanguageCode(translation.isoLanguageCode())
                 .build();
     }
 }
