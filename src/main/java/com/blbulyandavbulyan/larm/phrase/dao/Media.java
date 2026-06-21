@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -57,5 +58,21 @@ public class Media {
 
     @Column(name = "created_at")
     private Instant createdAt;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Media that)) {
+            return false;
+        }
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hashCode(getId());
+    }
 
 }

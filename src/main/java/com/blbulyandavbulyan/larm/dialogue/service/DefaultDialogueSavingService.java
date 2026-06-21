@@ -56,6 +56,7 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
             Phrase speakerName = dialogueSavedPhrases.speakerNames().get(i);
 
             final var speaker = DialogueSpeaker.builder()
+                    .id(UUID.randomUUID())
                     .dialogue(dialogue)
                     .speakerRefId(sp.speakerRefId())
                     .namePhrase(speakerName)
@@ -74,6 +75,7 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
 
                     DialogueSpeaker speaker = speakerRefToSpeaker.get(dp.speakerRefId());
                     return DialoguePhrase.builder()
+                            .id(UUID.randomUUID())
                             .dialogue(dialogue)
                             .phrase(savedPhrase)
                             .speaker(speaker)

@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,11 +41,26 @@ public class Dialogue {
 
     @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("speakerRefId ASC")
-    // TODO, set relies on equals and hashcode, so proper equals and hashcode must be implemented
     private Set<DialogueSpeaker> speakers;
 
     @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderIndex ASC")
-    private Set<DialoguePhrase> dialoguePhrases; // TODO, set relies on equals and hashcode, so proper equals and hashcode must be implemented
+    private Set<DialoguePhrase> dialoguePhrases;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Dialogue that)) {
+            return false;
+        }
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hashCode(getId());
+    }
 
 }

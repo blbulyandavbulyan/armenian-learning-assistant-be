@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,5 +46,21 @@ public class Phrase {
     @OneToMany(mappedBy = "phrase", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdAt ASC")
     private Set<Media> mediaSet;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Phrase that)) {
+            return false;
+        }
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hashCode(getId());
+    }
 
 }
