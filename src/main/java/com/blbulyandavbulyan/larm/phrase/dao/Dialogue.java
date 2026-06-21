@@ -45,8 +45,9 @@ public class Dialogue {
     private Set<DialogueSpeaker> speakers;
 
     @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)
-    //TODO, where TF IS ORDER BY USING THE 'orderIndex' FIELD? The tests arent failing too, they should fail if this order field is not used,
-    // meaning that in the database it should be inserted in such way, that without using this field the order will be WRONG, which should fail the tests
+    // TODO, where TF IS ORDER BY USING THE 'orderIndex' FIELD? The tests arent failing too, they should fail if this order field is not used,
+    // meaning that in the database it should be inserted in such way, that without using this field the order will be WRONG,
+    // which should fail the tests
     private Set<DialoguePhrase> dialoguePhrases; // TODO, set relies on equals and hashcode, so proper equals and hashcode must be implemented
 
 }

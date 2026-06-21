@@ -65,11 +65,12 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
 
             Mockito.verify(phraseOrchestrator, times(1)).savePhrases(anyList());
 
-            assertThat(phraseRepository.findById(phraseId))
+            phraseRecordAssertHelper.assertThatPhraseWithId(phraseId)
                     .as("Checking saved phrase in the database")
                     .isPresent()
                     .get()
                     .usingRecursiveComparison()
+                    .ignoringCollectionOrder()
                     .isEqualTo(PhraseMother.DefaultPhrase.builder()
                             .withMedias(MediaMother.DefaultMedia.builder()
                                     .withStorageBucket(TEMP_DIR.toString())

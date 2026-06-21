@@ -3,6 +3,8 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
+
 public interface TranslationMother {
     interface DefaultTranslation {
         UUID ID = UUID.fromString("bc5333d4-c70b-4121-8bdc-4b94547de419");
@@ -18,7 +20,7 @@ public interface TranslationMother {
                     .withCreatedAt(CREATED_AT);
         }
 
-        static Translation build() {
+        static TranslationRecord build() {
             return DefaultTranslation.builder().build();
         }
     }
@@ -53,8 +55,8 @@ public interface TranslationMother {
             return this;
         }
 
-        public Translation build() {
-            return new Translation(id, null, isoLanguageCode, translationText, createdAt);
+        public TranslationRecord build() {
+            return new TranslationRecord(id, isoLanguageCode, translationText, createdAt);
         }
     }
 }

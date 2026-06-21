@@ -35,7 +35,8 @@ public class DialogueSpeaker {
     private Dialogue dialogue;
 
     @Column(name = "speaker_ref_id")
-    // TODO most probably we don't need this field here at all, cause it is referenced by 'id' field, if it exist in the api response most probably it is not needed there as well, the 'id' should be returned there
+    // TODO most probably we don't need this field here at all, cause it is referenced by 'id' field,
+    // if it exist in the api response most probably it is not needed there as well, the 'id' should be returned there
     private String speakerRefId;
 
     @ManyToOne(fetch = FetchType.LAZY)

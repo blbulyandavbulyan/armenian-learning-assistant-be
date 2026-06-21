@@ -5,6 +5,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.blbulyandavbulyan.larm.phrase.dao.projections.MediaRecord;
+import com.blbulyandavbulyan.larm.phrase.dao.projections.PhraseRecord;
+import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
+
 public interface PhraseMother {
     interface DefaultPhrase {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
@@ -20,7 +24,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withTranslations(Set.of(TranslationMother.DefaultTranslation.build()));
+                    .withTranslations(TranslationMother.DefaultTranslation.build());
         }
 
     }
@@ -35,8 +39,8 @@ public interface PhraseMother {
         private String isoLanguageCode;
         private String phrase;
         private String transcription;
-        private Set<Translation> translations;
-        private Set<Media> mediaSet;
+        private Set<TranslationRecord> translations;
+        private Set<MediaRecord> mediaSet;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -63,18 +67,18 @@ public interface PhraseMother {
             return this;
         }
 
-        public Builder withTranslations(Set<Translation> translations) {
-            this.translations = translations;
+        public Builder withTranslations(TranslationRecord... translations) {
+            this.translations = Arrays.stream(translations).collect(Collectors.toSet());
             return this;
         }
 
-        public Builder withMedias(Media... medias) {
+        public Builder withMedias(MediaRecord... medias) {
             this.mediaSet = Arrays.stream(medias).collect(Collectors.toSet());
             return this;
         }
 
-        public Phrase build() {
-            return new Phrase(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet);
+        public PhraseRecord build() {
+            return new PhraseRecord(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet);
         }
     }
 }

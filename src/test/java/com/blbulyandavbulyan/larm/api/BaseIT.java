@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
-import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
+import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
 import org.junit.jupiter.api.AfterEach;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -37,6 +38,7 @@ import org.wiremock.spring.InjectWireMock;
 @EnableWireMock({
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "piper.url")
 })
+@Import(PhraseRecordAssertHelper.class)
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -67,7 +69,7 @@ public abstract class BaseIT {
     protected MockMvc mockMvc;
 
     @Autowired
-    protected PhraseRepository phraseRepository;
+    protected PhraseRecordAssertHelper phraseRecordAssertHelper;
 
     @MockitoBean
     protected Client mockGeminiClient;
