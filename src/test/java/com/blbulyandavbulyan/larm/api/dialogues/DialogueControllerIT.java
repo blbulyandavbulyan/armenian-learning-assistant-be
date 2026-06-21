@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
-import com.blbulyandavbulyan.larm.phrase.dao.DialogueRepository;
 import com.blbulyandavbulyan.larm.phrase.dao.MediaRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.jayway.jsonpath.JsonPath;
@@ -71,8 +70,9 @@ class DialogueControllerIT extends BaseIT {
         // Verify media count
         long mediaCount = mediaRepository.count();
         assertThat(mediaCount).isEqualTo(6);
-        //TODO in this case it might be important that the right 'audio' is connected to the 'right phrase', especially since we ignoring mediaSet completely everywhere in previous assertions
-        // we should assert the media and that the right audio file is connected to the right phrase somehow here
+        // TODO in this case it might be important that the right 'audio' is connected to the 'right phrase',
+        //  especially since we ignoring mediaSet completely everywhere in previous assertions
+        //  we should assert the media and that the right audio file is connected to the right phrase somehow here
 
         // Verify TTS service was called for each phrase and nothing was skipped
         verifyTtsCalledWith("Հացի փռում");

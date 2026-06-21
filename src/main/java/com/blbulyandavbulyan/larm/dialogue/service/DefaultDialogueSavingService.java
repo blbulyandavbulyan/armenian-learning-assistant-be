@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,6 +43,7 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
         DialogueSavedPhrases dialogueSavedPhrases = saveAllPhrases(parameters);
 
         Dialogue dialogue = Dialogue.builder()
+                .id(UUID.randomUUID())
                 .title(dialogueSavedPhrases.titlePhrase())
                 .createdAt(dialogueCreatedAt)
                 .build();
