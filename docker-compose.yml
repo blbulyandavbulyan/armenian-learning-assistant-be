@@ -12,7 +12,14 @@ services:
       - pgdata:/var/lib/postgresql/data
       # This line automatically creates the extension on startup:
       - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - mcp-bridge
     restart: unless-stopped
+
+networks:
+  mcp-bridge:
+    # Explicitly naming the network makes it predictable for the 'docker run' command
+    name: mcp-shared-network
 
 volumes:
   pgdata:
