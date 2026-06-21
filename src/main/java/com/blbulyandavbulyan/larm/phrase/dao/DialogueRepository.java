@@ -8,6 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface DialogueRepository extends CrudRepository<Dialogue, UUID> {
     @Override
-    @EntityGraph(attributePaths = {"title", "speakers.namePhrase", "dialoguePhrases.phrase"})
+    @EntityGraph(attributePaths = {"title", "title.translations", "title.mediaSet",
+            "speakers.namePhrase", "speakers.namePhrase.translations", "speakers.namePhrase.mediaSet",
+            "dialoguePhrases.phrase", "dialoguePhrases.phrase.translations", "dialoguePhrases.phrase.mediaSet"})
     Optional<Dialogue> findById(UUID id);
 }

@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.json.JsonCompareMode;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,6 +119,7 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     @Sql("/sql/insert-dialogue.sql")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void getDialogue() throws Exception {
         String expectedJson = readResourceToString("/responses/get-dialogue-response.json");
         UUID dialogueId = UUID.fromString("99999999-9999-9999-9999-999999999999");
