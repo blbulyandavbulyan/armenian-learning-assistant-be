@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -122,7 +123,7 @@ class DialogueControllerIT extends BaseIT {
 
         mockMvc.perform(get(RequestMapping.GET_DIALOGUE, dialogueId))
                 .andExpect(status().isOk())
-                .andExpect(content().json(expectedJson));
+                .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 
     @Test
