@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.util.Objects;
 import java.util.Set;
@@ -55,7 +55,7 @@ public class Phrase {
         if (!(o instanceof Phrase that)) {
             return false;
         }
-        return Objects.equals(getId(), that.getId());
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override

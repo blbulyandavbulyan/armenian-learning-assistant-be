@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.blbulyandavbulyan.larm.phrase.dao.Dialogue;
+import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
 
 public record DialogueRecord(
         UUID id,

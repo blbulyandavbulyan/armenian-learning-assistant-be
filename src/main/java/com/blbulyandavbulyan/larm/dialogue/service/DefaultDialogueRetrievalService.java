@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.dialogue.DialogueRetrievalService;
-import com.blbulyandavbulyan.larm.phrase.dao.Dialogue;
-import com.blbulyandavbulyan.larm.phrase.dao.DialogueRepository;
+import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
+import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

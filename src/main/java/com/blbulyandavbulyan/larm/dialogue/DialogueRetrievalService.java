@@ -3,7 +3,7 @@ package com.blbulyandavbulyan.larm.dialogue;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.phrase.dao.Dialogue;
+import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
 
 public interface DialogueRetrievalService {
     /**

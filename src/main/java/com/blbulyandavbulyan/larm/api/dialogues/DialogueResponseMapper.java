@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 import com.blbulyandavbulyan.larm.api.phrases.PhraseResponseMapper;
-import com.blbulyandavbulyan.larm.phrase.dao.Dialogue;
+import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

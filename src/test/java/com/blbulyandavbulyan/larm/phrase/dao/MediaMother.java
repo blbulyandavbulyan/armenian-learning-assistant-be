@@ -3,6 +3,7 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blbulyandavbulyan.larm.dao.entities.StorageProvider;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.MediaRecord;
 
 public interface MediaMother {

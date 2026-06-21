@@ -1,8 +1,9 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
+import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.CrudRepository;
 

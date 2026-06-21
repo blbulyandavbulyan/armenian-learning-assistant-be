@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.phrase.PhraseMediaService;
-import com.blbulyandavbulyan.larm.phrase.dao.Media;
-import com.blbulyandavbulyan.larm.phrase.dao.MediaRepository;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
+import com.blbulyandavbulyan.larm.dao.repository.MediaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

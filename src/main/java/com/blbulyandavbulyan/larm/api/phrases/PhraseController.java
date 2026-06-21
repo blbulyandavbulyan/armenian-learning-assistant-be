@@ -6,7 +6,7 @@ import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
 import com.blbulyandavbulyan.larm.phrase.PageParameters;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
-import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;

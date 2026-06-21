@@ -7,9 +7,9 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
-import com.blbulyandavbulyan.larm.phrase.dao.Media;
-import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
-import com.blbulyandavbulyan.larm.phrase.dao.Translation;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
+import com.blbulyandavbulyan.larm.dao.entities.Translation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

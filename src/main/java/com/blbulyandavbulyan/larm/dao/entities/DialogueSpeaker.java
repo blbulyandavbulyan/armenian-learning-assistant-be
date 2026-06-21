@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -52,7 +52,7 @@ public class DialogueSpeaker {
         if (!(o instanceof DialogueSpeaker that)) {
             return false;
         }
-        return Objects.equals(getId(), that.getId());
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override

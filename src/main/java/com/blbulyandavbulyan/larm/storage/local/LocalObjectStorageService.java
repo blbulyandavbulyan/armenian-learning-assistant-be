@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
+import com.blbulyandavbulyan.larm.dao.entities.StorageProvider;
 import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
 import com.blbulyandavbulyan.larm.storage.StoredObject;
 import org.springframework.beans.factory.annotation.Value;

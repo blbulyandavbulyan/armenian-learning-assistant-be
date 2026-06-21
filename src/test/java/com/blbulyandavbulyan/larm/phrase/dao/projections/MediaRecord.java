@@ -3,8 +3,8 @@ package com.blbulyandavbulyan.larm.phrase.dao.projections;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.phrase.dao.Media;
-import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
+import com.blbulyandavbulyan.larm.dao.entities.StorageProvider;
 
 public record MediaRecord(
         UUID id,

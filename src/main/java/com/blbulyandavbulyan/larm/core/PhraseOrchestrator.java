@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
-import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

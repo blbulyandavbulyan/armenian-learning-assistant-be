@@ -6,7 +6,7 @@ import com.blbulyandavbulyan.larm.asset.AssetNotFoundException;
 import com.blbulyandavbulyan.larm.asset.AssetResource;
 import com.blbulyandavbulyan.larm.asset.AssetService;
 import com.blbulyandavbulyan.larm.phrase.PhraseMediaService;
-import com.blbulyandavbulyan.larm.phrase.dao.Media;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;

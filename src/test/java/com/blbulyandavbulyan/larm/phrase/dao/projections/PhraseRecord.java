@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
-import com.blbulyandavbulyan.larm.phrase.dao.PhraseStatus;
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
+import com.blbulyandavbulyan.larm.dao.entities.PhraseStatus;
 
 public record PhraseRecord(
         UUID id,

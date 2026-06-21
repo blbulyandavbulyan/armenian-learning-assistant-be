@@ -1,4 +1,4 @@
 @NullMarked
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.repository;
 
 import org.jspecify.annotations.NullMarked;

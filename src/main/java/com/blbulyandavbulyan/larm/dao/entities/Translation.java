@@ -1,10 +1,9 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,30 +18,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "dialogue_phrases")
+@Table(name = "translations")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DialoguePhrase {
+public class Translation {
     @Id
     private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dialogue_id")
-    private Dialogue dialogue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "phrase_id")
     private Phrase phrase;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "speaker_id")
-    private DialogueSpeaker speaker;
+    @Column(name = "iso_language_code")
+    private String isoLanguageCode;
 
-    @Column(name = "order_index")
-    private int orderIndex;
+    @Column(name = "translation_text")
+    private String translationText;
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -52,14 +46,15 @@ public class DialoguePhrase {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DialoguePhrase that)) {
+        if (!(o instanceof Translation that)) {
             return false;
         }
-        return Objects.equals(getId(), that.getId());
+        return getId() != null && getId().equals(that.getId());
     }
 
     @Override
     public final int hashCode() {
         return Objects.hashCode(getId());
     }
+
 }

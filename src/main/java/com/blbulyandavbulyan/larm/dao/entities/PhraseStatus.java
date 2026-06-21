@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.entities;
 
 public enum PhraseStatus {
     APPROVED,

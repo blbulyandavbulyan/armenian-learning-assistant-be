@@ -3,7 +3,7 @@ package com.blbulyandavbulyan.larm.phrase;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.phrase.dao.Media;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
 
 public interface PhraseMediaService {
 

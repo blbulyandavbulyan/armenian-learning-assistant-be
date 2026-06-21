@@ -1,9 +1,10 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dao.repository;
 
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

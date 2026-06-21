@@ -3,7 +3,7 @@ package com.blbulyandavbulyan.larm.phrase.dao.projections;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.phrase.dao.DialoguePhrase;
+import com.blbulyandavbulyan.larm.dao.entities.DialoguePhrase;
 
 public record DialoguePhraseRecord(
         UUID id,
