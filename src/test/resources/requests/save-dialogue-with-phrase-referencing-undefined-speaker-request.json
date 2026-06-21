@@ -1,7 +1,7 @@
 {
   "info": {
-    "title": "In the bakery",
-    "transcription": "In the bakery",
+    "title": "Հացի փռում",
+    "transcription": "Hatsi prrum",
     "translations": [
       {
         "translationText": "В пекарне",
@@ -12,8 +12,8 @@
   "speakers": [
     {
       "id": "speaker1",
-      "title": "Baker",
-      "transcription": "Baker",
+      "title": "Հացթուխ",
+      "transcription": "Hatstukh",
       "translations": [
         {
           "translationText": "Пекарь",
@@ -23,8 +23,8 @@
     },
     {
       "id": "speaker2",
-      "title": "Customer",
-      "transcription": "Customer",
+      "title": "Գնորդ",
+      "transcription": "Gnord",
       "translations": [
         {
           "translationText": "Покупатель",

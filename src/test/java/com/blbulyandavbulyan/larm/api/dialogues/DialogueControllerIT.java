@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueDaoMother;
+import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.phrase.dao.DialogueRepository;
 import com.blbulyandavbulyan.larm.phrase.dao.MediaRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -34,17 +34,11 @@ class DialogueControllerIT extends BaseIT {
     private DialogueOrchestrator dialogueOrchestrator;
 
     @Autowired
-    private DialogueRepository dialogueRepository;
-
-    @Autowired
     private MediaRepository mediaRepository;
-
-    @Autowired
-    private com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository phraseRepository;
 
     @Test
     void saveDialogue() throws Exception {
-        String requestJson = readResourceToString("/responses/save-dialogue-request.json");
+        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
 
         wireMockServer.stubFor(WireMock.post("/")
                 .willReturn(WireMock.ok()
@@ -58,45 +52,32 @@ class DialogueControllerIT extends BaseIT {
                 .andExpect(jsonPath("$.id").exists())
                 .andReturn().getResponse().getContentAsString();
 
-        String idString = JsonPath.read(responseContent, "$.id");
-        UUID dialogueId = UUID.fromString(idString);
+        UUID dialogueId = UUID.fromString(JsonPath.read(responseContent, "$.id"));
 
-        // Fetch the raw dialogue DAO from the database directly
-        var savedDialogue = dialogueRepository.findById(dialogueId)
-                .orElseThrow(() -> new AssertionError("Dialogue not found"));
-
-        // Assert the dialogue structure (speakers, phrases counts and indexes) without mapping
-        var expectedDialogue = DialogueDaoMother.DefaultDialogue.build();
+        var expectedDialogue = DialogueMother.DefaultDialogue.build();
         
-        assertThat(savedDialogue).usingRecursiveComparison()
+        dialogueRecordAssertHelper.assertThatDialogueWithId(dialogueId)
+                .isPresent()
+                .get()
+                .usingRecursiveComparison()
                 .ignoringCollectionOrder()
                 .ignoringFieldsOfTypes(UUID.class, java.time.Instant.class)
-                .ignoringFields("title", "dialoguePhrases.phrase", "speakers.namePhrase",
-                        "dialoguePhrases.dialogue", "speakers.dialogue", "dialoguePhrases.speaker")
+                .ignoringFields("title.mediaSet", 
+                        "dialoguePhrases.phrase.mediaSet", 
+                        "speakers.namePhrase.mediaSet", 
+                        "dialoguePhrases.speaker.namePhrase.mediaSet")
                 .isEqualTo(expectedDialogue);
-
-        assertThat(savedDialogue.getTitle().getId()).isNotNull();
-
-        // Ensure all phrases referenced by the dialogue are actually persisted
-        var phraseIdList = savedDialogue.getDialoguePhrases().stream()
-                .map(dp -> dp.getPhrase().getId())
-                .toList();
-        var speakerPhraseIdList = savedDialogue.getSpeakers().stream()
-                .map(ds -> ds.getNamePhrase().getId())
-                .toList();
-        
-        assertThat(phraseRepository.findById(savedDialogue.getTitle().getId())).isPresent();
-        assertThat(phraseRepository.findAllById(phraseIdList)).hasSize(3);
-        assertThat(phraseRepository.findAllById(speakerPhraseIdList)).hasSize(2);
 
         // Verify media count
         long mediaCount = mediaRepository.count();
         assertThat(mediaCount).isEqualTo(6);
+        //TODO in this case it might be important that the right 'audio' is connected to the 'right phrase', especially since we ignoring mediaSet completely everywhere in previous assertions
+        // we should assert the media and that the right audio file is connected to the right phrase somehow here
 
         // Verify TTS service was called for each phrase and nothing was skipped
-        verifyTtsCalledWith("In the bakery");
-        verifyTtsCalledWith("Baker");
-        verifyTtsCalledWith("Customer");
+        verifyTtsCalledWith("Հացի փռում");
+        verifyTtsCalledWith("Հացթուխ");
+        verifyTtsCalledWith("Գնորդ");
         verifyTtsCalledWith("Բարեւ ձեզ");
         verifyTtsCalledWith("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
         verifyTtsCalledWith("Ահա, խնդրեմ:");
@@ -109,7 +90,7 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     void saveDialogue_whenPhraseReferencesUndefinedSpeaker() throws Exception {
-        String requestJson = readResourceToString("/responses/save-dialogue-with-phrase-referencing-undefined-speaker-request.json");
+        String requestJson = readResourceToString("/requests/save-dialogue-with-phrase-referencing-undefined-speaker-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -122,7 +103,7 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     void saveDialogue_whenDefinedSpeakerIsUnused() throws Exception {
-        String requestJson = readResourceToString("/responses/save-dialogue-with-unused-defined-speaker-request.json");
+        String requestJson = readResourceToString("/requests/save-dialogue-with-unused-defined-speaker-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
                 .contentType(MediaType.APPLICATION_JSON)

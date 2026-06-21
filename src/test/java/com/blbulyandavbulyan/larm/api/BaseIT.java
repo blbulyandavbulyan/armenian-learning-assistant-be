@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
+import com.blbulyandavbulyan.larm.phrase.util.DialogueRecordAssertHelper;
 import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
@@ -38,7 +39,7 @@ import org.wiremock.spring.InjectWireMock;
 @EnableWireMock({
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "piper.url")
 })
-@Import(PhraseRecordAssertHelper.class)
+@Import({PhraseRecordAssertHelper.class, DialogueRecordAssertHelper.class})
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -70,6 +71,9 @@ public abstract class BaseIT {
 
     @Autowired
     protected PhraseRecordAssertHelper phraseRecordAssertHelper;
+
+    @Autowired
+    protected DialogueRecordAssertHelper dialogueRecordAssertHelper;
 
     @MockitoBean
     protected Client mockGeminiClient;
