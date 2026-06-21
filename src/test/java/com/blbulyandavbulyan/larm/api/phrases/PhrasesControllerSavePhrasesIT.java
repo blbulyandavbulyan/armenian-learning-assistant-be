@@ -69,6 +69,7 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
                     .as("Checking saved phrase in the database")
                     .isPresent()
                     .get()
+                    .usingRecursiveComparison()
                     .isEqualTo(PhraseMother.DefaultPhrase.builder()
                             .withMedias(MediaMother.DefaultMedia.builder()
                                     .withStorageBucket(TEMP_DIR.toString())

@@ -71,21 +71,21 @@ class DialogueControllerIT extends BaseIT {
         assertThat(savedDialogue).usingRecursiveComparison()
                 .ignoringCollectionOrder()
                 .ignoringFieldsOfTypes(UUID.class, java.time.Instant.class)
-                .ignoringFields("titlePhrase", "dialoguePhrases.phrase", "speakers.namePhrase")
-                .ignoringFieldsMatchingRegexes(".*isNewFlag.*")
+                .ignoringFields("title", "dialoguePhrases.phrase", "speakers.namePhrase",
+                        "dialoguePhrases.dialogue", "speakers.dialogue", "dialoguePhrases.speaker")
                 .isEqualTo(expectedDialogue);
 
-        assertThat(savedDialogue.title().getId()).isNotNull();
+        assertThat(savedDialogue.getTitle().getId()).isNotNull();
 
         // Ensure all phrases referenced by the dialogue are actually persisted
-        var phraseIdList = savedDialogue.dialoguePhrases().stream()
-                .map(dp -> dp.phrase().getId())
+        var phraseIdList = savedDialogue.getDialoguePhrases().stream()
+                .map(dp -> dp.getPhrase().getId())
                 .toList();
-        var speakerPhraseIdList = savedDialogue.speakers().stream()
-                .map(ds -> ds.namePhrase().getId())
+        var speakerPhraseIdList = savedDialogue.getSpeakers().stream()
+                .map(ds -> ds.getNamePhrase().getId())
                 .toList();
         
-        assertThat(phraseRepository.findById(savedDialogue.title().getId())).isPresent();
+        assertThat(phraseRepository.findById(savedDialogue.getTitle().getId())).isPresent();
         assertThat(phraseRepository.findAllById(phraseIdList)).hasSize(3);
         assertThat(phraseRepository.findAllById(speakerPhraseIdList)).hasSize(2);
 

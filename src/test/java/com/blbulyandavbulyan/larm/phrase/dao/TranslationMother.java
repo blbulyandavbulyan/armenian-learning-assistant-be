@@ -54,7 +54,7 @@ public interface TranslationMother {
         }
 
         public Translation build() {
-            return new Translation(id, isoLanguageCode, translationText, createdAt);
+            return new Translation(id, null, isoLanguageCode, translationText, createdAt);
         }
     }
 }
