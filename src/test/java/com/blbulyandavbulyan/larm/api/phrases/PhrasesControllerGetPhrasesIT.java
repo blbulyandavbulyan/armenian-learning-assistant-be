@@ -12,10 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Sql(scripts = "/sql-test-scripts/insert-phrases.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class PhrasesControllerGetPhrasesIT extends BaseIT {
 
     @Test
-    @Sql(scripts = "/sql-test-scripts/insert-phrases.sql")
     void getPhrases_firstPage() throws Exception {
         String expectedResponse = TestUtils.readResourceToString("responses/get-phrases-success.json");
 
@@ -28,7 +28,6 @@ class PhrasesControllerGetPhrasesIT extends BaseIT {
     }
 
     @Test
-    @Sql(scripts = "/sql-test-scripts/insert-phrases.sql")
     void getPhrases_secondPage() throws Exception {
         String expectedResponse = TestUtils.readResourceToString("responses/get-phrases-empty-page.json");
 
