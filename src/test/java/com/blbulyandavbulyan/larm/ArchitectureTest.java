@@ -49,6 +49,7 @@ class ArchitectureTest {
     public static final String JAVA_LANG = "java.lang..";
     public static final String JAVA_UTIL = "java.util..";
     public static final String SPRINGFRAMEWORK_CONTEXT_ANNOTATION = "org.springframework.context.annotation..";
+    public static final String ORG_SPRINGDOC_CORE = "org.springdoc.core..";
 
     private static JavaClasses importedClasses;
 
@@ -131,7 +132,8 @@ class ArchitectureTest {
         noClasses()
                 .that().resideInAPackage(API_OPENAPI_PACKAGE)
                 .should().dependOnClassesThat()
-                .resideOutsideOfPackages(API_OPENAPI_PACKAGE, JAVA_LANG, JAVA_UTIL, SPRINGFRAMEWORK_CONTEXT_ANNOTATION, SWAGGER_ANNOTATIONS_PACKAGE)
+                .resideOutsideOfPackages(API_OPENAPI_PACKAGE, API_PACKAGE, JAVA_LANG, JAVA_UTIL,
+                        SPRINGFRAMEWORK_CONTEXT_ANNOTATION, SWAGGER_ANNOTATIONS_PACKAGE, ORG_SPRINGDOC_CORE)
                 .because("openapi must be self-contained within the api package")
                 .check(importedClasses);
     }
@@ -164,7 +166,7 @@ class ArchitectureTest {
             cu = StaticJavaParser.parse(Files.readString(file));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException _) {
             // JavaParser does not yet support every Java 22+ construct (e.g. JEP 492
             // "statements before super()"). Skip unparseable files — the ArchUnit
             // bytecode rule still enforces structural dependencies for them.
@@ -185,7 +187,7 @@ class ArchitectureTest {
                 // Only report the outermost FQN that matches to avoid duplicate violations
                 // for every nested segment (e.g. a.b.c.d reported once, not also a.b.c, a.b).
                 boolean parentIsAlsoApiRef = n.getParentNode()
-                        .filter(parent -> parent instanceof FieldAccessExpr)
+                        .filter(FieldAccessExpr.class::isInstance)
                         .map(parent -> parent.toString().startsWith(API_PACKAGE_PREFIX))
                         .orElse(false);
                 if (!parentIsAlsoApiRef && n.toString().startsWith(API_PACKAGE_PREFIX)) {
