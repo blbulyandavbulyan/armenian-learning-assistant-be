@@ -25,6 +25,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -40,6 +41,7 @@ import org.wiremock.spring.InjectWireMock;
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "piper.url")
 })
 @Import({PhraseRecordAssertHelper.class, DialogueRecordAssertHelper.class})
+@Sql(scripts = "/sql-test-scripts/drop-all-data-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public abstract class BaseIT {
 
     @ServiceConnection

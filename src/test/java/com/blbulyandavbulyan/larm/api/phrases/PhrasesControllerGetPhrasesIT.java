@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PhrasesControllerGetPhrasesIT extends BaseIT {
+class PhrasesControllerGetPhrasesIT extends BaseIT {
 
     @Test
     @Sql(scripts = "/sql-test-scripts/insert-phrases.sql")
