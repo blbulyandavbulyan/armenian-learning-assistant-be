@@ -2,8 +2,8 @@ package com.blbulyandavbulyan.larm.phrase.service;
 
 import java.time.Instant;
 
-import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
+import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
 import org.springframework.stereotype.Component;
 
 @Component

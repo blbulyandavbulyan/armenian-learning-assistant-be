@@ -4,11 +4,11 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
-import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import com.blbulyandavbulyan.larm.dao.entities.PhraseStatus;
 import com.blbulyandavbulyan.larm.dao.entities.Translation;
+import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
+import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +28,13 @@ public class PhraseMapper {
 
         var translations = resource.translations().stream()
                 .map(this::mapToTranslation)
-                .peek(t -> t.setPhrase(phrase))
+                .map(t -> t.setPhrase(phrase))
                 .collect(Collectors.toSet());
         phrase.setTranslations(translations);
 
         var mediaSet = resource.mediaResources().stream()
                 .map(mediaMapper::toMedia)
-                .peek(m -> m.setPhrase(phrase))
+                .map(m -> m.setPhrase(phrase))
                 .collect(Collectors.toSet());
         phrase.setMediaSet(mediaSet);
 

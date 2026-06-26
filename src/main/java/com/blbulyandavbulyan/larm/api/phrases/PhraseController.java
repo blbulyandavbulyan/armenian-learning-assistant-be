@@ -3,10 +3,10 @@ package com.blbulyandavbulyan.larm.api.phrases;
 import java.util.List;
 
 import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import com.blbulyandavbulyan.larm.phrase.PageParameters;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
-import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +32,6 @@ class PhraseController implements PhrasesApi {
 
     @Override
     public CreatePhrasesResponse savePhrases(CreatePhrasesRequest request) {
-        // TODO most probably you have to handle validation errors here (like invalid iso2Language codes and so on)
         // TODO most probably you have to check if at least one phrase is a duplicate -> return error and don't save anything
         List<Phrase> savedPhrases = phraseOrchestrator.savePhrases(phraseRequestMapper.mapToBatchPhrasesParameters(request));
         return new CreatePhrasesResponse(phraseResponseMapper.mapToCreatePhrasesResponse(savedPhrases));

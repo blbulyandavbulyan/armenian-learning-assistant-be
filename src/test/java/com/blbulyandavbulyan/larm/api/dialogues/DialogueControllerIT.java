@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
-import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dao.repository.MediaRepository;
+import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;

@@ -3,9 +3,9 @@ package com.blbulyandavbulyan.larm.phrase.service;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.phrase.PhraseMediaService;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dao.repository.MediaRepository;
+import com.blbulyandavbulyan.larm.phrase.PhraseMediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

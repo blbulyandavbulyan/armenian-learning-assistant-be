@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
+import com.blbulyandavbulyan.larm.dao.repository.PhraseRepository;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.InvalidIsoLanguageCodeException;
@@ -13,8 +15,6 @@ import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.PhrasesAlreadyExistException;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
-import com.blbulyandavbulyan.larm.dao.entities.Phrase;
-import com.blbulyandavbulyan.larm.dao.repository.PhraseRepository;
 import com.blbulyandavbulyan.larm.validation.IsoLanguageValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
