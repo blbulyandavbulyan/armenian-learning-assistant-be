@@ -7,8 +7,8 @@ This file will contain all the ideas which I consider interesting and worth addi
 Probably worth trying idea with 'dialogues', when LLM generates the dialogue,
 and there is dedicated endpoint for saving dialogue and getting your dialogues.
 Which should preserve the order of the phrases.
-- [ ] Dedicated endpoint for saving dialogues (preserving order)
-- [ ] Dedicated endpoint for retrieving dialogues (preserving order)
+- [x] Dedicated endpoint for saving dialogues (preserving order)
+- [x] Dedicated endpoint for retrieving dialogues (preserving order)
 - [ ] UI for role-playing dialogues (alternating between speakers)
 
 ### Tracking Learning Progress
