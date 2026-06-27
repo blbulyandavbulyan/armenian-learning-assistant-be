@@ -7,6 +7,13 @@ Tech stack:
 * Spring AI
 * python3 + piper (for text to speech)
 * Gemini model for phrases generation
+
+## MCP servers
+There is github mcp server, if you want to use it, you have to create .env file in .agents folder with your personal access token, like this:
+```
+GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_TOKEN
+```
+
 ## Running locally
 Make sure you have maven installed.
 You also need python (you should follow the instructions below to set up piper)
