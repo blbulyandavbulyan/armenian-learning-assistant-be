@@ -8,6 +8,7 @@ import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
+import com.blbulyandavbulyan.larm.phrase.dao.PhraseMother;
 import com.jayway.jsonpath.JsonPath;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -40,12 +41,12 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     void saveDialogue() throws Exception {
-        piperWireMock.stubTtsWithAudio("Հացի փռում", new byte[]{1});
-        piperWireMock.stubTtsWithAudio("Հացթուխ", new byte[]{2});
-        piperWireMock.stubTtsWithAudio("Գնորդ", new byte[]{3});
-        piperWireMock.stubTtsWithAudio("Բարեւ ձեզ", new byte[]{4});
-        piperWireMock.stubTtsWithAudio("Բարեւ ձեզ, խնդրում եմ մեկ հաց:", new byte[]{5});
-        piperWireMock.stubTtsWithAudio("Ահա, խնդրեմ:", new byte[]{6});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueTitlePhrase.PHRASE, new byte[]{1});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE, new byte[]{2});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE, new byte[]{3});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase1.PHRASE, new byte[]{4});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase2.PHRASE, new byte[]{5});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase3.PHRASE, new byte[]{6});
 
         String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-request.json");
         String responseContent = mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
@@ -80,39 +81,41 @@ class DialogueControllerIT extends BaseIT {
         assertThat(dialogue.getSpeakers())
                 .anySatisfy(speaker -> {
                     assertThat(speaker.getSpeakerRefId()).isEqualTo("speaker1");
+                    assertThat(speaker.getNamePhrase().getPhrase()).isEqualTo(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE);
                     assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{2});
                 })
                 .anySatisfy(speaker -> {
                     assertThat(speaker.getSpeakerRefId()).isEqualTo("speaker2");
+                    assertThat(speaker.getNamePhrase().getPhrase()).isEqualTo(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE);
                     assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{3});
                 });
 
         assertThat(dialogue.getDialoguePhrases())
                 .anySatisfy(dp -> {
-                    assertThat(dp.getPhrase().getPhrase()).isEqualTo("Բարեւ ձեզ");
+                    assertThat(dp.getPhrase().getPhrase()).isEqualTo(PhraseMother.DialoguePhrase1.PHRASE);
                     assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{4});
                 })
                 .anySatisfy(dp -> {
-                    assertThat(dp.getPhrase().getPhrase()).isEqualTo("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
+                    assertThat(dp.getPhrase().getPhrase()).isEqualTo(PhraseMother.DialoguePhrase2.PHRASE);
                     assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{5});
                 })
                 .anySatisfy(dp -> {
-                    assertThat(dp.getPhrase().getPhrase()).isEqualTo("Ահա, խնդրեմ:");
+                    assertThat(dp.getPhrase().getPhrase()).isEqualTo(PhraseMother.DialoguePhrase3.PHRASE);
                     assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{6});
                 });
 
         // Verify TTS service was called for each phrase and nothing was skipped
-        piperWireMock.verifyTtsCalledWith("Հացի փռում");
-        piperWireMock.verifyTtsCalledWith("Հացթուխ");
-        piperWireMock.verifyTtsCalledWith("Գնորդ");
-        piperWireMock.verifyTtsCalledWith("Բարեւ ձեզ");
-        piperWireMock.verifyTtsCalledWith("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
-        piperWireMock.verifyTtsCalledWith("Ահա, խնդրեմ:");
+        piperWireMock.verifyTtsCalledWith(com.blbulyandavbulyan.larm.phrase.dao.PhraseMother.DialogueTitlePhrase.PHRASE);
+        piperWireMock.verifyTtsCalledWith(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE);
+        piperWireMock.verifyTtsCalledWith(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE);
+        piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase1.PHRASE);
+        piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase2.PHRASE);
+        piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase3.PHRASE);
     }
 
     private byte[] readMediaBytes(Media media) {
