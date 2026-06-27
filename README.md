@@ -15,39 +15,17 @@ GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_TOKEN
 ```
 
 ## Running locally
-Make sure you have maven installed.
-You also need python (you should follow the instructions below to set up piper)
+Make sure you have maven and Docker installed.
 When you run the application locally you have to provide:
 * `local` as your Spring Boot Profile
 * `GEMINI_API_KEY` as environment variable, with your gemini api key
 
-### 🎙️ Text-to-Speech (TTS) Setup & Troubleshooting
+### 🐳 Running external services (PostgreSQL & Piper TTS)
+The application relies on PostgreSQL and Piper TTS. You can easily run both of them locally via Docker Compose:
 ```bash
-# 1. Initialize the virtual environment
-python3 -m venv myenv
-
-# 3. Activate the environment
-source myenv/bin/activate
-
-# 4. Install the Piper TTS binary wrapper
-pip install piper-tts
-pip install 'piper-tts[http]'
-
-# Download the Neural Weights
-wget https://huggingface.co/davit312/piper-TTS-Armenian/resolve/main/v3/hy_AM-gor-medium.onnx -O hy_AM-medium.onnx
-
-# Download the Structure Config Map
-wget https://huggingface.co/davit312/piper-TTS-Armenian/resolve/main/v3/hy_AM-gor-medium.onnx.json -O hy_AM-medium.onnx.json
-
-# To test your setup
-python3 text-to-speech-test.py
-
-# Run the piper API server locally
-python3 -m piper.http_server -m hy_AM-medium.onnx
+docker compose up -d
 ```
-
-#### Running the Piper API server locally
-This is essential step in the setup
+This will start the PostgreSQL database and build the Piper TTS container with the Armenian Neural Weights automatically.
 
 ## Testing
 When running tests locally, always use `mvn verify` instead of `mvn test`.
