@@ -8,7 +8,6 @@ import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +39,12 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     void saveDialogue() throws Exception {
-        stubTtsWithAudio("Հացի փռում", new byte[]{1});
-        stubTtsWithAudio("Հացթուխ", new byte[]{2});
-        stubTtsWithAudio("Գնորդ", new byte[]{3});
-        stubTtsWithAudio("Բարեւ ձեզ", new byte[]{4});
-        stubTtsWithAudio("Բարեւ ձեզ, խնդրում եմ մեկ հաց:", new byte[]{5});
-        stubTtsWithAudio("Ահա, խնդրեմ:", new byte[]{6});
+        piperWireMock.stubTtsWithAudio("Հացի փռում", new byte[]{1});
+        piperWireMock.stubTtsWithAudio("Հացթուխ", new byte[]{2});
+        piperWireMock.stubTtsWithAudio("Գնորդ", new byte[]{3});
+        piperWireMock.stubTtsWithAudio("Բարեւ ձեզ", new byte[]{4});
+        piperWireMock.stubTtsWithAudio("Բարեւ ձեզ, խնդրում եմ մեկ հաց:", new byte[]{5});
+        piperWireMock.stubTtsWithAudio("Ահա, խնդրեմ:", new byte[]{6});
 
         String requestJson = readResourceToString("/requests/save-dialogue-request.json");
         String responseContent = mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
@@ -107,22 +106,12 @@ class DialogueControllerIT extends BaseIT {
                 });
 
         // Verify TTS service was called for each phrase and nothing was skipped
-        verifyTtsCalledWith("Հացի փռում");
-        verifyTtsCalledWith("Հացթուխ");
-        verifyTtsCalledWith("Գնորդ");
-        verifyTtsCalledWith("Բարեւ ձեզ");
-        verifyTtsCalledWith("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
-        verifyTtsCalledWith("Ահա, խնդրեմ:");
-    }
-
-    private void stubTtsWithAudio(String text, byte[] audioData) {
-        // todo, having 2 such method makes me think that maybe we shuld extract them into separate class,
-        //  maybe we can call it PiperWireMock, and we initialize it in parent class in before each method, populating there this wiremock service
-        wireMockServer.stubFor(WireMock.post("/")
-                .withRequestBody(WireMock.matchingJsonPath("$.text", WireMock.equalTo(text)))
-                .willReturn(WireMock.ok()
-                        .withHeader("Content-Type", "audio/wav")
-                        .withBody(audioData)));
+        piperWireMock.verifyTtsCalledWith("Հացի փռում");
+        piperWireMock.verifyTtsCalledWith("Հացթուխ");
+        piperWireMock.verifyTtsCalledWith("Գնորդ");
+        piperWireMock.verifyTtsCalledWith("Բարեւ ձեզ");
+        piperWireMock.verifyTtsCalledWith("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
+        piperWireMock.verifyTtsCalledWith("Ահա, խնդրեմ:");
     }
 
     private byte[] readMediaBytes(Media media) {
@@ -131,11 +120,6 @@ class DialogueControllerIT extends BaseIT {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void verifyTtsCalledWith(String text) {
-        wireMockServer.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/"))
-                .withRequestBody(WireMock.matchingJsonPath("$.text", WireMock.equalTo(text))));
     }
 
     @Test

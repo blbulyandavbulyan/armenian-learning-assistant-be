@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
 import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
@@ -84,18 +85,21 @@ public abstract class BaseIT {
     @InjectWireMock("piper-tts-service")
     protected WireMockServer wireMockServer;
 
+    protected PiperWireMock piperWireMock;
+
     @MockitoSpyBean
     protected PhraseOrchestrator phraseOrchestrator;
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseIT.class);
 
     @BeforeEach
-    protected void logTestStart(TestInfo testInfo) {
+    protected void beforeEach(TestInfo testInfo) {
         LOG.info("Starting test: {}", testInfo);
+        this.piperWireMock = new PiperWireMock(wireMockServer);
     }
 
     @AfterEach
-    protected void logTestEnd(TestInfo testInfo) {
+    protected void afterEach(TestInfo testInfo) {
         LOG.info("Finished test: {}", testInfo);
     }
 }
