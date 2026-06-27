@@ -19,6 +19,7 @@ Make sure you have maven and Docker installed.
 When you run the application locally you have to provide:
 * `local` as your Spring Boot Profile
 * `GEMINI_API_KEY` as environment variable, with your gemini api key
+* `STORAGE_FOLDER_NAME` as environment variable, pointing to an existing directory where local files will be stored (e.g., `C:\arm-learn-files` on Windows), because the default is a Linux path.
 
 ### 🐳 Running external services (PostgreSQL & Piper TTS)
 The application relies on PostgreSQL and Piper TTS. You can easily run both of them locally via Docker Compose:
