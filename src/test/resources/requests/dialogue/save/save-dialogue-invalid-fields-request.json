@@ -1,0 +1,41 @@
+{
+  "info": {
+    "title": " ",
+    "transcription": " ",
+    "translations": [
+      {
+        "translationText": " ",
+        "isoLanguageCode": "invalid"
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "id": " ",
+      "title": " ",
+      "transcription": " ",
+      "translations": [
+        {
+          "translationText": " ",
+          "isoLanguageCode": "invalid"
+        }
+      ]
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerId": " ",
+      "phrase": {
+        "phrase": " ",
+        "isoLanguageCode": "invalid-iso",
+        "transcription": " ",
+        "translations": [
+          {
+            "translationText": " ",
+            "isoLanguageCode": "invalid"
+          }
+        ]
+      }
+    }
+  ]
+}

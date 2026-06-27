@@ -1,0 +1,26 @@
+{
+  "info": {
+    "title": "Valid",
+    "transcription": "Valid",
+    "translations": []
+  },
+  "speakers": [
+    {
+      "id": "speaker1",
+      "title": "Valid",
+      "transcription": "Valid",
+      "translations": []
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerId": "speaker1",
+      "phrase": {
+        "phrase": "Valid",
+        "isoLanguageCode": "hy",
+        "transcription": "Valid",
+        "translations": []
+      }
+    }
+  ]
+}

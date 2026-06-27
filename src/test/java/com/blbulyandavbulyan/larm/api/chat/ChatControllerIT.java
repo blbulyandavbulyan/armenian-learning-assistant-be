@@ -49,7 +49,7 @@ class ChatControllerIT extends BaseIT {
         when(promptSpec.call()).thenReturn(callResponseSpec);
         when(callResponseSpec.entity(StructuredPhrasesResource.class)).thenReturn(serviceResponse);
 
-        String requestJson = readResourceToString("/requests/phrases-chat-request.json");
+        String requestJson = readResourceToString("/requests/chat/phrases/phrases-chat-request.json");
 
         mockMvc.perform(post(RequestMapping.PHRASES)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -60,7 +60,7 @@ class ChatControllerIT extends BaseIT {
 
     @Test
     void phrasesChat_validationFailure() throws Exception {
-        String requestJson = readResourceToString("/requests/phrases-chat-invalid-request.json");
+        String requestJson = readResourceToString("/requests/chat/phrases/phrases-chat-invalid-request.json");
 
         mockMvc.perform(post(RequestMapping.PHRASES)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -85,7 +85,7 @@ class ChatControllerIT extends BaseIT {
         when(promptSpec.call()).thenReturn(callResponseSpec);
         when(callResponseSpec.entity(StructuredDialogueResource.class)).thenReturn(serviceResponse);
 
-        String requestJson = readResourceToString("/requests/dialogue-chat-request.json");
+        String requestJson = readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json");
 
         mockMvc.perform(post(RequestMapping.DIALOGUE)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ class ChatControllerIT extends BaseIT {
 
         mockMvc.perform(post(RequestMapping.DIALOGUE)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(readResourceToString("/requests/dialogue-chat-invalid-request.json")))
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-invalid-request.json")))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors.message").isNotEmpty())
                 .andExpect(jsonPath("$.errors.chatId").isNotEmpty());

@@ -9,6 +9,7 @@ import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
 import com.jayway.jsonpath.JsonPath;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -46,7 +47,7 @@ class DialogueControllerIT extends BaseIT {
         piperWireMock.stubTtsWithAudio("Բարեւ ձեզ, խնդրում եմ մեկ հաց:", new byte[]{5});
         piperWireMock.stubTtsWithAudio("Ահա, խնդրեմ:", new byte[]{6});
 
-        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-request.json");
         String responseContent = mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
@@ -123,58 +124,118 @@ class DialogueControllerIT extends BaseIT {
     }
 
     @Test
-    void saveDialogue_whenInfoIsNull() throws Exception {
-        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
-        String invalidJson = JsonPath.parse(requestJson).delete("$.info").jsonString();
-
-        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.info").exists());
-        verifyNoInteractions(dialogueOrchestrator);
-    }
-
-    @Test
-    void saveDialogue_whenTitleIsBlank() throws Exception {
-        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
-        String invalidJson = JsonPath.parse(requestJson).set("$.info.title", " ").jsonString();
-
-        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors['info.title']").exists());
-        verifyNoInteractions(dialogueOrchestrator);
-    }
-
-    // TODO we probably should have 2 of such tests,
-    //  instead of individual validation tests,
-    //  maybe it is worth to create one test with big invalid request,
-    //  and then some small set of tests to cover uncovered cases in that test
-    @Test
-    void saveDialogue_whenIsoLanguageCodeIsInvalid() throws Exception {
-        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
-        String invalidJson = JsonPath.parse(requestJson).set("$.dialoguePhrases[0].phrase.isoLanguageCode", "invalid").jsonString();
-
-        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.isoLanguageCode']").exists());
-        verifyNoInteractions(dialogueOrchestrator);
-    }
-
-    // TODO not everything from validation is covered by tests
-
-    @Test
-    void saveDialogue_whenPhraseReferencesUndefinedSpeaker() throws Exception {
-        String requestJson = readResourceToString("/requests/save-dialogue-with-phrase-referencing-undefined-speaker-request.json");
+    void saveDialogue_withInvalidFields() throws Exception {
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-invalid-fields-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(15)))
+                .andExpect(jsonPath("$.errors['info.title']").exists())
+                .andExpect(jsonPath("$.errors['info.transcription']").exists())
+                .andExpect(jsonPath("$.errors['info.translations[0].translationText']").exists())
+                .andExpect(jsonPath("$.errors['info.translations[0].isoLanguageCode']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].id']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].title']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].transcription']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].translations[0].translationText']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].translations[0].isoLanguageCode']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].speakerId']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.phrase']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.isoLanguageCode']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.transcription']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.translations[0].translationText']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.translations[0].isoLanguageCode']").exists());
+        
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    @Test
+    void saveDialogue_withNullRootFieldsFields() throws Exception {
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-missing-fields-request.json");
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(3)))
+                .andExpect(jsonPath("$.errors.info").exists())
+                .andExpect(jsonPath("$.errors.speakers").exists())
+                .andExpect(jsonPath("$.errors.dialoguePhrases").exists());
+        
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    @Test
+    void saveDialogue_withEmptySpeakersAndEmptyDialoguePhrases() throws Exception {
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-empty-speakers-and-dialogue-phrases-request.json");
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(3)))
+                .andExpect(jsonPath("$.errors.info").exists())
+                .andExpect(jsonPath("$.errors.speakers").exists())
+                .andExpect(jsonPath("$.errors.dialoguePhrases").exists());
+
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    @Test
+    void saveDialogue_withEmptyTranslations() throws Exception {
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-empty-translations-request.json");
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(3)))
+                .andExpect(jsonPath("$.errors['info.translations']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].translations']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.translations']").exists());
+        
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    @Test
+    void saveDialogue_withNullFieldsAndNonEmptyLists() throws Exception {
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-with-null-fields-not-empty-lists-request.json");
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(15)))
+                .andExpect(jsonPath("$.errors['info.title']").exists())
+                .andExpect(jsonPath("$.errors['info.transcription']").exists())
+                .andExpect(jsonPath("$.errors['info.translations[0].translationText']").exists())
+                .andExpect(jsonPath("$.errors['info.translations[0].isoLanguageCode']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].id']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].title']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].transcription']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].translations[0].translationText']").exists())
+                .andExpect(jsonPath("$.errors['speakers[0].translations[0].isoLanguageCode']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].speakerId']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.phrase']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.isoLanguageCode']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.transcription']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.translations[0].translationText']").exists())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.translations[0].isoLanguageCode']").exists());
+
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    @Test
+    void saveDialogue_whenPhraseReferencesUndefinedSpeaker() throws Exception {
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-with-phrase-referencing-undefined-speaker-request.json");
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(1)))
                 .andExpect(jsonPath("$.errors.dialoguePhrases")
                         .value("Phrase references undefined speaker: unknown_speaker"));
         verifyNoInteractions(dialogueOrchestrator);
@@ -182,12 +243,13 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     void saveDialogue_whenDefinedSpeakerIsUnused() throws Exception {
-        String requestJson = readResourceToString("/requests/save-dialogue-with-unused-defined-speaker-request.json");
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-with-unused-defined-speaker-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", Matchers.aMapWithSize(1)))
                 .andExpect(jsonPath("$.errors.speakers")
                         .value("Defined speaker is never used: speaker2"));
         verifyNoInteractions(dialogueOrchestrator);

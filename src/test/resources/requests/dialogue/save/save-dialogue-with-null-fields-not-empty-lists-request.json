@@ -1,0 +1,41 @@
+{
+  "info": {
+    "title": null,
+    "transcription": null,
+    "translations": [
+      {
+        "translationText": null,
+        "isoLanguageCode": null
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "id": null,
+      "title": null,
+      "transcription": null,
+      "translations": [
+        {
+          "translationText": null,
+          "isoLanguageCode": null
+        }
+      ]
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerId": null,
+      "phrase": {
+        "phrase": null,
+        "isoLanguageCode": null,
+        "transcription": null,
+        "translations": [
+          {
+            "translationText": null,
+            "isoLanguageCode": null
+          }
+        ]
+      }
+    }
+  ]
+}
