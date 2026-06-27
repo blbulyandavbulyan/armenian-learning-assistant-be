@@ -31,3 +31,5 @@ piper:
 logging:
   level:
     com.blbulyandavbulyan.larm: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: DEBUG

@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "local-postgres": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--network=mcp-shared-network",
+        "-e", "DATABASE_URI=postgresql://myuser:secret@assistant-postgres:5432/mydatabase",
+        "crystaldba/postgres-mcp"
+      ]
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--env-file", ".agents/.env",
+        "ghcr.io/github/github-mcp-server"
+      ]
+    }
+  }
+}

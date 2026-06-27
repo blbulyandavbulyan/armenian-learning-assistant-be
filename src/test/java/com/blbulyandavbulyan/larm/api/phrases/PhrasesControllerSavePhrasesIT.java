@@ -31,7 +31,7 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
     @Test
     @Transactional
     void savePhrases() throws Exception {
-        String request = readResourceToString("/responses/save-phrases-request.json");
+        String request = readResourceToString("/requests/phrases/save/save-phrases-request.json");
         String expectedResponse = readResourceToString("/responses/save-phrases-response.json");
 
         final UUID phraseId = PhraseMother.DefaultPhrase.ID;
@@ -65,10 +65,12 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
 
             Mockito.verify(phraseOrchestrator, times(1)).savePhrases(anyList());
 
-            assertThat(phraseRepository.findById(phraseId))
+            phraseRecordAssertHelper.assertThatPhraseWithId(phraseId)
                     .as("Checking saved phrase in the database")
                     .isPresent()
                     .get()
+                    .usingRecursiveComparison()
+                    .ignoringCollectionOrder()
                     .isEqualTo(PhraseMother.DefaultPhrase.builder()
                             .withMedias(MediaMother.DefaultMedia.builder()
                                     .withStorageBucket(TEMP_DIR.toString())
@@ -85,7 +87,7 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
 
     @Test
     void savePhrases_whenInvalidRequest() throws Exception {
-        String request = readResourceToString("/responses/save-phrases-invalid-request.json");
+        String request = readResourceToString("/requests/phrases/save/save-phrases-invalid-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_PHRASES)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -101,7 +103,7 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
 
     @Test
     void savePhrases_whenPhrasesListIsEmpty() throws Exception {
-        String request = readResourceToString("/responses/save-phrases-empty-phrases-request.json");
+        String request = readResourceToString("/requests/phrases/save/save-phrases-empty-phrases-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_PHRASES)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +116,7 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
 
     @Test
     void savePhrases_whenTranslationsListIsEmpty() throws Exception {
-        String request = readResourceToString("/responses/save-phrases-empty-translations-request.json");
+        String request = readResourceToString("/requests/phrases/save/save-phrases-empty-translations-request.json");
 
         mockMvc.perform(post(RequestMapping.SAVE_PHRASES)
                         .contentType(MediaType.APPLICATION_JSON)

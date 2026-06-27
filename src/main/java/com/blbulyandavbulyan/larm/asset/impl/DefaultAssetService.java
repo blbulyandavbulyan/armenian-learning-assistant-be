@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.blbulyandavbulyan.larm.asset.AssetNotFoundException;
 import com.blbulyandavbulyan.larm.asset.AssetResource;
 import com.blbulyandavbulyan.larm.asset.AssetService;
-import com.blbulyandavbulyan.larm.phrase.MediaResource;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.phrase.PhraseMediaService;
 import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,14 @@ class DefaultAssetService implements AssetService {
 
     @Override
     public AssetResource findAssetByMediaId(UUID mediaId) {
-        MediaResource media = phraseMediaService.findById(mediaId)
+        Media media = phraseMediaService.findById(mediaId)
                 .orElseThrow(() -> new AssetNotFoundException("Asset not found in database: " + mediaId));
 
-        Resource resource = storageService.loadAsResource(media.storageKey());
+        Resource resource = storageService.loadAsResource(media.getStorageKey());
 
         return AssetResource.builder()
-                .contentType(media.contentType())
-                .fileName(media.storageKey())
+                .contentType(media.getContentType())
+                .fileName(media.getStorageKey())
                 .resource(resource)
                 .build();
     }

@@ -1,6 +1,6 @@
 package com.blbulyandavbulyan.larm.storage;
 
-import com.blbulyandavbulyan.larm.phrase.dao.StorageProvider;
+import com.blbulyandavbulyan.larm.dao.entities.StorageProvider;
 import lombok.Builder;
 
 @Builder

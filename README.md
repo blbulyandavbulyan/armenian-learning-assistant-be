@@ -7,6 +7,13 @@ Tech stack:
 * Spring AI
 * python3 + piper (for text to speech)
 * Gemini model for phrases generation
+
+## MCP servers
+There is github mcp server, if you want to use it, you have to create .env file in .agents folder with your personal access token, like this:
+```
+GITHUB_PERSONAL_ACCESS_TOKEN=YOUR_TOKEN
+```
+
 ## Running locally
 Make sure you have maven installed.
 You also need python (you should follow the instructions below to set up piper)
@@ -41,3 +48,10 @@ python3 -m piper.http_server -m hy_AM-medium.onnx
 
 #### Running the Piper API server locally
 This is essential step in the setup
+
+## Testing
+When running tests locally, always use `mvn verify` instead of `mvn test`.
+The `mvn test` command only runs unit tests, so it completely skips all integration tests (any class ending with `*IT`). To ensure both unit and integration tests run, use:
+```bash
+mvn verify
+```

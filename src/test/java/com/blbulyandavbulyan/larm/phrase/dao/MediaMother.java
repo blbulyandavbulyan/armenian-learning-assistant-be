@@ -3,6 +3,9 @@ package com.blbulyandavbulyan.larm.phrase.dao;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blbulyandavbulyan.larm.dao.entities.StorageProvider;
+import com.blbulyandavbulyan.larm.phrase.dao.projections.MediaRecord;
+
 public interface MediaMother {
 
     interface DefaultMedia {
@@ -19,7 +22,6 @@ public interface MediaMother {
         static Builder builder() {
             return MediaMother.builder()
                     .withId(ID)
-                    .withPhraseId(PHRASE_ID)
                     .withStorageProvider(STORAGE_PROVIDER)
                     .withStorageKey(STORAGE_KEY)
                     .withContentType(CONTENT_TYPE)
@@ -37,23 +39,17 @@ public interface MediaMother {
 
     class Builder {
         private UUID id;
-        private UUID phraseId;
         private StorageProvider storageProvider;
         private String storageBucket;
         private String storageKey;
         private String contentType;
-        private Integer sizeInBytes;
+        private int sizeInBytes;
         private String aiModelUsed;
         private String voiceIdentifier;
         private Instant createdAt;
 
         public Builder withId(UUID id) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withPhraseId(UUID phraseId) {
-            this.phraseId = phraseId;
             return this;
         }
 
@@ -97,8 +93,8 @@ public interface MediaMother {
             return this;
         }
 
-        public Media build() {
-            return new Media(id, phraseId, storageProvider, storageBucket, storageKey,
+        public MediaRecord build() {
+            return new MediaRecord(id, storageProvider, storageBucket, storageKey,
                     contentType, sizeInBytes, aiModelUsed, voiceIdentifier, createdAt);
         }
     }

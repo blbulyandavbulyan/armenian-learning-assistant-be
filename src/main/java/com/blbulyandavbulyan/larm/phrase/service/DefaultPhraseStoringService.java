@@ -5,17 +5,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
+import com.blbulyandavbulyan.larm.dao.repository.PhraseRepository;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.InvalidIsoLanguageCodeException;
 import com.blbulyandavbulyan.larm.phrase.PageParameters;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
-import com.blbulyandavbulyan.larm.phrase.PhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.PhrasesAlreadyExistException;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
-import com.blbulyandavbulyan.larm.phrase.dao.Phrase;
-import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
 import com.blbulyandavbulyan.larm.validation.IsoLanguageValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,7 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
 
     @Transactional
     @Override
-    public List<PhraseResource> batchSavePhrases(BatchSavePhrasesParameters parameters) {
+    public List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters) {
         validate(parameters);
 
         checkAndThrowIfSomePhrasesAlreadySaved(parameters);
@@ -44,7 +43,6 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
         Iterable<Phrase> savedPhrases = phraseRepository.saveAll(newPhrases.parallelStream().map(phraseMapper::mapToPhrase).toList());
 
         return StreamSupport.stream(savedPhrases.spliterator(), true)
-                .map(phraseMapper::mapFromPhrase)
                 .toList();
     }
 
@@ -64,7 +62,7 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
                         .totalPages(phrasePage.getTotalPages())
                         .pageSize(phrasePage.getSize())
                         .build())
-                .phrases(phrasePage.stream().map(phraseMapper::mapFromPhrase).toList())
+                .phrases(phrasePage.getContent())
                 .build();
     }
 

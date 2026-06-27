@@ -1,6 +1,11 @@
 spring:
   application:
     name: armenian-learning-assistant
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+    open-in-view: false
 
 management:
   endpoints:

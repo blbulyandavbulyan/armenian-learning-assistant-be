@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.blbulyandavbulyan.larm.api.chat.TranslationResponse;
+import com.blbulyandavbulyan.larm.api.dialogues.SaveDialogueRequest;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Schema;
@@ -48,6 +49,30 @@ public class OpenApiConfiguration {
             // 3. Set the example for DraftPhraseResponse's translations
             setTranslationExample(schemas, OpenApiConstants.SchemaNames.DRAFT_PHRASES_RESPONSE,
                     OpenApiConstants.PropertyNames.TRANSLATIONS, TranslationResponse.builder()
+                            .translationText(OpenApiConstants.Examples.TRANSLATION_TEXT)
+                            .isoLanguageCode(OpenApiConstants.Examples.TRANSLATION_ISO_LANGUAGE_CODE)
+                            .build());
+
+            // 4. Set the example for Save Dialogue Title Request's translations
+            setTranslationExample(schemas, OpenApiConstants.SchemaNames.SAVE_DIALOGUE_TITLE_REQUEST,
+                    OpenApiConstants.PropertyNames.TRANSLATIONS,
+                    SaveDialogueRequest.TranslationRequest.builder()
+                            .translationText(OpenApiConstants.Examples.DIALOGUE_TRANSLATION_TEXT)
+                            .isoLanguageCode(OpenApiConstants.Examples.TRANSLATION_ISO_LANGUAGE_CODE)
+                            .build());
+
+            // 5. Set the example for Save Speaker Request's translations
+            setTranslationExample(schemas, OpenApiConstants.SchemaNames.SAVE_SPEAKER_REQUEST,
+                    OpenApiConstants.PropertyNames.TRANSLATIONS,
+                    SaveDialogueRequest.TranslationRequest.builder()
+                            .translationText(OpenApiConstants.Examples.SPEAKER_TRANSLATION_TEXT)
+                            .isoLanguageCode(OpenApiConstants.Examples.TRANSLATION_ISO_LANGUAGE_CODE)
+                            .build());
+
+            // 6. Set the example for Save Dialogue Phrase Inner Request's translations
+            setTranslationExample(schemas, OpenApiConstants.SchemaNames.SAVE_DIALOGUE_PHRASE_INNER_REQUEST,
+                    OpenApiConstants.PropertyNames.TRANSLATIONS,
+                    SaveDialogueRequest.TranslationRequest.builder()
                             .translationText(OpenApiConstants.Examples.TRANSLATION_TEXT)
                             .isoLanguageCode(OpenApiConstants.Examples.TRANSLATION_ISO_LANGUAGE_CODE)
                             .build());

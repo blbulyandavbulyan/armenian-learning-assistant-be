@@ -1,0 +1,80 @@
+{
+  "info": {
+    "title": "Հացի փռում",
+    "transcription": "Hatsi prrum",
+    "translations": [
+      {
+        "translationText": "В пекарне",
+        "isoLanguageCode": "ru"
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "id": "speaker1",
+      "title": "Հացթուխ",
+      "transcription": "Hatstukh",
+      "translations": [
+        {
+          "translationText": "Пекарь",
+          "isoLanguageCode": "ru"
+        }
+      ]
+    },
+    {
+      "id": "speaker2",
+      "title": "Գնորդ",
+      "transcription": "Gnord",
+      "translations": [
+        {
+          "translationText": "Покупатель",
+          "isoLanguageCode": "ru"
+        }
+      ]
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerId": "unknown_speaker",
+      "phrase": {
+        "phrase": "Բարեւ ձեզ",
+        "isoLanguageCode": "hy",
+        "transcription": "Barev dzez",
+        "translations": [
+          {
+            "translationText": "Здравствуйте",
+            "isoLanguageCode": "ru"
+          }
+        ]
+      }
+    },
+    {
+      "speakerId": "speaker2",
+      "phrase": {
+        "phrase": "Բարեւ ձեզ, խնդրում եմ մեկ հաց:",
+        "isoLanguageCode": "hy",
+        "transcription": "Barev dzez, khndrum em mek hats.",
+        "translations": [
+          {
+            "translationText": "Здравствуйте, пожалуйста, один хлеб.",
+            "isoLanguageCode": "ru"
+          }
+        ]
+      }
+    },
+    {
+      "speakerId": "speaker1",
+      "phrase": {
+        "phrase": "Ահա, խնդրեմ:",
+        "isoLanguageCode": "hy",
+        "transcription": "Aha, khndrem.",
+        "translations": [
+          {
+            "translationText": "Вот, пожалуйста.",
+            "isoLanguageCode": "ru"
+          }
+        ]
+      }
+    }
+  ]
+}

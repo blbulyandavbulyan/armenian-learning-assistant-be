@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.phrase;
 
 import java.util.List;
 
+import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface PhraseStoringService {
@@ -14,7 +15,7 @@ public interface PhraseStoringService {
      * @throws InvalidIsoLanguageCodeException in case if some translations have invalid iso language code
      */
     @Transactional
-    List<PhraseResource> batchSavePhrases(BatchSavePhrasesParameters parameters);
+    List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters);
 
     /**
      * Finds all phrases by page parameters.

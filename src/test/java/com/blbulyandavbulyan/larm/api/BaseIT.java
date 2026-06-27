@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
-import com.blbulyandavbulyan.larm.phrase.dao.PhraseRepository;
+import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
+import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
 import org.junit.jupiter.api.AfterEach;
@@ -18,13 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.wiremock.spring.ConfigureWireMock;
 import org.wiremock.spring.EnableWireMock;
@@ -33,10 +36,11 @@ import org.wiremock.spring.InjectWireMock;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Transactional
 @EnableWireMock({
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "piper.url")
 })
+@Import({PhraseRecordAssertHelper.class, DialogueRecordAssertHelper.class})
+@Sql(scripts = "/sql-test-scripts/drop-all-data-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -67,7 +71,10 @@ public abstract class BaseIT {
     protected MockMvc mockMvc;
 
     @Autowired
-    protected PhraseRepository phraseRepository;
+    protected PhraseRecordAssertHelper phraseRecordAssertHelper;
+
+    @Autowired
+    protected DialogueRecordAssertHelper dialogueRecordAssertHelper;
 
     @MockitoBean
     protected Client mockGeminiClient;
@@ -78,18 +85,21 @@ public abstract class BaseIT {
     @InjectWireMock("piper-tts-service")
     protected WireMockServer wireMockServer;
 
+    protected PiperWireMock piperWireMock;
+
     @MockitoSpyBean
     protected PhraseOrchestrator phraseOrchestrator;
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseIT.class);
 
     @BeforeEach
-    protected void logTestStart(TestInfo testInfo) {
+    protected void beforeEach(TestInfo testInfo) {
         LOG.info("Starting test: {}", testInfo);
+        this.piperWireMock = new PiperWireMock(wireMockServer);
     }
 
     @AfterEach
-    protected void logTestEnd(TestInfo testInfo) {
+    protected void afterEach(TestInfo testInfo) {
         LOG.info("Finished test: {}", testInfo);
     }
 }
