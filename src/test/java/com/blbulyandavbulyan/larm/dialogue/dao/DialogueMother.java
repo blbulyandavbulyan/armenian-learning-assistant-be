@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.dialogue.dao;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
@@ -46,7 +45,6 @@ public interface DialogueMother {
         private PhraseRecord title;
         private Set<DialogueSpeakerRecord> speakers;
         private Set<DialoguePhraseRecord> dialoguePhrases;
-        private Instant createdAt;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -69,7 +67,7 @@ public interface DialogueMother {
         }
 
         public DialogueRecord build() {
-            return new DialogueRecord(id, title, speakers, dialoguePhrases, createdAt);
+            return new DialogueRecord(id, title, speakers, dialoguePhrases, null);
         }
     }
 }
