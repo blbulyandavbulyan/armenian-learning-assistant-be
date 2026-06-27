@@ -1,11 +1,13 @@
 package com.blbulyandavbulyan.larm.api.dialogues;
 
+import java.nio.file.Files;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
-import com.blbulyandavbulyan.larm.dao.repository.MediaRepository;
+import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
+import com.blbulyandavbulyan.larm.phrase.dao.TestDialogueRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.json.JsonCompareMode;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +36,7 @@ class DialogueControllerIT extends BaseIT {
     private DialogueOrchestrator dialogueOrchestrator;
 
     @Autowired
-    private MediaRepository mediaRepository;
+    private TestDialogueRepository testDialogueRepository;
 
     @Test
     void saveDialogue() throws Exception {
@@ -70,12 +70,37 @@ class DialogueControllerIT extends BaseIT {
                         "dialoguePhrases.speaker.namePhrase.mediaSet")
                 .isEqualTo(expectedDialogue);
 
-        // Verify media count
-        long mediaCount = mediaRepository.count();
-        assertThat(mediaCount).isEqualTo(6);
-        // TODO in this case it might be important that the right 'audio' is connected to the 'right phrase',
-        //  especially since we ignoring mediaSet completely everywhere in previous assertions
-        //  we should assert the media and that the right audio file is connected to the right phrase somehow here
+        var dialogue = testDialogueRepository.findByIdEagerly(dialogueId).orElseThrow();
+        // TODO, one audio per everything,
+        //  we should return different audio for different phrase and assert
+        //  that associations work correctly there. Most probably we have to mock that via wiremock properly, with proper request bodies there
+        byte[] expectedAudio = new byte[]{1, 2, 3, 4};
+        
+        Media titleMedia = dialogue.getTitle().getMediaSet().iterator().next();
+        assertThat(Files.readAllBytes(TEMP_DIR.resolve(titleMedia.getStorageKey())))
+                .isEqualTo(expectedAudio);
+
+        // TODO user natural assertj assertions for this, you can chain stuff
+        dialogue.getSpeakers().forEach(speaker -> {
+            Media speakerMedia = speaker.getNamePhrase().getMediaSet().iterator().next();
+            try {
+                assertThat(Files.readAllBytes(TEMP_DIR.resolve(speakerMedia.getStorageKey())))
+                        .isEqualTo(expectedAudio);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // TODO user natural assertj assertions for this, you can chain stuff
+        dialogue.getDialoguePhrases().forEach(dp -> {
+            Media phraseMedia = dp.getPhrase().getMediaSet().iterator().next();
+            try {
+                assertThat(Files.readAllBytes(TEMP_DIR.resolve(phraseMedia.getStorageKey())))
+                        .isEqualTo(expectedAudio);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         // Verify TTS service was called for each phrase and nothing was skipped
         verifyTtsCalledWith("Հացի փռում");
@@ -90,6 +115,51 @@ class DialogueControllerIT extends BaseIT {
         wireMockServer.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/"))
                 .withRequestBody(WireMock.matchingJsonPath("$.text", WireMock.equalTo(text))));
     }
+
+    @Test
+    void saveDialogue_whenInfoIsNull() throws Exception {
+        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
+        String invalidJson = JsonPath.parse(requestJson).delete("$.info").jsonString();
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.info").exists());
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    @Test
+    void saveDialogue_whenTitleIsBlank() throws Exception {
+        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
+        String invalidJson = JsonPath.parse(requestJson).set("$.info.title", " ").jsonString();
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors['info.title']").exists());
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    // TODO we probably should have 2 of such tests,
+    //  instead of individual validation tests,
+    //  maybe it is worth to create one test with big invalid request,
+    //  and then some small set of tests to cover uncovered cases in that test
+    @Test
+    void saveDialogue_whenIsoLanguageCodeIsInvalid() throws Exception {
+        String requestJson = readResourceToString("/requests/save-dialogue-request.json");
+        String invalidJson = JsonPath.parse(requestJson).set("$.dialoguePhrases[0].phrase.isoLanguageCode", "invalid").jsonString();
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors['dialoguePhrases[0].phrase.isoLanguageCode']").exists());
+        verifyNoInteractions(dialogueOrchestrator);
+    }
+
+    // TODO not everything from validation is covered by tests
 
     @Test
     void saveDialogue_whenPhraseReferencesUndefinedSpeaker() throws Exception {
@@ -119,7 +189,6 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     @Sql("/sql/insert-dialogue.sql")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void getDialogue() throws Exception {
         String expectedJson = readResourceToString("/responses/get-dialogue-response.json");
         UUID dialogueId = UUID.fromString("99999999-9999-9999-9999-999999999999");
@@ -130,7 +199,6 @@ class DialogueControllerIT extends BaseIT {
     }
 
     @Test
-    @Sql("/sql/insert-dialogue.sql")
     void getDialogue_whenDialogueNotFound() throws Exception {
         UUID dialogueId = UUID.fromString("6c81f573-d19b-46ca-ad09-17b156b2eff6");
 
