@@ -16,6 +16,16 @@ services:
       - mcp-bridge
     restart: unless-stopped
 
+  piper:
+    build:
+      context: ./piper
+    container_name: assistant-piper
+    ports:
+      - "5000:5000"
+    networks:
+      - mcp-bridge
+    restart: unless-stopped
+
 networks:
   mcp-bridge:
     # Explicitly naming the network makes it predictable for the 'docker run' command
