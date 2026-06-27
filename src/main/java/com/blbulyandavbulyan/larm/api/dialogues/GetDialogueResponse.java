@@ -20,8 +20,7 @@ public record GetDialogueResponse(
         List<DialogueSpeakerResponse> speakers,
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-        List<DialoguePhraseResponse> dialoguePhrases
-) {
+        List<DialoguePhraseResponse> dialoguePhrases) {
     @Schema(name = "Get Dialogue Speaker Response")
     @Builder
     public record DialogueSpeakerResponse(
@@ -29,8 +28,7 @@ public record GetDialogueResponse(
             String speakerRefId,
 
             @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-            PhraseResponse name
-    ) {
+            PhraseResponse name) {
     }
 
     @Schema(name = "Get Dialogue Phrase Response")
@@ -40,7 +38,6 @@ public record GetDialogueResponse(
             String speakerRefId,
 
             @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-            PhraseResponse phrase
-    ) {
+            PhraseResponse phrase) {
     }
 }

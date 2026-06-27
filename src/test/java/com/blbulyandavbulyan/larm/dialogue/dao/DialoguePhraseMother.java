@@ -92,11 +92,6 @@ public interface DialoguePhraseMother {
             return this;
         }
 
-        public Builder withCreatedAt(Instant createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
         public DialoguePhraseRecord build() {
             return new DialoguePhraseRecord(id, phrase, speaker, orderIndex, createdAt);
         }

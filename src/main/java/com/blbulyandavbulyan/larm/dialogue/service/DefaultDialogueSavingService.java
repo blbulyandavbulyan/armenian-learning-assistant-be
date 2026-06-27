@@ -39,7 +39,6 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
     public SavedDialogueResource saveDialogue(StoreDialogueParameters parameters) {
         final Instant dialogueCreatedAt = Instant.now();
 
-        // 1. Save all phrases (title, speakers, dialogue phrases) in this transaction
         DialogueSavedPhrases dialogueSavedPhrases = saveAllPhrases(parameters);
 
         Dialogue dialogue = Dialogue.builder()
@@ -48,7 +47,6 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                 .createdAt(dialogueCreatedAt)
                 .build();
 
-        // 2. Build speakers, mapping speakerRefId -> DB UUID
         Map<String, DialogueSpeaker> speakerRefToSpeaker = new HashMap<>();
         Set<DialogueSpeaker> speakers = new LinkedHashSet<>();
         for (int i = 0; i < parameters.speakers().size(); i++) {
@@ -85,7 +83,6 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                 })
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        // 4. Persist dialogue aggregate
         dialogue.setSpeakers(speakers);
         dialogue.setDialoguePhrases(dialoguePhrases);
         dialogueRepository.save(dialogue);
@@ -95,14 +92,21 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
 
     @Builder
     private record DialogueSavedPhrases(Phrase titlePhrase, List<Phrase> speakerNames, List<Phrase> dialoguePhrases) {
-
     }
 
     private DialogueSavedPhrases saveAllPhrases(StoreDialogueParameters parameters) {
         List<SavePhraseParameters> allPhrasesToSave = new ArrayList<>();
         allPhrasesToSave.add(parameters.titlePhrase());
-        parameters.speakers().forEach(sp -> allPhrasesToSave.add(sp.namePhrase()));
-        parameters.dialoguePhrases().forEach(dp -> allPhrasesToSave.add(dp.phrase()));
+
+        parameters.speakers()
+                .stream()
+                .map(StoreDialogueParameters.StoreSpeakerParameters::namePhrase)
+                .forEach(allPhrasesToSave::add);
+
+        parameters.dialoguePhrases()
+                .stream()
+                .map(StoreDialogueParameters.StoreDialoguePhraseParameters::phrase)
+                .forEach(allPhrasesToSave::add);
 
         List<Phrase> savedPhrases = phraseStoringService.batchSavePhrases(
                 new BatchSavePhrasesParameters(allPhrasesToSave));

@@ -66,11 +66,6 @@ public interface DialogueSpeakerMother {
             return this;
         }
 
-        public Builder withCreatedAt(Instant createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
         public DialogueSpeakerRecord build() {
             return new DialogueSpeakerRecord(id, speakerRefId, namePhrase, createdAt);
         }

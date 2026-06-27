@@ -1,6 +1,14 @@
 package com.blbulyandavbulyan.larm.api.openapi;
 
+/**
+ * Holds constants used across OpenAPI annotations to ensure consistency
+ * in schema names, descriptions, examples, and property names.
+ */
 public interface OpenApiConstants {
+
+    /**
+     * Holds descriptions for open api, which are used in {@link io.swagger.v3.oas.annotations.media.Schema}.
+     */
     interface Descriptions {
 
         String CHAT_REQUEST_MESSAGE = "Request message, to tell the AI what to do";
@@ -28,8 +36,13 @@ public interface OpenApiConstants {
         String SPEAKER_TITLE = "Speaker title";
         String DIALOGUE_TITLE = "Dialogue title";
         String SPEAKER_ID = "Identifier linking a phrase to a specific speaker";
+        String DIALOGUE_TITLE_INFO = "Dialogue title information";
+        String DIALOGUE_ID = "The UUID of the saved dialogue";
     }
 
+    /**
+     * Holds examples which are used in {@link io.swagger.v3.oas.annotations.media.Schema} and in {@link OpenApiConfiguration}.
+     */
     interface Examples {
 
         String CHAT_REQUEST_MESSAGE = "Hello, could you please generate phrases for going into groceries store?";
@@ -60,18 +73,22 @@ public interface OpenApiConstants {
         String DIALOGUE_TRANSLATION_TEXT = "В магазине";
     }
 
+    /**
+     * Holds schema names, which are used in {@link io.swagger.v3.oas.annotations.media.Schema}.
+     * Constans should be put here only if they are used in {@link OpenApiConfiguration}.
+     */
     interface SchemaNames {
         String DIALOGUE_TITLE_RESPONSE = "Dialogue Title Response";
         String SPEAKER_RESPONSE = "Speaker Response";
         String DRAFT_PHRASES_RESPONSE = "Draft Phrases Response";
-        String SAVE_DIALOGUE_REQUEST = "Save Dialogue Request";
         String SAVE_DIALOGUE_TITLE_REQUEST = "Save Dialogue Title Request";
         String SAVE_SPEAKER_REQUEST = "Save Speaker Request";
-        String SAVE_DIALOGUE_PHRASE_REQUEST = "Save Dialogue Phrase Request";
         String SAVE_DIALOGUE_PHRASE_INNER_REQUEST = "Save Dialogue Phrase Inner Request";
-        String SAVE_DIALOGUE_TRANSLATION_REQUEST = "Save Dialogue Translation Request";
     }
 
+    /**
+     * Holds property names which are used in {@link OpenApiConfiguration}.
+     */
     interface PropertyNames {
         String TRANSLATIONS = "translations";
     }

@@ -21,7 +21,7 @@ CREATE TABLE dialogue_phrases
     id          UUID    PRIMARY KEY,
     dialogue_id UUID    NOT NULL REFERENCES dialogues (id),
     phrase_id   UUID    NOT NULL REFERENCES phrases (id),
-    speaker_id  UUID    NOT NULL REFERENCES dialogue_speakers (id),
+    speaker_id  UUID    NOT NULL REFERENCES dialogue_speakers (id) DEFERRABLE INITIALLY DEFERRED,
     order_index INTEGER NOT NULL,
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT unique_dialogue_phrase_order UNIQUE (dialogue_id, order_index)

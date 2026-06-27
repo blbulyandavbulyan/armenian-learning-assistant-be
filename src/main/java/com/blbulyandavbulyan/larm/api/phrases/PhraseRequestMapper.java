@@ -2,21 +2,21 @@ package com.blbulyandavbulyan.larm.api.phrases;
 
 import java.util.List;
 
-import com.blbulyandavbulyan.larm.core.NewCreatePhraseParameters;
+import com.blbulyandavbulyan.larm.core.CreateNewPhraseParameters;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import org.springframework.stereotype.Component;
 
 @Component
 class PhraseRequestMapper {
-    public List<NewCreatePhraseParameters> mapToBatchPhrasesParameters(CreatePhrasesRequest request) {
+    public List<CreateNewPhraseParameters> mapToBatchPhrasesParameters(CreatePhrasesRequest request) {
         return request.phrases()
                 .stream()
                 .map(PhraseRequestMapper::mapToSavePhraseParameters)
                 .toList();
     }
 
-    private static NewCreatePhraseParameters mapToSavePhraseParameters(CreatePhraseRequest request) {
-        return NewCreatePhraseParameters.builder()
+    private static CreateNewPhraseParameters mapToSavePhraseParameters(CreatePhraseRequest request) {
+        return CreateNewPhraseParameters.builder()
                 .phrase(request.phrase())
                 .transcription(request.transcription())
                 .isoLanguageCode("hy")

@@ -18,12 +18,12 @@ public class PhraseOrchestrator {
     private final PhraseProcessor phraseProcessor;
 
     @Timed(value = "save.phrases.total-time", description = "Includes total time for saving phrases including additional stuff like text-to-speach")
-    public List<Phrase> savePhrases(List<NewCreatePhraseParameters> newCreatePhraseParameters) {
-        final var phrasesWithMedias = initialProcess(newCreatePhraseParameters);
+    public List<Phrase> savePhrases(List<CreateNewPhraseParameters> createNewPhraseParameters) {
+        final var phrasesWithMedias = initialProcess(createNewPhraseParameters);
         return phraseStoringService.batchSavePhrases(phrasesWithMedias);
     }
 
-    private BatchSavePhrasesParameters initialProcess(List<NewCreatePhraseParameters> newCreatePhraseParameters) {
-        return new BatchSavePhrasesParameters(newCreatePhraseParameters.stream().parallel().map(phraseProcessor::process).toList());
+    private BatchSavePhrasesParameters initialProcess(List<CreateNewPhraseParameters> createNewPhraseParameters) {
+        return new BatchSavePhrasesParameters(createNewPhraseParameters.stream().parallel().map(phraseProcessor::process).toList());
     }
 }

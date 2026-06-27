@@ -2,7 +2,7 @@ package com.blbulyandavbulyan.larm.api.dialogues;
 
 import java.util.List;
 
-import com.blbulyandavbulyan.larm.dialogue.SaveDialogueParameters;
+import com.blbulyandavbulyan.larm.core.SaveDialogueParameters;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import org.springframework.stereotype.Component;
 
@@ -29,13 +29,13 @@ class DialogueRequestMapper {
     }
 
     private SaveDialogueParameters.DialoguePhraseParameters mapDialoguePhrase(
-            SaveDialogueRequest.DialoguePhraseRequest dp) {
+            SaveDialogueRequest.DialoguePhraseRequest request) {
         return SaveDialogueParameters.DialoguePhraseParameters.builder()
-                .speakerRefId(dp.speakerId())
-                .phrase(dp.phrase().phrase())
-                .isoLanguageCode(dp.phrase().isoLanguageCode())
-                .transcription(dp.phrase().transcription())
-                .translations(mapTranslations(dp.phrase().translations()))
+                .speakerRefId(request.speakerId())
+                .phrase(request.phrase().phrase())
+                .isoLanguageCode(request.phrase().isoLanguageCode())
+                .transcription(request.phrase().transcription())
+                .translations(mapTranslations(request.phrase().translations()))
                 .build();
     }
 

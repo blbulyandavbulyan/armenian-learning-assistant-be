@@ -9,10 +9,6 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.OptionalAssert;
 import org.springframework.boot.test.context.TestComponent;
 
-/**
- * A Spring-managed test component that wraps the TestPhraseRepository to provide 
- * fluent, shiny AssertJ assertions for Phrase records directly from the database.
- */
 @TestComponent
 @RequiredArgsConstructor
 public class PhraseRecordAssertHelper {

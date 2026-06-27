@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.api.dialogues;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 import com.blbulyandavbulyan.larm.api.phrases.PhraseResponseMapper;
@@ -13,24 +14,32 @@ import org.springframework.stereotype.Component;
 public class DialogueResponseMapper {
     private final PhraseResponseMapper phraseResponseMapper;
 
-    public GetDialogueResponse toResponse(Dialogue resource) {
+    public GetDialogueResponse toResponse(Dialogue dialogue) {
         return GetDialogueResponse.builder()
-                .id(resource.getId())
-                .title(phraseResponseMapper.mapToPhraseResponse(resource.getTitle()))
-                .speakers(Stream.ofNullable(resource.getSpeakers())
-                        .flatMap(Collection::stream)
-                        .map(s -> GetDialogueResponse.DialogueSpeakerResponse.builder()
-                                .speakerRefId(s.getSpeakerRefId())
-                                .name(phraseResponseMapper.mapToPhraseResponse(s.getNamePhrase()))
-                                .build())
-                        .toList())
-                .dialoguePhrases(Stream.ofNullable(resource.getDialoguePhrases())
-                        .flatMap(Collection::stream)
-                        .map(p -> GetDialogueResponse.DialoguePhraseResponse.builder()
-                                .speakerRefId(p.getSpeaker().getSpeakerRefId())
-                                .phrase(phraseResponseMapper.mapToPhraseResponse(p.getPhrase()))
-                                .build())
-                        .toList())
+                .id(dialogue.getId())
+                .title(phraseResponseMapper.mapToPhraseResponse(dialogue.getTitle()))
+                .speakers(mapSpeakers(dialogue))
+                .dialoguePhrases(mapDialoguePhrases(dialogue))
                 .build();
+    }
+
+    private List<GetDialogueResponse.DialogueSpeakerResponse> mapSpeakers(Dialogue dialogue) {
+        return Stream.ofNullable(dialogue.getSpeakers())
+                .flatMap(Collection::stream)
+                .map(dialogueSpeaker -> GetDialogueResponse.DialogueSpeakerResponse.builder()
+                        .speakerRefId(dialogueSpeaker.getSpeakerRefId())
+                        .name(phraseResponseMapper.mapToPhraseResponse(dialogueSpeaker.getNamePhrase()))
+                        .build())
+                .toList();
+    }
+
+    private List<GetDialogueResponse.DialoguePhraseResponse> mapDialoguePhrases(Dialogue dialogue) {
+        return Stream.ofNullable(dialogue.getDialoguePhrases())
+                .flatMap(Collection::stream)
+                .map(dialoguePhrase -> GetDialogueResponse.DialoguePhraseResponse.builder()
+                        .speakerRefId(dialoguePhrase.getSpeaker().getSpeakerRefId())
+                        .phrase(phraseResponseMapper.mapToPhraseResponse(dialoguePhrase.getPhrase()))
+                        .build())
+                .toList();
     }
 }

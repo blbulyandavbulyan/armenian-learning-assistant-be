@@ -18,6 +18,6 @@ public class DefaultDialogueRetrievalService implements DialogueRetrievalService
 
     @Override
     public Optional<Dialogue> getDialogue(UUID id) {
-        return dialogueRepository.findById(id);
+        return dialogueRepository.findByIdEagerly(id);
     }
 }

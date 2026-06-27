@@ -23,7 +23,7 @@ public class PhraseProcessor {
      * Generates TTS audio for a phrase, stores it, and returns the phrase parameters
      * ready to be persisted.
      */
-    public SavePhraseParameters process(NewCreatePhraseParameters parameters) {
+    public SavePhraseParameters process(CreateNewPhraseParameters parameters) {
         final var phraseId = UUID.randomUUID();
         final var mediaId = UUID.randomUUID();
         final SpeechResource speechResource = textToSpeechService.convert(parameters.phrase(), parameters.isoLanguageCode());

@@ -16,6 +16,6 @@ public class DialogueRecordAssertHelper {
     private final TestDialogueRepository testDialogueRepository;
 
     public OptionalAssert<DialogueRecord> assertThatDialogueWithId(UUID dialogueId) {
-        return Assertions.assertThat(testDialogueRepository.findById(dialogueId).map(DialogueRecord::new));
+        return Assertions.assertThat(testDialogueRepository.findByIdEagerly(dialogueId).map(DialogueRecord::new));
     }
 }

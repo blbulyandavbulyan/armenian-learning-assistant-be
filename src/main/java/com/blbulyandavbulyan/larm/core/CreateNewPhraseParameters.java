@@ -6,7 +6,7 @@ import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import lombok.Builder;
 
 @Builder
-public record NewCreatePhraseParameters(
+public record CreateNewPhraseParameters(
         String phrase,
         String isoLanguageCode,
         String transcription,

@@ -2,9 +2,9 @@
   "id": "99999999-9999-9999-9999-999999999999",
   "title": {
     "id": "11111111-1111-1111-1111-111111111111",
-    "phrase": "In the bakery",
-    "isoLanguageCode": "am",
-    "transcription": "In the bakery trans",
+    "phrase": "Հացի փռում",
+    "isoLanguageCode": "hy",
+    "transcription": "Hatsi prrum",
     "translations": [
       {
         "id": "77777777-1111-1111-1111-111111111111",
@@ -24,9 +24,9 @@
       "speakerRefId": "speaker1",
       "name": {
         "id": "22222222-2222-2222-2222-222222222222",
-        "phrase": "Baker",
-        "isoLanguageCode": "am",
-        "transcription": "Baker trans",
+        "phrase": "Հացթուխ",
+        "isoLanguageCode": "hy",
+        "transcription": "Hatstukh",
         "translations": [
           {
             "id": "77777777-2222-2222-2222-222222222222",
@@ -46,9 +46,9 @@
       "speakerRefId": "speaker2",
       "name": {
         "id": "33333333-3333-3333-3333-333333333333",
-        "phrase": "Customer",
-        "isoLanguageCode": "am",
-        "transcription": "Customer trans",
+        "phrase": "Գնորդ",
+        "isoLanguageCode": "hy",
+        "transcription": "Gnord",
         "translations": [
           {
             "id": "77777777-3333-3333-3333-333333333333",
@@ -71,7 +71,7 @@
       "phrase": {
         "id": "44444444-4444-4444-4444-444444444444",
         "phrase": "Բարեւ ձեզ",
-        "isoLanguageCode": "am",
+        "isoLanguageCode": "hy",
         "transcription": "Barev dzez",
         "translations": [
           {
@@ -93,7 +93,7 @@
       "phrase": {
         "id": "55555555-5555-5555-5555-555555555555",
         "phrase": "Բարեւ ձեզ, խնդրում եմ մեկ հաց:",
-        "isoLanguageCode": "am",
+        "isoLanguageCode": "hy",
         "transcription": "Barev dzez, khndrum em mek hats",
         "translations": [
           {
@@ -115,7 +115,7 @@
       "phrase": {
         "id": "66666666-6666-6666-6666-666666666666",
         "phrase": "Ահա, խնդրեմ:",
-        "isoLanguageCode": "am",
+        "isoLanguageCode": "hy",
         "transcription": "Aha, khndrem",
         "translations": [
           {

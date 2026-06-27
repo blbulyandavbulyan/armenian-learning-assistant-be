@@ -1,8 +1,10 @@
 package com.blbulyandavbulyan.larm.dialogue.dao;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseMother;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.DialoguePhraseRecord;
@@ -57,17 +59,12 @@ public interface DialogueMother {
         }
 
         public Builder withSpeakers(DialogueSpeakerRecord... speakers) {
-            this.speakers = java.util.Arrays.stream(speakers).collect(java.util.stream.Collectors.toSet());
+            this.speakers = Arrays.stream(speakers).collect(Collectors.toSet());
             return this;
         }
 
         public Builder withDialoguePhrases(DialoguePhraseRecord... dialoguePhrases) {
-            this.dialoguePhrases = java.util.Arrays.stream(dialoguePhrases).collect(java.util.stream.Collectors.toSet());
-            return this;
-        }
-
-        public Builder withCreatedAt(Instant createdAt) {
-            this.createdAt = createdAt;
+            this.dialoguePhrases = Arrays.stream(dialoguePhrases).collect(Collectors.toSet());
             return this;
         }
 
