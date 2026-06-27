@@ -38,6 +38,8 @@ public interface OpenApiConstants {
         String SPEAKER_ID = "Identifier linking a phrase to a specific speaker";
         String DIALOGUE_TITLE_INFO = "Dialogue title information";
         String DIALOGUE_ID = "The UUID of the saved dialogue";
+        String SPEAKERS_LIST = "List of speakers in the dialogue";
+        String DIALOGUE_PHRASES = "List of phrases spoken in the dialogue in chronological order";
     }
 
     /**

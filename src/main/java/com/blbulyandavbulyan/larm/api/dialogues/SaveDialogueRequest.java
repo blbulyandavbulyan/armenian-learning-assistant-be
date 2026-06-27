@@ -20,10 +20,10 @@ public record SaveDialogueRequest(
         @Schema(description = Descriptions.DIALOGUE_TITLE_INFO)
         @NotNull @Valid DialogueTitleRequest info,
         
-        @Schema(description = "List of speakers in the dialogue")
+        @Schema(description = Descriptions.SPEAKERS_LIST)
         @NotEmpty List<@NotNull @Valid SpeakerRequest> speakers,
         
-        @Schema(description = "List of phrases spoken in the dialogue in chronological order")
+        @Schema(description = Descriptions.DIALOGUE_PHRASES)
         @NotEmpty List<@NotNull @Valid DialoguePhraseRequest> dialoguePhrases) {
 
     @Schema(name = OpenApiConstants.SchemaNames.SAVE_DIALOGUE_TITLE_REQUEST)
