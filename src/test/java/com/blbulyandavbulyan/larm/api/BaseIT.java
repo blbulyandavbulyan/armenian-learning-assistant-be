@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
-import com.blbulyandavbulyan.larm.phrase.util.DialogueRecordAssertHelper;
+import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
 import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;

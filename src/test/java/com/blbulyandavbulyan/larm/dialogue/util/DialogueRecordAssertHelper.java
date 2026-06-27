@@ -1,8 +1,8 @@
-package com.blbulyandavbulyan.larm.phrase.util;
+package com.blbulyandavbulyan.larm.dialogue.util;
 
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.phrase.dao.TestDialogueRepository;
+import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.DialogueRecord;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;

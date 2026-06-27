@@ -7,7 +7,7 @@ import com.blbulyandavbulyan.larm.api.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
-import com.blbulyandavbulyan.larm.phrase.dao.TestDialogueRepository;
+import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -40,13 +40,14 @@ class DialogueControllerIT extends BaseIT {
 
     @Test
     void saveDialogue() throws Exception {
+        stubTtsWithAudio("Հացի փռում", new byte[]{1});
+        stubTtsWithAudio("Հացթուխ", new byte[]{2});
+        stubTtsWithAudio("Գնորդ", new byte[]{3});
+        stubTtsWithAudio("Բարեւ ձեզ", new byte[]{4});
+        stubTtsWithAudio("Բարեւ ձեզ, խնդրում եմ մեկ հաց:", new byte[]{5});
+        stubTtsWithAudio("Ահա, խնդրեմ:", new byte[]{6});
+
         String requestJson = readResourceToString("/requests/save-dialogue-request.json");
-
-        wireMockServer.stubFor(WireMock.post("/")
-                .willReturn(WireMock.ok()
-                        .withHeader("Content-Type", "audio/wav")
-                        .withBody(new byte[]{1, 2, 3, 4})));
-
         String responseContent = mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJson))
@@ -71,36 +72,39 @@ class DialogueControllerIT extends BaseIT {
                 .isEqualTo(expectedDialogue);
 
         var dialogue = testDialogueRepository.findByIdEagerly(dialogueId).orElseThrow();
-        // TODO, one audio per everything,
-        //  we should return different audio for different phrase and assert
-        //  that associations work correctly there. Most probably we have to mock that via wiremock properly, with proper request bodies there
-        byte[] expectedAudio = new byte[]{1, 2, 3, 4};
-        
+
+        assertThat(dialogue.getTitle().getMediaSet()).hasSize(1);
         Media titleMedia = dialogue.getTitle().getMediaSet().iterator().next();
-        assertThat(Files.readAllBytes(TEMP_DIR.resolve(titleMedia.getStorageKey())))
-                .isEqualTo(expectedAudio);
+        assertThat(readMediaBytes(titleMedia)).isEqualTo(new byte[]{1});
 
-        // TODO user natural assertj assertions for this, you can chain stuff
-        dialogue.getSpeakers().forEach(speaker -> {
-            Media speakerMedia = speaker.getNamePhrase().getMediaSet().iterator().next();
-            try {
-                assertThat(Files.readAllBytes(TEMP_DIR.resolve(speakerMedia.getStorageKey())))
-                        .isEqualTo(expectedAudio);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+        assertThat(dialogue.getSpeakers())
+                .anySatisfy(speaker -> {
+                    assertThat(speaker.getSpeakerRefId()).isEqualTo("speaker1");
+                    assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
+                    assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{2});
+                })
+                .anySatisfy(speaker -> {
+                    assertThat(speaker.getSpeakerRefId()).isEqualTo("speaker2");
+                    assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
+                    assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{3});
+                });
 
-        // TODO user natural assertj assertions for this, you can chain stuff
-        dialogue.getDialoguePhrases().forEach(dp -> {
-            Media phraseMedia = dp.getPhrase().getMediaSet().iterator().next();
-            try {
-                assertThat(Files.readAllBytes(TEMP_DIR.resolve(phraseMedia.getStorageKey())))
-                        .isEqualTo(expectedAudio);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+        assertThat(dialogue.getDialoguePhrases())
+                .anySatisfy(dp -> {
+                    assertThat(dp.getPhrase().getPhrase()).isEqualTo("Բարեւ ձեզ");
+                    assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
+                    assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{4});
+                })
+                .anySatisfy(dp -> {
+                    assertThat(dp.getPhrase().getPhrase()).isEqualTo("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
+                    assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
+                    assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{5});
+                })
+                .anySatisfy(dp -> {
+                    assertThat(dp.getPhrase().getPhrase()).isEqualTo("Ահա, խնդրեմ:");
+                    assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
+                    assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{6});
+                });
 
         // Verify TTS service was called for each phrase and nothing was skipped
         verifyTtsCalledWith("Հացի փռում");
@@ -109,6 +113,24 @@ class DialogueControllerIT extends BaseIT {
         verifyTtsCalledWith("Բարեւ ձեզ");
         verifyTtsCalledWith("Բարեւ ձեզ, խնդրում եմ մեկ հաց:");
         verifyTtsCalledWith("Ահա, խնդրեմ:");
+    }
+
+    private void stubTtsWithAudio(String text, byte[] audioData) {
+        // todo, having 2 such method makes me think that maybe we shuld extract them into separate class,
+        //  maybe we can call it PiperWireMock, and we initialize it in parent class in before each method, populating there this wiremock service
+        wireMockServer.stubFor(WireMock.post("/")
+                .withRequestBody(WireMock.matchingJsonPath("$.text", WireMock.equalTo(text)))
+                .willReturn(WireMock.ok()
+                        .withHeader("Content-Type", "audio/wav")
+                        .withBody(audioData)));
+    }
+
+    private byte[] readMediaBytes(Media media) {
+        try {
+            return Files.readAllBytes(TEMP_DIR.resolve(media.getStorageKey()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void verifyTtsCalledWith(String text) {

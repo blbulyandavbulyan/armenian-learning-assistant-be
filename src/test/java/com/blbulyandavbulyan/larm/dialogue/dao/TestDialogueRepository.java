@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.phrase.dao;
+package com.blbulyandavbulyan.larm.dialogue.dao;
 
 import java.util.Optional;
 import java.util.UUID;
