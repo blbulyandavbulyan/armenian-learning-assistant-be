@@ -40,7 +40,7 @@ public class Dialogue {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("speakerRefId ASC")
+    @OrderBy("createdAt ASC")
     private Set<DialogueSpeaker> speakers;
 
     @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)

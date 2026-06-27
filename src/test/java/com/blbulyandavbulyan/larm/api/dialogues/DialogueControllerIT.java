@@ -80,13 +80,11 @@ class DialogueControllerIT extends BaseIT {
 
         assertThat(dialogue.getSpeakers())
                 .anySatisfy(speaker -> {
-                    assertThat(speaker.getSpeakerRefId()).isEqualTo("speaker1");
                     assertThat(speaker.getNamePhrase().getPhrase()).isEqualTo(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE);
                     assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{2});
                 })
                 .anySatisfy(speaker -> {
-                    assertThat(speaker.getSpeakerRefId()).isEqualTo("speaker2");
                     assertThat(speaker.getNamePhrase().getPhrase()).isEqualTo(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE);
                     assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
                     assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{3});

@@ -3,6 +3,8 @@ package com.blbulyandavbulyan.larm.api.dialogues;
 import java.util.List;
 import java.util.UUID;
 
+import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.Descriptions;
+import com.blbulyandavbulyan.larm.api.openapi.OpenApiConstants.Examples;
 import com.blbulyandavbulyan.larm.api.phrases.PhraseResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -10,7 +12,7 @@ import lombok.Builder;
 @Schema(name = "Get Dialogue Response")
 @Builder
 public record GetDialogueResponse(
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+        @Schema(description = Descriptions.DIALOGUE_ID, examples = Examples.DIALOGUE_ID, requiredMode = Schema.RequiredMode.REQUIRED)
         UUID id,
 
         @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
@@ -24,8 +26,8 @@ public record GetDialogueResponse(
     @Schema(name = "Get Dialogue Speaker Response")
     @Builder
     public record DialogueSpeakerResponse(
-            @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-            String speakerRefId,
+            @Schema(description = Descriptions.SPEAKER_ID, examples = Examples.SPEAKER_ID, requiredMode = Schema.RequiredMode.REQUIRED)
+            UUID id,
 
             @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
             PhraseResponse name) {
@@ -34,8 +36,8 @@ public record GetDialogueResponse(
     @Schema(name = "Get Dialogue Phrase Response")
     @Builder
     public record DialoguePhraseResponse(
-            @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-            String speakerRefId,
+            @Schema(description = Descriptions.SPEAKER_ID, examples = Examples.SPEAKER_ID, requiredMode = Schema.RequiredMode.REQUIRED)
+            UUID speakerId,
 
             @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
             PhraseResponse phrase) {

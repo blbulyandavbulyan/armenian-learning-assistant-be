@@ -71,8 +71,9 @@ public interface OpenApiConstants {
         String SPEAKER_TRANSLATION_TEXT = "Покупатель";
         String DIALOGUE_TITLE = "Խանութում";
         String DIALOGUE_TRANSCRIPTION = "Khanutum";
-        String SPEAKER_ID = "speaker-1";
+        String SPEAKER_ID = "519f4266-17c2-46fc-a761-f0ef0021e4f1";
         String DIALOGUE_TRANSLATION_TEXT = "В магазине";
+        String DIALOGUE_ID = "831a5d64-74c5-4a1e-989e-ab1c310c17f2";
     }
 
     /**

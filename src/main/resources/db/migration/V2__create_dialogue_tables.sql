@@ -10,10 +10,8 @@ CREATE TABLE dialogue_speakers
 (
     id               UUID PRIMARY KEY,
     dialogue_id      UUID NOT NULL REFERENCES dialogues (id),
-    speaker_ref_id   VARCHAR(100) NOT NULL,
     name_phrase_id   UUID NOT NULL REFERENCES phrases (id),
-    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    CONSTRAINT unique_speaker_ref_per_dialogue UNIQUE (dialogue_id, speaker_ref_id)
+    created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE dialogue_phrases

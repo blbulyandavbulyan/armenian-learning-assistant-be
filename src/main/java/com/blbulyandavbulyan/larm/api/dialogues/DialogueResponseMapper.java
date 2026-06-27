@@ -27,7 +27,7 @@ public class DialogueResponseMapper {
         return Stream.ofNullable(dialogue.getSpeakers())
                 .flatMap(Collection::stream)
                 .map(dialogueSpeaker -> GetDialogueResponse.DialogueSpeakerResponse.builder()
-                        .speakerRefId(dialogueSpeaker.getSpeakerRefId())
+                        .id(dialogueSpeaker.getId())
                         .name(phraseResponseMapper.mapToPhraseResponse(dialogueSpeaker.getNamePhrase()))
                         .build())
                 .toList();
@@ -37,7 +37,7 @@ public class DialogueResponseMapper {
         return Stream.ofNullable(dialogue.getDialoguePhrases())
                 .flatMap(Collection::stream)
                 .map(dialoguePhrase -> GetDialogueResponse.DialoguePhraseResponse.builder()
-                        .speakerRefId(dialoguePhrase.getSpeaker().getSpeakerRefId())
+                        .speakerId(dialoguePhrase.getSpeaker().getId())
                         .phrase(phraseResponseMapper.mapToPhraseResponse(dialoguePhrase.getPhrase()))
                         .build())
                 .toList();

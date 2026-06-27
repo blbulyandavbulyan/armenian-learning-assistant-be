@@ -11,12 +11,10 @@ public interface DialogueSpeakerMother {
 
     interface DefaultDialogueSpeaker1 {
         UUID ID = UUID.fromString("22222222-2222-2222-2222-222222222221");
-        String SPEAKER_REF_ID = "speaker1";
 
         static Builder builder() {
             return DialogueSpeakerMother.builder()
                     .withId(ID)
-                    .withSpeakerRefId(SPEAKER_REF_ID)
                     .withNamePhrase(PhraseMother.DialogueSpeaker1NamePhrase.build());
         }
 
@@ -27,12 +25,10 @@ public interface DialogueSpeakerMother {
 
     interface DefaultDialogueSpeaker2 {
         UUID ID = UUID.fromString("22222222-2222-2222-2222-222222222222");
-        String SPEAKER_REF_ID = "speaker2";
 
         static Builder builder() {
             return DialogueSpeakerMother.builder()
                     .withId(ID)
-                    .withSpeakerRefId(SPEAKER_REF_ID)
                     .withNamePhrase(PhraseMother.DialogueSpeaker2NamePhrase.build());
         }
 
@@ -47,17 +43,11 @@ public interface DialogueSpeakerMother {
 
     class Builder {
         private UUID id;
-        private String speakerRefId;
         private PhraseRecord namePhrase;
         private Instant createdAt;
 
         public Builder withId(UUID id) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withSpeakerRefId(String speakerRefId) {
-            this.speakerRefId = speakerRefId;
             return this;
         }
 
@@ -67,7 +57,7 @@ public interface DialogueSpeakerMother {
         }
 
         public DialogueSpeakerRecord build() {
-            return new DialogueSpeakerRecord(id, speakerRefId, namePhrase, createdAt);
+            return new DialogueSpeakerRecord(id, namePhrase, createdAt);
         }
     }
 }

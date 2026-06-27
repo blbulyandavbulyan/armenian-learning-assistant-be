@@ -18,19 +18,18 @@ INSERT INTO medias (id, phrase_id, storage_provider, storage_bucket, storage_key
 ('88888888-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'LOCAL', 'bucket', 'key1', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', 'LOCAL', 'bucket', 'key2', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', 'LOCAL', 'bucket', 'key3', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
-('88888888-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 'LOCAL', 'bucket', 'key4', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
+('88888888-4444-4444-4444-4444-44444444', '44444444-4444-4444-4444-444444444444', 'LOCAL', 'bucket', 'key4', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 'LOCAL', 'bucket', 'key5', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', 'LOCAL', 'bucket', 'key6', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP);
 
 INSERT INTO dialogues (id, title_phrase_id, created_at) VALUES
 ('99999999-9999-9999-9999-999999999999', '11111111-1111-1111-1111-111111111111', CURRENT_TIMESTAMP);
 
-INSERT INTO dialogue_speakers (id, dialogue_id, speaker_ref_id, name_phrase_id) VALUES
-('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '99999999-9999-9999-9999-999999999999', 'speaker1', '22222222-2222-2222-2222-222222222222'),
-('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '99999999-9999-9999-9999-999999999999', 'speaker2', '33333333-3333-3333-3333-333333333333');
+INSERT INTO dialogue_speakers (id, dialogue_id, name_phrase_id, created_at)
+VALUES ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '99999999-9999-9999-9999-999999999999', '22222222-2222-2222-2222-222222222222', '2023-10-27 10:00:00'),
+       ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '99999999-9999-9999-9999-999999999999', '33333333-3333-3333-3333-333333333333', '2023-10-27 10:00:01');
 
 INSERT INTO dialogue_phrases (id, dialogue_id, phrase_id, speaker_id, order_index) VALUES
 ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '99999999-9999-9999-9999-999999999999', '66666666-6666-6666-6666-666666666666', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 2),
 ('cccccccc-cccc-cccc-cccc-cccccccccccc', '99999999-9999-9999-9999-999999999999', '44444444-4444-4444-4444-444444444444', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 0),
 ('dddddddd-dddd-dddd-dddd-dddddddddddd', '99999999-9999-9999-9999-999999999999', '55555555-5555-5555-5555-555555555555', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 1);
-
