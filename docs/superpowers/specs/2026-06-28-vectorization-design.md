@@ -4,7 +4,7 @@
 Implement vectorization (embeddings) for both individual phrases and full dialogues to enable deduplication, semantic search, and advanced recommendation (spaced repetition) features.
 
 ## Architecture
-We use Spring AI's `EmbeddingModel` (backed by Gemini multilingual embedding models) to map text to vectors (`vector(1536)`). 
+We use Spring AI's `EmbeddingModel` (backed by Gemini multilingual embedding models) to map text to vectors (`vector(3072)`).
 Because the AI models are naturally multilingual, we do not need separate embeddings per language. Instead, we generate a single, highly robust "combo-string" embedding for each item.
 
 ### 1. Phrase Vectorization

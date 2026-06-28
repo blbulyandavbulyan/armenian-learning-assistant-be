@@ -23,7 +23,7 @@ public interface PhraseMother {
                 + TranslationMother.DefaultTranslation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.123f;
             embedding[1] = 0.456f;
             return embedding;
@@ -53,8 +53,8 @@ public interface PhraseMother {
                 + TranslationMother.DialogueTitleTranslation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
-            embedding[0] = 0.1f;
+            float[] embedding = new float[3072];
+            Arrays.fill(embedding, 0.1f);
             return embedding;
         }
 
@@ -87,7 +87,7 @@ public interface PhraseMother {
                 + TranslationMother.DialogueSpeaker1NameTranslation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.2f;
             return embedding;
         }
@@ -121,7 +121,7 @@ public interface PhraseMother {
                 + TranslationMother.DialogueSpeaker2NameTranslation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.3f;
             return embedding;
         }
@@ -155,7 +155,7 @@ public interface PhraseMother {
                 + TranslationMother.DialoguePhrase1Translation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.4f;
             return embedding;
         }
@@ -188,7 +188,7 @@ public interface PhraseMother {
                 + TranslationMother.DialoguePhrase2Translation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.5f;
             return embedding;
         }
@@ -222,7 +222,7 @@ public interface PhraseMother {
                 + TranslationMother.DialoguePhrase3Translation.TRANSLATION_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.6f;
             return embedding;
         }

@@ -13,13 +13,10 @@ spring:
         api-key: ${GEMINI_API_KEY}
         embedding:
           api-key: ${GEMINI_API_KEY}
-          options:
-            model: text-embedding-004
+          text:
+            dimensions: 3072
+            model: gemini-embedding-001
 
-    vectorstore:
-      pgvector:
-        dimensions: 768
-        initialize-schema: true
 storage:
   local:
     folder-name: ${STORAGE_FOLDER_NAME:/home/david/arm-learn-files}

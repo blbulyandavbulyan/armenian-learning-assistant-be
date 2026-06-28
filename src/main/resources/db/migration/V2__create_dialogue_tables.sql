@@ -2,7 +2,7 @@ CREATE TABLE dialogues
 (
     id              UUID PRIMARY KEY,
     title_phrase_id UUID NOT NULL REFERENCES phrases (id),
-    embedding       vector(1536) NOT NULL,
+    embedding       vector(3072) NOT NULL,
     created_at      TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 

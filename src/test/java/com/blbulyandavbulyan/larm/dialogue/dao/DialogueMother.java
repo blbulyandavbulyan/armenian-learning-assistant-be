@@ -20,7 +20,7 @@ public interface DialogueMother {
                 + "\n" + PhraseMother.DialogueSpeaker1NamePhrase.PHRASE + ": " + PhraseMother.DialoguePhrase3.EMBEDDING_TEXT;
 
         static float[] embedding() {
-            float[] embedding = new float[1536];
+            float[] embedding = new float[3072];
             embedding[0] = 0.9f;
             return embedding;
         }
