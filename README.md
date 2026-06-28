@@ -21,6 +21,20 @@ When you run the application locally you have to provide:
 * `GEMINI_API_KEY` as environment variable, with your gemini api key
 * `STORAGE_FOLDER_NAME` as environment variable, pointing to an existing directory where local files will be stored (e.g., `C:\arm-learn-files` on Windows), because the default is a Linux path.
 
+### 🛠️ IntelliJ IDEA Setup (Crucial for Hibernate Lazy Loading)
+This project relies on the `hibernate-maven-plugin` to perform bytecode enhancement, which is required for lazy-loading large fields like vector embeddings. Running the app using IntelliJ's native builder out-of-the-box will overwrite the enhanced `.class` files, causing memory issues.
+
+**Do NOT check "Delegate IDE build/run actions to Maven"**, as it relies on `exec-maven-plugin` which drops your environment variables and breaks the Spring profile injection.
+
+Instead, configure your native IntelliJ Spring Boot Run Configuration like this:
+1. Open your Spring Boot Run Configuration.
+2. Scroll down to the **"Before launch"** section.
+3. Ensure **"Build"** is in the list.
+4. Click the **`+`** button, select **"Run Maven Goal"**, and type `compile`.
+5. **Order is critical:** Make sure **"Build"** is FIRST in the list, and **"Run Maven Goal"** is SECOND.
+
+This ensures IntelliJ builds the project first, Maven enhances the bytecode in-place, and IntelliJ natively boots the app with your `local` profile correctly activated.
+
 ### 🐳 Running external services (PostgreSQL & Piper TTS)
 The application relies on PostgreSQL and Piper TTS. You can easily run both of them locally via Docker Compose:
 ```bash
