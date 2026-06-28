@@ -263,6 +263,7 @@
 						<configuration>
 							<enableLazyInitialization>true</enableLazyInitialization>
 						</configuration>
+                        <phase>compile</phase>
 						<goals>
 							<goal>enhance</goal>
 						</goals>
