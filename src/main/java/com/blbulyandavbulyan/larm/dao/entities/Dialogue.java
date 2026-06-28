@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +21,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "dialogues")
@@ -31,6 +34,10 @@ import lombok.Setter;
 public class Dialogue {
     @Id
     private UUID id;
+
+    @Basic(fetch = FetchType.LAZY)
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    private float[] embedding;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "title_phrase_id")

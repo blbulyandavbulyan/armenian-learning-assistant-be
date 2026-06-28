@@ -6,8 +6,8 @@ This file will contain all the ideas which I consider interesting and worth addi
 ### Vectorization (Embeddings)
 *See design spec: [docs/superpowers/specs/2026-06-28-vectorization-design.md](docs/superpowers/specs/2026-06-28-vectorization-design.md)*
 *See implementation plan: [docs/superpowers/plans/2026-06-28-vectorization-plan.md](docs/superpowers/plans/2026-06-28-vectorization-plan.md)*
-- [ ] Vectorization of phrases in the dialogoue (Planned)
-- [ ] Vectorization of full dialogue (maybe by concatenating phrases) (Planned)
+- [x] Vectorization of phrases in the dialogoue
+- [x] Vectorization of full dialogue (maybe by concatenating phrases)
 
 ### Tools
 #### For generating dialogues

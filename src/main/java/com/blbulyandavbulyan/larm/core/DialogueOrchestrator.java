@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.core;
 
+import com.blbulyandavbulyan.larm.ai.embedding.DialogueVectorizationService;
 import com.blbulyandavbulyan.larm.dialogue.DialogueSavingService;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
 import com.blbulyandavbulyan.larm.dialogue.StoreDialogueParameters;
@@ -13,13 +14,16 @@ public class DialogueOrchestrator {
 
     private final PhraseProcessor phraseProcessor;
     private final DialogueSavingService dialogueSavingService;
+    private final DialogueVectorizationService dialogueVectorizationService;
 
     public SavedDialogueResource saveDialogue(SaveDialogueParameters parameters) {
+        float[] embedding = dialogueVectorizationService.vectorize(parameters);
         return dialogueSavingService.saveDialogue(
                 StoreDialogueParameters.builder()
                         .titlePhrase(processDialogueTitle(parameters))
                         .speakers(parameters.speakers().stream().map(this::processSpeaker).toList())
                         .dialoguePhrases(parameters.dialoguePhrases().stream().map(this::processDialoguePhrase).toList())
+                        .embedding(embedding)
                         .build());
     }
 

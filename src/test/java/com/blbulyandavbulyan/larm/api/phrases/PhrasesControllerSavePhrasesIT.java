@@ -31,8 +31,8 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
     @Test
     @Transactional
     void savePhrases() throws Exception {
-        String request = readResourceToString("/requests/phrases/save/save-phrases-request.json");
-        String expectedResponse = readResourceToString("/responses/save-phrases-response.json");
+        final String request = readResourceToString("/requests/phrases/save/save-phrases-request.json");
+        final String expectedResponse = readResourceToString("/responses/save-phrases-response.json");
 
         final UUID phraseId = PhraseMother.DefaultPhrase.ID;
         final UUID translationId = TranslationMother.DefaultTranslation.ID;
@@ -46,6 +46,9 @@ class PhrasesControllerSavePhrasesIT extends BaseIT {
                         .withStatus(200)
                         .withHeader("Content-Type", "audio/wav")
                         .withBody(expectedMediaBinaryContent)));
+
+        Mockito.when(embeddingModel.embed(PhraseMother.DefaultPhrase.EMBEDDING_TEXT))
+                .thenReturn(PhraseMother.DefaultPhrase.embedding());
 
         try (
                 var uuidMockedStatic = Mockito.mockStatic(UUID.class, Mockito.CALLS_REAL_METHODS);

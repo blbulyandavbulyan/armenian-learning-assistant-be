@@ -43,7 +43,7 @@ This project is the backend service for the Armenian Learning Assistant. It leve
 
 ### Key Commands
 - **Build**: `mvn clean install`
-- **Test**: `mvn test`
+- **Test**: `mvn clean verify` (must use verify to run Integration Tests `*IT.java`)
 - **Checkstyle**: `mvn checkstyle:check` (Enforced during the `compile` phase).
 
 ---
@@ -101,3 +101,6 @@ This document outlines the architectural boundaries and engineering standards fo
 ### 3. Scope of Work (The "Do Not Touch" Rule)
 - Do not refactor unrelated files or change configuration properties unless it is a direct dependency of the task.
 - Leave existing, untouched code exactly as it is to prevent regression.
+
+### 4. Build and Test Execution
+- **Always run `mvn verify` instead of `mvn test`**: This project relies on `failsafe` for executing `*IT.java` integration tests. Running only `mvn test` will skip integration tests, potentially hiding broken functionality. Never skip the verification phase.

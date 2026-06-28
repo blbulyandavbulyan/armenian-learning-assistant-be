@@ -15,6 +15,16 @@ public interface DialogueMother {
 
     interface DefaultDialogue {
         UUID ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        String EMBEDDING_TEXT = "Topic: " + PhraseMother.DialogueTitlePhrase.EMBEDDING_TEXT + "\n\n"
+                + PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT + "\n" + PhraseMother.DialoguePhrase1.EMBEDDING_TEXT
+                + "\n\n" + PhraseMother.DialogueSpeaker2NamePhrase.EMBEDDING_TEXT + "\n" + PhraseMother.DialoguePhrase2.EMBEDDING_TEXT
+                + "\n\n" + PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT + "\n" + PhraseMother.DialoguePhrase3.EMBEDDING_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[3072];
+            embedding[0] = 0.9f;
+            return embedding;
+        }
 
         static Builder builder() {
             return DialogueMother.builder()
@@ -24,6 +34,7 @@ public interface DialogueMother {
                             DialogueSpeakerMother.DefaultDialogueSpeaker1.build(), 
                             DialogueSpeakerMother.DefaultDialogueSpeaker2.build()
                     )
+                    .withEmbedding(embedding())
                     .withDialoguePhrases(
                             DialoguePhraseMother.DefaultDialoguePhrase1.build(), 
                             DialoguePhraseMother.DefaultDialoguePhrase2.build(), 
@@ -45,6 +56,7 @@ public interface DialogueMother {
         private PhraseRecord title;
         private Set<DialogueSpeakerRecord> speakers;
         private Set<DialoguePhraseRecord> dialoguePhrases;
+        private float[] embedding;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -66,8 +78,13 @@ public interface DialogueMother {
             return this;
         }
 
+        public Builder withEmbedding(float[] embedding) {
+            this.embedding = embedding;
+            return this;
+        }
+
         public DialogueRecord build() {
-            return new DialogueRecord(id, title, speakers, dialoguePhrases, null);
+            return new DialogueRecord(id, title, speakers, dialoguePhrases, null, embedding);
         }
     }
 }
