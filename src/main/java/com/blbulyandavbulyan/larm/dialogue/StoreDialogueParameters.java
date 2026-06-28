@@ -6,7 +6,9 @@ import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import lombok.Builder;
 
 @Builder
+// TODO sonar warning java:S6218
 public record StoreDialogueParameters(
+        float[] embedding,
         SavePhraseParameters titlePhrase,
         List<StoreSpeakerParameters> speakers,
         List<StoreDialoguePhraseParameters> dialoguePhrases) {

@@ -6,7 +6,7 @@ CREATE TABLE phrases
     phrase        TEXT NOT NULL,
     status VARCHAR(25) NOT NULL,
     transcription TEXT,
-    embedding     vector(1536),
+    embedding     vector(1536) NOT NULL,
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_phrase UNIQUE (phrase)
 );

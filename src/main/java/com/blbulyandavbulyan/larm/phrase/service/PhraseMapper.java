@@ -24,6 +24,7 @@ public class PhraseMapper {
                 .transcription(resource.transcription())
                 .isoLanguageCode(resource.isoLanguageCode())
                 .status(PhraseStatus.DRAFT)
+                .embedding(resource.embedding())
                 .build();
 
         var translations = resource.translations().stream()

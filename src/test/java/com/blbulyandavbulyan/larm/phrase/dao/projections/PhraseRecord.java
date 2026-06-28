@@ -14,10 +14,11 @@ public record PhraseRecord(
         String phrase,
         String transcription,
         Set<TranslationRecord> translations,
-        Set<MediaRecord> mediaSet) {
+        Set<MediaRecord> mediaSet,
+        float[] embedding) {
     public PhraseRecord(Phrase phrase) {
         this(phrase.getId(), phrase.getStatus(), phrase.getIsoLanguageCode(), phrase.getPhrase(),
-                phrase.getTranscription(), getTranslationRecords(phrase), getMediaRecords(phrase));
+                phrase.getTranscription(), getTranslationRecords(phrase), getMediaRecords(phrase), phrase.getEmbedding());
     }
 
     private static Set<MediaRecord> getMediaRecords(Phrase phrase) {

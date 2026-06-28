@@ -45,6 +45,7 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                 .id(UUID.randomUUID())
                 .title(dialogueSavedPhrases.titlePhrase())
                 .createdAt(dialogueCreatedAt)
+                .embedding(parameters.embedding())
                 .build();
 
         Map<String, DialogueSpeaker> speakerRefToSpeaker = new HashMap<>();

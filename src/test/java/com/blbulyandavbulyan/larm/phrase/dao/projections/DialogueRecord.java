@@ -12,14 +12,16 @@ public record DialogueRecord(
         PhraseRecord title,
         Set<DialogueSpeakerRecord> speakers,
         Set<DialoguePhraseRecord> dialoguePhrases,
-        Instant createdAt) {
+        Instant createdAt,
+        float[] embedding) {
 
     public DialogueRecord(Dialogue dialogue) {
         this(dialogue.getId(), 
                 new PhraseRecord(dialogue.getTitle()),
                 getSpeakerRecords(dialogue),
                 getPhraseRecords(dialogue),
-                dialogue.getCreatedAt());
+                dialogue.getCreatedAt(),
+                dialogue.getEmbedding());
     }
 
     private static Set<DialogueSpeakerRecord> getSpeakerRecords(Dialogue dialogue) {

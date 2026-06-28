@@ -17,6 +17,17 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Որտե՞ղ է հացի բաժինը:";
         String TRANSCRIPTION = "Vortegh e hatsi bazhiny?";
+        String EMBEDDING_TEXT = PhraseMother.DefaultPhrase.ISO_LANGUAGE_CODE + ": "
+                + PhraseMother.DefaultPhrase.PHRASE + ", "
+                + TranslationMother.DefaultTranslation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DefaultTranslation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.123f;
+            embedding[1] = 0.456f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -25,6 +36,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DefaultTranslation.build());
         }
     }
@@ -35,6 +47,16 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Հացի փռում";
         String TRANSCRIPTION = "Hatsi prrum";
+        String EMBEDDING_TEXT = PhraseMother.DialogueTitlePhrase.ISO_LANGUAGE_CODE + ": "
+                + PhraseMother.DialogueTitlePhrase.PHRASE + ", "
+                + TranslationMother.DialogueTitleTranslation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DialogueTitleTranslation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.1f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -43,6 +65,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DialogueTitleTranslation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -58,6 +81,16 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Հացթուխ";
         String TRANSCRIPTION = "Hatstukh";
+        String EMBEDDING_TEXT = PhraseMother.DialogueSpeaker1NamePhrase.ISO_LANGUAGE_CODE + ": "
+                + PhraseMother.DialogueSpeaker1NamePhrase.PHRASE + ", "
+                + TranslationMother.DialogueSpeaker1NameTranslation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DialogueSpeaker1NameTranslation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.2f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -66,6 +99,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DialogueSpeaker1NameTranslation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -81,6 +115,16 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Գնորդ";
         String TRANSCRIPTION = "Gnord";
+        String EMBEDDING_TEXT = PhraseMother.DialogueSpeaker2NamePhrase.ISO_LANGUAGE_CODE + ": "
+                + PhraseMother.DialogueSpeaker2NamePhrase.PHRASE + ", "
+                + TranslationMother.DialogueSpeaker2NameTranslation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DialogueSpeaker2NameTranslation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.3f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -89,6 +133,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DialogueSpeaker2NameTranslation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -104,6 +149,16 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Բարեւ ձեզ";
         String TRANSCRIPTION = "Barev dzez";
+        String EMBEDDING_TEXT = PhraseMother.DialoguePhrase1.ISO_LANGUAGE_CODE + ": "
+                + PhraseMother.DialoguePhrase1.PHRASE + ", "
+                + TranslationMother.DialoguePhrase1Translation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DialoguePhrase1Translation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.4f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -112,6 +167,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DialoguePhrase1Translation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -127,6 +183,15 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Բարեւ ձեզ, խնդրում եմ մեկ հաց:";
         String TRANSCRIPTION = "Barev dzez, khndrum em mek hats.";
+        String EMBEDDING_TEXT = PhraseMother.DialoguePhrase2.ISO_LANGUAGE_CODE + ": " + PhraseMother.DialoguePhrase2.PHRASE + ", "
+                + TranslationMother.DialoguePhrase2Translation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DialoguePhrase2Translation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.5f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -135,6 +200,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DialoguePhrase2Translation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -150,6 +216,16 @@ public interface PhraseMother {
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Ահա, խնդրեմ:";
         String TRANSCRIPTION = "Aha, khndrem.";
+        String EMBEDDING_TEXT = PhraseMother.DialoguePhrase3.ISO_LANGUAGE_CODE + ": "
+                + PhraseMother.DialoguePhrase3.PHRASE + ", "
+                + TranslationMother.DialoguePhrase3Translation.ISO_LANGUAGE_CODE + ": "
+                + TranslationMother.DialoguePhrase3Translation.TRANSLATION_TEXT;
+
+        static float[] embedding() {
+            float[] embedding = new float[1536];
+            embedding[0] = 0.6f;
+            return embedding;
+        }
 
         static Builder builder() {
             return PhraseMother.builder()
@@ -158,6 +234,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
+                    .withEmbedding(embedding())
                     .withTranslations(TranslationMother.DialoguePhrase3Translation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -179,6 +256,7 @@ public interface PhraseMother {
         private String transcription;
         private Set<TranslationRecord> translations;
         private Set<MediaRecord> mediaSet;
+        private float[] embedding;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -215,8 +293,13 @@ public interface PhraseMother {
             return this;
         }
 
+        public Builder withEmbedding(float[] embedding) {
+            this.embedding = embedding;
+            return this;
+        }
+
         public PhraseRecord build() {
-            return new PhraseRecord(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet);
+            return new PhraseRecord(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet, embedding);
         }
     }
 }

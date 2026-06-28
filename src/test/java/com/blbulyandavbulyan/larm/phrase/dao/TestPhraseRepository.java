@@ -9,6 +9,6 @@ import org.springframework.data.repository.Repository;
 
 public interface TestPhraseRepository extends Repository<Phrase, UUID> {
     
-    @EntityGraph(attributePaths = {"mediaSet", "translations"})
+    @EntityGraph(attributePaths = {"mediaSet", "translations", "embedding"})
     Optional<Phrase> findById(UUID id);
 }

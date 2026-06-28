@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.google.genai.GoogleGenAiEmbeddingConnectionDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,6 +82,9 @@ public abstract class BaseIT {
 
     @MockitoBean
     protected GoogleGenAiEmbeddingConnectionDetails embeddingConnectionDetails;
+
+    @MockitoBean
+    protected EmbeddingModel embeddingModel;
 
     @InjectWireMock("piper-tts-service")
     protected WireMockServer wireMockServer;
