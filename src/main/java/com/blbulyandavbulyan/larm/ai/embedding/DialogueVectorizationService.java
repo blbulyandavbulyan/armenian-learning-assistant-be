@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.stereotype.Service;
 
+import static com.blbulyandavbulyan.larm.ai.embedding.util.TranslationUtils.extractTranslations;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,19 +23,25 @@ public class DialogueVectorizationService {
                 .stream()
                 .collect(Collectors.toMap(SaveDialogueParameters.SpeakerParameters::speakerRefId, Function.identity()));
 
-        String embeddingText = params.dialoguePhrases().stream()
-                .map(dp -> {
-                    String speakerName = speakerRefIdToSpeaker.get(dp.speakerRefId()).title();
-                    String prefix = speakerName + ": ";
-                    String text = prefix + dp.isoLanguageCode() + ": " + dp.phrase();
+        final var textBuilder = new StringBuilder();
 
-                    text += ", " + dp.translations().stream()
-                            .map(t -> t.isoLanguageCode() + ": " + t.translationText())
-                            .collect(Collectors.joining(", "));
-                    return text;
+        textBuilder.append("Topic: ").append(params.title());
+        textBuilder.append(" (").append(extractTranslations(params.titleTranslations())).append(")\n\n");
+
+        final String dialogueLines = params.dialoguePhrases().stream()
+                .map(dp -> {
+                    final var speaker = speakerRefIdToSpeaker.get(dp.speakerRefId());
+
+                    return speaker.title()
+                            + " (" + extractTranslations(speaker.translations()) + "): "
+                            + dp.phrase()
+                            + " (" + extractTranslations(dp.translations()) + ")";
                 })
                 .collect(Collectors.joining("\n"));
 
+        textBuilder.append(dialogueLines);
+        final var embeddingText = textBuilder.toString();
+        
         log.debug("Converted dialogue parameters: {} into embedding text: {}", params, embeddingText);
         return embeddingModel.embed(embeddingText);
     }
