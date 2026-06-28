@@ -24,10 +24,10 @@ public record StoreDialogueParameters(
         if (!(o instanceof StoreDialogueParameters that)) {
             return false;
         }
-        return Arrays.equals(this.embedding, that.embedding) &&
-                Objects.equals(this.titlePhrase, that.titlePhrase) &&
-                Objects.equals(this.speakers, that.speakers) &&
-                Objects.equals(this.dialoguePhrases, that.dialoguePhrases);
+        return Arrays.equals(this.embedding, that.embedding)
+                && Objects.equals(this.titlePhrase, that.titlePhrase)
+                && Objects.equals(this.speakers, that.speakers)
+                && Objects.equals(this.dialoguePhrases, that.dialoguePhrases);
     }
 
     @Override

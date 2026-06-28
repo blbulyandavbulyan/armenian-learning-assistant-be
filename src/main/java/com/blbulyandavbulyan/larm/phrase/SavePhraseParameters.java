@@ -27,13 +27,13 @@ public record SavePhraseParameters(
         if (!(o instanceof SavePhraseParameters that)) {
             return false;
         }
-        return Objects.equals(id, that.id) &&
-                Objects.equals(phrase, that.phrase) &&
-                Objects.equals(isoLanguageCode, that.isoLanguageCode) &&
-                Objects.equals(transcription, that.transcription) &&
-                Arrays.equals(embedding, that.embedding) &&
-                Objects.equals(translations, that.translations) &&
-                Objects.equals(mediaResources, that.mediaResources);
+        return Objects.equals(id, that.id)
+                && Objects.equals(phrase, that.phrase)
+                && Objects.equals(isoLanguageCode, that.isoLanguageCode)
+                && Objects.equals(transcription, that.transcription)
+                && Arrays.equals(embedding, that.embedding)
+                && Objects.equals(translations, that.translations)
+                && Objects.equals(mediaResources, that.mediaResources);
     }
 
     @Override
