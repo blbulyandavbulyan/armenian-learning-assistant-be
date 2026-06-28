@@ -2,6 +2,20 @@
 This file will contain all the ideas which I consider interesting and worth adding here
 
 ## High Priority (Core Learning Experience):
+- [ ] identify if generating prhases and saving phrases separately outside of dialogue is even useful feature. Because dialogues have more context and most probably more fun then separate phrases. Provide arguments for preserving generating and saving phrases separately, and also provide the arguments for dropping this feature.
+### Vectorization (Embeddings)
+*See design spec: [docs/superpowers/specs/2026-06-28-vectorization-design.md](docs/superpowers/specs/2026-06-28-vectorization-design.md)*
+*See implementation plan: [docs/superpowers/plans/2026-06-28-vectorization-plan.md](docs/superpowers/plans/2026-06-28-vectorization-plan.md)*
+- [ ] Vectorization of phrases in the dialogoue (Planned)
+- [ ] Vectorization of full dialogue (maybe by concatenating phrases) (Planned)
+
+### Tools
+#### For generating dialogues
+- [ ] Tool for generating dialogue endpoint (POST /chat/dialogue) which uses vector search in postgres to identify if similar dialogues are alerady saved.
+- [ ] Adjustemnt to the chat endpoint so that it would return similar dialgoues, probably as list of dialogue ids, so that user can maybe fetch them later. Or maybe it is better to return them in the response fully, I don't know.
+#### For generating phrases
+- [ ] Tool for generating phrases (POST /chat/phrases) which uses vector search in postgres to identify if similar phrases was already saved.
+- [ ] Adjustment in the chat endpoint, so that similar phrases will be returned in the response, as ids or as full phrases.
 
 ### Dialogues
 Probably worth trying idea with 'dialogues', when LLM generates the dialogue,
