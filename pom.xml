@@ -260,13 +260,6 @@
 				<groupId>org.hibernate.orm</groupId>
 				<artifactId>hibernate-maven-plugin</artifactId>
 				<version>${hibernate.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>net.bytebuddy</groupId>
-						<artifactId>byte-buddy</artifactId>
-						<version>1.15.5</version>
-					</dependency>
-				</dependencies>
 				<executions>
 					<execution>
 						<configuration>
