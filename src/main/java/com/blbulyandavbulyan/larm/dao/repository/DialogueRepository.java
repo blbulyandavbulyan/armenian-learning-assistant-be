@@ -1,9 +1,11 @@
 package com.blbulyandavbulyan.larm.dao.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,4 +17,12 @@ public interface DialogueRepository extends CrudRepository<Dialogue, UUID> {
             "dialoguePhrases.phrase", "dialoguePhrases.phrase.mediaSet", "dialoguePhrases.translations"})
     @Query("SELECT d FROM Dialogue d WHERE d.id = :id")
     Optional<Dialogue> findByIdEagerly(@Param("id") UUID id);
+
+    @EntityGraph(attributePaths = {"title", "titleTranslations", "title.mediaSet"})
+    @Query(value =
+            """
+            SELECT d FROM Dialogue d \
+            ORDER BY l2_distance(d.embedding, :embedding)\
+            """)
+    List<Dialogue> searchByEmbedding(@Param("embedding") float[] embedding, Limit limit);
 }

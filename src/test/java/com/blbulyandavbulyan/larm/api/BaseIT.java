@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -92,8 +93,19 @@ public abstract class BaseIT {
         this.piperWireMock = new PiperWireMock(wireMockServer);
     }
 
+    @Autowired(required = false)
+    protected CacheManager cacheManager;
+
     @AfterEach
     protected void afterEach(TestInfo testInfo) {
         LOG.info("Finished test: {}", testInfo);
+        if (cacheManager != null) {
+            cacheManager.getCacheNames().forEach(name -> {
+                var cache = cacheManager.getCache(name);
+                if (cache != null) {
+                    cache.clear();
+                }
+            });
+        }
     }
 }

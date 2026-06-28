@@ -62,7 +62,7 @@ This project is the backend service for the Armenian Learning Assistant. It leve
 
 ### Database
 - All schema changes MUST be done via Flyway migrations in `src/main/resources/db/migration`.
-- The `phrases` table uses `pgvector` (`vector(1536)`) for embeddings.
+- The `phrases` table uses `pgvector` (`vector(3072)`) for embeddings.
 
 ### Text-to-Speech (TTS)
 - Currently, only Armenian (`hy`) is supported.

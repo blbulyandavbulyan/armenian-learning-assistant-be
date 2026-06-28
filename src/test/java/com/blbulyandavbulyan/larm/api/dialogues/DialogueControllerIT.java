@@ -23,6 +23,7 @@ import org.springframework.test.json.JsonCompareMode;
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -130,7 +131,7 @@ class DialogueControllerIT extends BaseIT {
     }
 
     @Test
-    @Sql("/sql/insert-phrases-for-deduplication.sql")
+    @Sql("/sql-test-scripts/insert-phrases-for-deduplication.sql")
     void saveDialogue_withExistingPhrases() throws Exception {
         piperWireMock.stubTtsWithAudio(PhraseMother.DialogueTitlePhrase.PHRASE, new byte[]{1});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE, new byte[]{2});
@@ -341,7 +342,7 @@ class DialogueControllerIT extends BaseIT {
     }
 
     @Test
-    @Sql("/sql/insert-dialogue.sql")
+    @Sql("/sql-test-scripts/insert-dialogue.sql")
     void getDialogue() throws Exception {
         String expectedJson = readResourceToString("/responses/get-dialogue-response.json");
         UUID dialogueId = UUID.fromString("99999999-9999-9999-9999-999999999999");
@@ -357,5 +358,47 @@ class DialogueControllerIT extends BaseIT {
 
         mockMvc.perform(get(RequestMapping.GET_DIALOGUE, dialogueId))
                 .andExpect(status().isNotFound());
+    }
+
+    private float[] generateMockEmbedding(float firstValue) {
+        float[] queryEmbedding = new float[3072];
+        queryEmbedding[0] = firstValue;
+        return queryEmbedding;
+    }
+
+    @Test
+    @Sql("/sql-test-scripts/insert-dialogues-for-search.sql")
+    void searchDialogues() throws Exception {
+        when(embeddingModel.embed("buying apples")).thenReturn(generateMockEmbedding(1.0f));
+
+        String expectedJson = readResourceToString("/expected-responses/dialogue/search-dialogues-response.json");
+
+        mockMvc.perform(get("/dialogues/search")
+                .param("query", "buying apples"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
+    }
+
+    @Test
+    void searchDialogues_cachesResults() throws Exception {
+        when(embeddingModel.embed("hello")).thenReturn(generateMockEmbedding(1.0f));
+
+        mockMvc.perform(get("/dialogues/search")
+                .param("query", "hello"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/dialogues/search")
+                .param("query", "hello"))
+                .andExpect(status().isOk());
+
+        verify(embeddingModel, times(1)).embed("hello");
+    }
+
+    @Test
+    void searchDialogues_emptyQuery() throws Exception {
+        mockMvc.perform(get("/dialogues/search")
+                .param("query", " "))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.query").exists());
     }
 }
