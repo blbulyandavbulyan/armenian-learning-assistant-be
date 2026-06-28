@@ -211,3 +211,28 @@ Run: `mvn clean test`
 git add src/test/
 git commit -m "test: update ITs to verify vectorization"
 ```
+
+### Task 7: Update TODO.md
+
+**Files:**
+- Modify: `TODO.md`
+
+- [ ] **Step 1: Check off completed vectorization tasks**
+
+Open `TODO.md` and locate the "Vectorization (Embeddings)" section.
+Change the checkboxes from `[ ]` to `[x]` and remove the `(Planned)` label:
+
+```markdown
+### Vectorization (Embeddings)
+*See design spec: [docs/superpowers/specs/2026-06-28-vectorization-design.md](docs/superpowers/specs/2026-06-28-vectorization-design.md)*
+*See implementation plan: [docs/superpowers/plans/2026-06-28-vectorization-plan.md](docs/superpowers/plans/2026-06-28-vectorization-plan.md)*
+- [x] Vectorization of phrases in the dialogoue
+- [x] Vectorization of full dialogue (maybe by concatenating phrases)
+```
+
+- [ ] **Step 2: Commit**
+
+```bash
+git add TODO.md
+git commit -m "chore: mark vectorization tasks as complete in TODO.md"
+```
