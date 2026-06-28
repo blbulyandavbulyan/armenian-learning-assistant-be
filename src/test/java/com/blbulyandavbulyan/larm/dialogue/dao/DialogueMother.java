@@ -16,9 +16,9 @@ public interface DialogueMother {
     interface DefaultDialogue {
         UUID ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
         String EMBEDDING_TEXT = "Topic: " + PhraseMother.DialogueTitlePhrase.EMBEDDING_TEXT + "\n\n"
-                + PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT + ": " + PhraseMother.DialoguePhrase1.EMBEDDING_TEXT
-                + "\n" + PhraseMother.DialogueSpeaker2NamePhrase.EMBEDDING_TEXT + ": " + PhraseMother.DialoguePhrase2.EMBEDDING_TEXT
-                + "\n" + PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT + ": " + PhraseMother.DialoguePhrase3.EMBEDDING_TEXT;
+                + PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT + "\n" + PhraseMother.DialoguePhrase1.EMBEDDING_TEXT
+                + "\n\n" + PhraseMother.DialogueSpeaker2NamePhrase.EMBEDDING_TEXT + "\n" + PhraseMother.DialoguePhrase2.EMBEDDING_TEXT
+                + "\n\n" + PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT + "\n" + PhraseMother.DialoguePhrase3.EMBEDDING_TEXT;
 
         static float[] embedding() {
             float[] embedding = new float[3072];

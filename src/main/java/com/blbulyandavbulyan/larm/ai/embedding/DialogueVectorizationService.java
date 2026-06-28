@@ -33,11 +33,11 @@ public class DialogueVectorizationService {
                     final var speaker = speakerRefIdToSpeaker.get(dp.speakerRefId());
 
                     return speaker.title()
-                            + " (" + extractTranslations(speaker.translations()) + "): "
+                            + " (" + extractTranslations(speaker.translations()) + ")\n"
                             + dp.phrase()
                             + " (" + extractTranslations(dp.translations()) + ")";
                 })
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining("\n\n"));
 
         textBuilder.append(dialogueLines);
         final var embeddingText = textBuilder.toString();
