@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
-import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
+
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
 import org.junit.jupiter.api.AfterEach;
@@ -38,7 +38,7 @@ import org.wiremock.spring.InjectWireMock;
 @EnableWireMock({
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "piper.url")
 })
-@Import({PhraseRecordAssertHelper.class, DialogueRecordAssertHelper.class})
+@Import({DialogueRecordAssertHelper.class})
 @Sql(scripts = "/sql-test-scripts/drop-all-data-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public abstract class BaseIT {
 
@@ -69,8 +69,7 @@ public abstract class BaseIT {
     @Autowired
     protected MockMvc mockMvc;
 
-    @Autowired
-    protected PhraseRecordAssertHelper phraseRecordAssertHelper;
+
 
     @Autowired
     protected DialogueRecordAssertHelper dialogueRecordAssertHelper;
