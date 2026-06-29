@@ -1,20 +1,15 @@
 package com.blbulyandavbulyan.larm.api.phrases;
 
-import com.blbulyandavbulyan.larm.api.advice.ValidationErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/phrases")
 @Tag(name = "Phrases", description = "Endpoints for managing the collection of Armenian phrases, their translations, and audio assets")
@@ -40,33 +35,4 @@ interface PhrasesApi {
     )
     PhrasesPagedResponse getPhrases(@ParameterObject @Validated PageRequest pageRequest);
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(
-            summary = "Save and process phrases",
-            description =
-                    """
-                    Saves a list of phrases and their translations. For each phrase, \
-                    it automatically generates an audio asset using Text-to-Speech (TTS) and stores it.
-                    """,
-            responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Phrases successfully saved and audio assets generated",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = CreatePhrasesResponse.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Validation failed",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ValidationErrorResponse.class)
-                            )
-                    )
-            }
-    )
-    CreatePhrasesResponse savePhrases(@Validated @RequestBody CreatePhrasesRequest request);
 }

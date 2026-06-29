@@ -1,9 +1,5 @@
 package com.blbulyandavbulyan.larm.api.phrases;
 
-import java.util.List;
-
-import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
-import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import com.blbulyandavbulyan.larm.phrase.PageParameters;
 import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
@@ -17,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 class PhraseController implements PhrasesApi {
     private final PhraseStoringService phraseService;
     private final PhraseResponseMapper phraseResponseMapper;
-    private final PhraseRequestMapper phraseRequestMapper;
-    private final PhraseOrchestrator phraseOrchestrator;
 
     @Override
     public PhrasesPagedResponse getPhrases(PageRequest pageRequest) {
@@ -28,12 +22,5 @@ class PhraseController implements PhrasesApi {
                 .build());
 
         return phraseResponseMapper.mapToResponse(phraseResource);
-    }
-
-    @Override
-    public CreatePhrasesResponse savePhrases(CreatePhrasesRequest request) {
-        // TODO most probably you have to check if at least one phrase is a duplicate -> return error and don't save anything
-        List<Phrase> savedPhrases = phraseOrchestrator.savePhrases(phraseRequestMapper.mapToBatchPhrasesParameters(request));
-        return new CreatePhrasesResponse(phraseResponseMapper.mapToCreatePhrasesResponse(savedPhrases));
     }
 }

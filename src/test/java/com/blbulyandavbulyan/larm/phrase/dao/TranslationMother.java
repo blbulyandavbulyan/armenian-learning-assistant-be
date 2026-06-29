@@ -6,24 +6,6 @@ import java.util.UUID;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
 
 public interface TranslationMother {
-    interface DefaultTranslation {
-        UUID ID = UUID.fromString("bc5333d4-c70b-4121-8bdc-4b94547de419");
-        String ISO_LANGUAGE_CODE = "en";
-        String TRANSLATION_TEXT = "Where is the bread section?";
-        Instant CREATED_AT = Instant.parse("2026-06-13T10:00:00Z");
-
-        static Builder builder() {
-            return TranslationMother.builder()
-                    .withId(ID)
-                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
-                    .withTranslationText(TRANSLATION_TEXT)
-                    .withCreatedAt(CREATED_AT);
-        }
-
-        static TranslationRecord build() {
-            return DefaultTranslation.builder().build();
-        }
-    }
 
     interface DialogueTitleTranslation {
         UUID ID = UUID.fromString("bc5333d4-c70b-4121-8bdc-4b94547de420");

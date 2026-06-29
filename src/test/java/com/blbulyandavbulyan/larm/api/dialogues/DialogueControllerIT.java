@@ -20,6 +20,8 @@ import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -48,24 +50,6 @@ class DialogueControllerIT extends BaseIT {
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase1.PHRASE, new byte[]{4});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase2.PHRASE, new byte[]{5});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase3.PHRASE, new byte[]{6});
-
-        when(embeddingModel.embed(PhraseMother.DialogueTitlePhrase.EMBEDDING_TEXT))
-                .thenReturn(PhraseMother.DialogueTitlePhrase.embedding());
-
-        when(embeddingModel.embed(PhraseMother.DialogueSpeaker1NamePhrase.EMBEDDING_TEXT))
-                .thenReturn(PhraseMother.DialogueSpeaker1NamePhrase.embedding());
-
-        when(embeddingModel.embed(PhraseMother.DialogueSpeaker2NamePhrase.EMBEDDING_TEXT))
-                .thenReturn(PhraseMother.DialogueSpeaker2NamePhrase.embedding());
-
-        when(embeddingModel.embed(PhraseMother.DialoguePhrase1.EMBEDDING_TEXT))
-                .thenReturn(PhraseMother.DialoguePhrase1.embedding());
-
-        when(embeddingModel.embed(PhraseMother.DialoguePhrase2.EMBEDDING_TEXT))
-                .thenReturn(PhraseMother.DialoguePhrase2.embedding());
-
-        when(embeddingModel.embed(PhraseMother.DialoguePhrase3.EMBEDDING_TEXT))
-                .thenReturn(PhraseMother.DialoguePhrase3.embedding());
 
         when(embeddingModel.embed(DialogueMother.DefaultDialogue.EMBEDDING_TEXT))
                 .thenReturn(DialogueMother.DefaultDialogue.embedding());
@@ -136,6 +120,7 @@ class DialogueControllerIT extends BaseIT {
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase1.PHRASE);
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase2.PHRASE);
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase3.PHRASE);
+        verify(embeddingModel).embed(anyString());
     }
 
     private byte[] readMediaBytes(Media media) {
