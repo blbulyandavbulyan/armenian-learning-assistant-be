@@ -9,7 +9,7 @@ import lombok.Builder;
 
 @Schema(name = "Phrase Translation")
 @Builder
-record TranslationResponse(
+public record TranslationResponse(
         @Schema(description = Descriptions.TRANSLATION_ID, example = Examples.TRANSLATION_ID,
                 requiredMode = Schema.RequiredMode.REQUIRED)
         UUID id,

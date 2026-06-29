@@ -11,6 +11,11 @@ public record DialogueSpeakerRecord(
         Instant createdAt) {
 
     public DialogueSpeakerRecord(DialogueSpeaker speaker) {
-        this(speaker.getId(), new PhraseRecord(speaker.getNamePhrase()), speaker.getCreatedAt());
+        this(speaker.getId(), 
+                new PhraseRecord(speaker.getNamePhrase(), 
+                        speaker.getTranslations().stream()
+                                .map(TranslationRecord::new)
+                                .collect(java.util.stream.Collectors.toSet())), 
+                speaker.getCreatedAt());
     }
 }

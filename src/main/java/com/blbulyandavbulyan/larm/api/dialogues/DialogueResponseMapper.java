@@ -17,7 +17,7 @@ public class DialogueResponseMapper {
     public GetDialogueResponse toResponse(Dialogue dialogue) {
         return GetDialogueResponse.builder()
                 .id(dialogue.getId())
-                .title(phraseResponseMapper.mapToPhraseResponse(dialogue.getTitle()))
+                .title(phraseResponseMapper.mapToPhraseResponse(dialogue.getTitle(), dialogue.getTitleTranslations()))
                 .speakers(mapSpeakers(dialogue))
                 .dialoguePhrases(mapDialoguePhrases(dialogue))
                 .build();
@@ -28,7 +28,7 @@ public class DialogueResponseMapper {
                 .flatMap(Collection::stream)
                 .map(dialogueSpeaker -> GetDialogueResponse.DialogueSpeakerResponse.builder()
                         .id(dialogueSpeaker.getId())
-                        .name(phraseResponseMapper.mapToPhraseResponse(dialogueSpeaker.getNamePhrase()))
+                        .name(phraseResponseMapper.mapToPhraseResponse(dialogueSpeaker.getNamePhrase(), dialogueSpeaker.getTranslations()))
                         .build())
                 .toList();
     }
@@ -38,7 +38,7 @@ public class DialogueResponseMapper {
                 .flatMap(Collection::stream)
                 .map(dialoguePhrase -> GetDialogueResponse.DialoguePhraseResponse.builder()
                         .speakerId(dialoguePhrase.getSpeaker().getId())
-                        .phrase(phraseResponseMapper.mapToPhraseResponse(dialoguePhrase.getPhrase()))
+                        .phrase(phraseResponseMapper.mapToPhraseResponse(dialoguePhrase.getPhrase(), dialoguePhrase.getTranslations()))
                         .build())
                 .toList();
     }

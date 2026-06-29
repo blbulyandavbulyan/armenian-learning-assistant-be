@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
@@ -117,7 +116,6 @@ public interface TranslationMother {
         private UUID id;
         private String isoLanguageCode;
         private String translationText;
-        private Instant createdAt;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -134,13 +132,8 @@ public interface TranslationMother {
             return this;
         }
 
-        public Builder withCreatedAt(Instant createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
         public TranslationRecord build() {
-            return new TranslationRecord(id, isoLanguageCode, translationText, createdAt);
+            return new TranslationRecord(id, isoLanguageCode, translationText);
         }
     }
 }

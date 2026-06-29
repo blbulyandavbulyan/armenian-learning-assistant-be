@@ -20,7 +20,10 @@ public record DialogueRecord(
 
     public DialogueRecord(Dialogue dialogue) {
         this(dialogue.getId(), 
-                new PhraseRecord(dialogue.getTitle()),
+                new PhraseRecord(dialogue.getTitle(), 
+                        dialogue.getTitleTranslations().stream()
+                                .map(TranslationRecord::new)
+                                .collect(Collectors.toSet())),
                 getSpeakerRecords(dialogue),
                 getPhraseRecords(dialogue),
                 dialogue.getCreatedAt(),

@@ -11,8 +11,6 @@ public interface PhraseStoringService {
      *
      * @param parameters for saving phrase
      * @return list of saved phrases
-     * @throws PhrasesAlreadyExistException if at least some of the phrases are already saved, this fails the entire saving operation
-     * @throws InvalidIsoLanguageCodeException in case if some translations have invalid iso language code
      */
     @Transactional
     List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters);

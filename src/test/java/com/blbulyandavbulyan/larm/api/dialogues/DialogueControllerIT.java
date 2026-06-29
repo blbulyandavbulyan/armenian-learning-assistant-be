@@ -14,8 +14,10 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlMergeMode;
 import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
@@ -30,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 class DialogueControllerIT extends BaseIT {
     interface RequestMapping {
         String SAVE_DIALOGUE = "/dialogues";
@@ -41,6 +44,9 @@ class DialogueControllerIT extends BaseIT {
 
     @Autowired
     private TestDialogueRepository testDialogueRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     void saveDialogue() throws Exception {
@@ -121,6 +127,34 @@ class DialogueControllerIT extends BaseIT {
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase2.PHRASE);
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase3.PHRASE);
         verify(embeddingModel).embed(anyString());
+    }
+
+    @Test
+    @Sql("/sql/insert-phrases-for-deduplication.sql")
+    void saveDialogue_withExistingPhrases() throws Exception {
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueTitlePhrase.PHRASE, new byte[]{1});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE, new byte[]{2});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE, new byte[]{3});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase1.PHRASE, new byte[]{4});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase2.PHRASE, new byte[]{5});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase3.PHRASE, new byte[]{6});
+
+        when(embeddingModel.embed(anyString()))
+                .thenReturn(DialogueMother.DefaultDialogue.embedding());
+
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-request.json");
+
+        mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists());
+
+        Long finalPhraseCount = jdbcTemplate.queryForObject("SELECT count(*) FROM phrases", Long.class);
+
+        // Out of 6 distinct phrases in the request, 3 are already in the DB (inserted by SQL script).
+        // Therefore, exactly 3 NEW phrases should be inserted.
+        assertThat(finalPhraseCount).isEqualTo(6);
     }
 
     private byte[] readMediaBytes(Media media) {

@@ -13,7 +13,10 @@ import java.util.stream.IntStream;
 
 import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
 import com.blbulyandavbulyan.larm.dao.entities.DialoguePhrase;
+import com.blbulyandavbulyan.larm.dao.entities.DialoguePhraseTranslation;
 import com.blbulyandavbulyan.larm.dao.entities.DialogueSpeaker;
+import com.blbulyandavbulyan.larm.dao.entities.DialogueSpeakerTranslation;
+import com.blbulyandavbulyan.larm.dao.entities.DialogueTitleTranslation;
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import com.blbulyandavbulyan.larm.dialogue.DialogueSavingService;
@@ -46,6 +49,14 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                 .title(dialogueSavedPhrases.titlePhrase())
                 .createdAt(dialogueCreatedAt)
                 .embedding(parameters.embedding())
+                .titleTranslations(
+                        parameters.titlePhrase().translations().stream()
+                                .map(t -> DialogueTitleTranslation.builder()
+                                        .id(UUID.randomUUID())
+                                        .isoLanguageCode(t.isoLanguageCode())
+                                        .translationText(t.translationText())
+                                        .build())
+                                .collect(Collectors.toSet()))
                 .build();
 
         Map<String, DialogueSpeaker> speakerRefToSpeaker = new HashMap<>();
@@ -59,6 +70,14 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                     .dialogue(dialogue)
                     .namePhrase(speakerName)
                     .createdAt(dialogueCreatedAt)
+                    .translations(
+                            sp.namePhrase().translations().stream()
+                                    .map(t -> DialogueSpeakerTranslation.builder()
+                                            .id(UUID.randomUUID())
+                                            .isoLanguageCode(t.isoLanguageCode())
+                                            .translationText(t.translationText())
+                                            .build())
+                                    .collect(Collectors.toSet()))
                     .build();
             speakers.add(speaker);
             speakerRefToSpeaker.put(sp.speakerRefId(), speaker);
@@ -79,6 +98,14 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                             .speaker(speaker)
                             .orderIndex(i)
                             .createdAt(dialogueCreatedAt)
+                            .translations(
+                                    dp.phrase().translations().stream()
+                                            .map(t -> DialoguePhraseTranslation.builder()
+                                                    .id(UUID.randomUUID())
+                                                    .isoLanguageCode(t.isoLanguageCode())
+                                                    .translationText(t.translationText())
+                                                    .build())
+                                            .collect(Collectors.toSet()))
                             .build();
                 })
                 .collect(Collectors.toCollection(LinkedHashSet::new));

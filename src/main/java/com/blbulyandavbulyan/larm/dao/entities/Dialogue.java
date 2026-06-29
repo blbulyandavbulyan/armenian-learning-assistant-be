@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -53,6 +54,11 @@ public class Dialogue {
     @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderIndex ASC")
     private Set<DialoguePhrase> dialoguePhrases;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "dialogue_id", nullable = false)
+    @Builder.Default
+    private Set<DialogueTitleTranslation> titleTranslations = new HashSet<>();
 
     @Override
     public final boolean equals(Object o) {
