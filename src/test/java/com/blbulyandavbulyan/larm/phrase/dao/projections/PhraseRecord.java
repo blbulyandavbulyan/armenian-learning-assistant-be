@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.phrase.dao.projections;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -17,11 +16,10 @@ public record PhraseRecord(
         String phrase,
         String transcription,
         Set<TranslationRecord> translations,
-        Set<MediaRecord> mediaSet,
-        float[] embedding) {
+        Set<MediaRecord> mediaSet) {
     public PhraseRecord(Phrase phrase) {
         this(phrase.getId(), phrase.getStatus(), phrase.getIsoLanguageCode(), phrase.getPhrase(),
-                phrase.getTranscription(), getTranslationRecords(phrase), getMediaRecords(phrase), phrase.getEmbedding());
+                phrase.getTranscription(), getTranslationRecords(phrase), getMediaRecords(phrase));
     }
 
     private static Set<MediaRecord> getMediaRecords(Phrase phrase) {
@@ -43,7 +41,6 @@ public record PhraseRecord(
         }
         return Objects.equals(id, that.id)
                 && Objects.equals(phrase, that.phrase)
-                && Objects.deepEquals(embedding, that.embedding)
                 && status == that.status
                 && Objects.equals(transcription, that.transcription)
                 && Objects.equals(isoLanguageCode, that.isoLanguageCode)
@@ -54,13 +51,13 @@ public record PhraseRecord(
     @Override
     public int hashCode() {
         return Objects.hash(id, status, isoLanguageCode, phrase, transcription,
-                translations, mediaSet, Arrays.hashCode(embedding));
+                translations, mediaSet);
     }
 
     @Override
     @NonNull
     public String toString() {
-        return "PhraseRecord{id=%s, status=%s, isoLanguageCode='%s', phrase='%s', transcription='%s', translations=%s, mediaSet=%s, embedding=%s}"
-                .formatted(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet, Arrays.toString(embedding));
+        return "PhraseRecord{id=%s, status=%s, isoLanguageCode='%s', phrase='%s', transcription='%s', translations=%s, mediaSet=%s}"
+                .formatted(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet);
     }
 }

@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.ai.SpeechResource;
 import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
-import com.blbulyandavbulyan.larm.ai.embedding.PhraseVectorizationService;
 import com.blbulyandavbulyan.larm.phrase.CreateMediaResource;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
@@ -16,10 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PhraseProcessor {
-
     private final TextToSpeechService textToSpeechService;
     private final ObjectStorageService objectStorageService;
-    private final PhraseVectorizationService phraseVectorizationService;
 
     /**
      * Generates TTS audio for a phrase, stores it, and returns the phrase parameters
@@ -43,8 +40,6 @@ public class PhraseProcessor {
                 .contentType(speechResource.contentType())
                 .build();
 
-        float[] embedding = phraseVectorizationService.vectorize(parameters);
-
         return SavePhraseParameters.builder()
                 .id(phraseId)
                 .phrase(parameters.phrase())
@@ -52,7 +47,7 @@ public class PhraseProcessor {
                 .isoLanguageCode(parameters.isoLanguageCode())
                 .translations(parameters.translations())
                 .mediaResources(List.of(mediaResource))
-                .embedding(embedding)
                 .build();
     }
 }
+

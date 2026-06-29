@@ -11,11 +11,11 @@ import org.springframework.data.repository.Repository;
 public interface TestDialogueRepository extends Repository<Dialogue, UUID> {
     
     @EntityGraph(attributePaths = {
-            "title", "title.translations", "title.mediaSet", "title.embedding",
+            "title", "title.translations", "title.mediaSet",
             "speakers", "speakers.namePhrase", "speakers.namePhrase.translations",
-            "speakers.namePhrase.mediaSet", "speakers.namePhrase.embedding",
+            "speakers.namePhrase.mediaSet",
             "dialoguePhrases", "dialoguePhrases.phrase", "dialoguePhrases.phrase.translations",
-            "dialoguePhrases.phrase.mediaSet", "dialoguePhrases.phrase.embedding",
+            "dialoguePhrases.phrase.mediaSet",
             "dialoguePhrases.speaker", "dialoguePhrases.speaker.namePhrase",
             "embedding"
     })

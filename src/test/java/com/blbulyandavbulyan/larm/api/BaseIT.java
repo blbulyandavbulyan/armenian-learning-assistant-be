@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
-import com.blbulyandavbulyan.larm.core.PhraseOrchestrator;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
 import com.blbulyandavbulyan.larm.phrase.util.PhraseRecordAssertHelper;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -26,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -90,10 +88,6 @@ public abstract class BaseIT {
     protected WireMockServer wireMockServer;
 
     protected PiperWireMock piperWireMock;
-
-    @MockitoSpyBean
-    protected PhraseOrchestrator phraseOrchestrator;
-
     private static final Logger LOG = LoggerFactory.getLogger(BaseIT.class);
 
     @BeforeEach

@@ -20,13 +20,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DefaultPhrase.PHRASE + " ("
                 + TranslationMother.DefaultTranslation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            embedding[0] = 0.123f;
-            embedding[1] = 0.456f;
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -34,7 +27,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DefaultTranslation.build());
         }
     }
@@ -48,12 +41,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DialogueTitlePhrase.PHRASE + " ("
                 + TranslationMother.DialogueTitleTranslation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            Arrays.fill(embedding, 0.1f);
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -61,7 +48,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DialogueTitleTranslation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -80,12 +67,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DialogueSpeaker1NamePhrase.PHRASE + " ("
                 + TranslationMother.DialogueSpeaker1NameTranslation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            embedding[0] = 0.2f;
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -93,7 +74,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DialogueSpeaker1NameTranslation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -112,12 +93,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DialogueSpeaker2NamePhrase.PHRASE + " ("
                 + TranslationMother.DialogueSpeaker2NameTranslation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            embedding[0] = 0.3f;
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -125,7 +100,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DialogueSpeaker2NameTranslation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -144,12 +119,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DialoguePhrase1.PHRASE + " ("
                 + TranslationMother.DialoguePhrase1Translation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            embedding[0] = 0.4f;
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -157,7 +126,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DialoguePhrase1Translation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -176,12 +145,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DialoguePhrase2.PHRASE + " ("
                 + TranslationMother.DialoguePhrase2Translation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            embedding[0] = 0.5f;
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -189,7 +152,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DialoguePhrase2Translation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -208,12 +171,6 @@ public interface PhraseMother {
         String EMBEDDING_TEXT = PhraseMother.DialoguePhrase3.PHRASE + " ("
                 + TranslationMother.DialoguePhrase3Translation.TRANSLATION_TEXT + ")";
 
-        static float[] embedding() {
-            float[] embedding = new float[3072];
-            embedding[0] = 0.6f;
-            return embedding;
-        }
-
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
@@ -221,7 +178,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-                    .withEmbedding(embedding())
+
                     .withTranslations(TranslationMother.DialoguePhrase3Translation.build())
                     .withMedias(MediaMother.DefaultMedia.builder().build());
         }
@@ -243,7 +200,6 @@ public interface PhraseMother {
         private String transcription;
         private Set<TranslationRecord> translations;
         private Set<MediaRecord> mediaSet;
-        private float[] embedding;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -280,13 +236,8 @@ public interface PhraseMother {
             return this;
         }
 
-        public Builder withEmbedding(float[] embedding) {
-            this.embedding = embedding;
-            return this;
-        }
-
         public PhraseRecord build() {
-            return new PhraseRecord(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet, embedding);
+            return new PhraseRecord(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.phrase;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -14,7 +13,6 @@ public record SavePhraseParameters(
         String phrase,
         String isoLanguageCode,
         String transcription,
-        float[] embedding,
         List<CreateTranslationParameters> translations,
         List<CreateMediaResource> mediaResources) {
 
@@ -31,22 +29,19 @@ public record SavePhraseParameters(
                 && Objects.equals(phrase, that.phrase)
                 && Objects.equals(isoLanguageCode, that.isoLanguageCode)
                 && Objects.equals(transcription, that.transcription)
-                && Arrays.equals(embedding, that.embedding)
                 && Objects.equals(translations, that.translations)
                 && Objects.equals(mediaResources, that.mediaResources);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, phrase, isoLanguageCode, transcription, translations, mediaResources);
-        result = 31 * result + Arrays.hashCode(embedding);
-        return result;
+        return Objects.hash(id, phrase, isoLanguageCode, transcription, translations, mediaResources);
     }
 
     @Override
     @NonNull
     public String toString() {
-        return "SavePhraseParameters{id=%s, phrase='%s', isoLanguageCode='%s', transcription='%s', embedding=%s, translations=%s, mediaResources=%s}"
-                .formatted(id, phrase, isoLanguageCode, transcription, Arrays.toString(embedding), translations, mediaResources);
+        return "SavePhraseParameters{id=%s, phrase='%s', isoLanguageCode='%s', transcription='%s', translations=%s, mediaResources=%s}"
+                .formatted(id, phrase, isoLanguageCode, transcription, translations, mediaResources);
     }
 }

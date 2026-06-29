@@ -4,13 +4,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -20,8 +18,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "phrases")
@@ -33,10 +29,6 @@ import org.hibernate.type.SqlTypes;
 public class Phrase {
     @Id
     private UUID id;
-
-    @Basic(fetch = FetchType.LAZY)
-    @JdbcTypeCode(SqlTypes.VECTOR)
-    private float[] embedding;
 
     @Enumerated(EnumType.STRING)
     private PhraseStatus status;

@@ -1,10 +1,10 @@
-INSERT INTO phrases (id, iso_language_code, phrase, status, transcription, created_at, embedding) VALUES
-('11111111-1111-1111-1111-111111111111', 'hy', 'Հացի փռում', 'APPROVED', 'Hatsi prrum', CURRENT_TIMESTAMP, array_fill(0, ARRAY[3072])::vector),
-('22222222-2222-2222-2222-222222222222', 'hy', 'Հացթուխ', 'APPROVED', 'Hatstukh', CURRENT_TIMESTAMP, array_fill(0, ARRAY[3072])::vector),
-('33333333-3333-3333-3333-333333333333', 'hy', 'Գնորդ', 'APPROVED', 'Gnord', CURRENT_TIMESTAMP, array_fill(0, ARRAY[3072])::vector),
-('44444444-4444-4444-4444-444444444444', 'hy', 'Բարեւ ձեզ', 'APPROVED', 'Barev dzez', CURRENT_TIMESTAMP, array_fill(0, ARRAY[3072])::vector),
-('55555555-5555-5555-5555-555555555555', 'hy', 'Բարեւ ձեզ, խնդրում եմ մեկ հաց:', 'APPROVED', 'Barev dzez, khndrum em mek hats', CURRENT_TIMESTAMP, array_fill(0, ARRAY[3072])::vector),
-('66666666-6666-6666-6666-666666666666', 'hy', 'Ահա, խնդրեմ:', 'APPROVED', 'Aha, khndrem', CURRENT_TIMESTAMP, array_fill(0, ARRAY[3072])::vector);
+INSERT INTO phrases (id, iso_language_code, phrase, status, transcription, created_at) VALUES
+('11111111-1111-1111-1111-111111111111', 'hy', 'Հացի փռում', 'APPROVED', 'Hatsi prrum', CURRENT_TIMESTAMP),
+('22222222-2222-2222-2222-222222222222', 'hy', 'Հացթուխ', 'APPROVED', 'Hatstukh', CURRENT_TIMESTAMP),
+('33333333-3333-3333-3333-333333333333', 'hy', 'Գնորդ', 'APPROVED', 'Gnord', CURRENT_TIMESTAMP),
+('44444444-4444-4444-4444-444444444444', 'hy', 'Բարեւ ձեզ', 'APPROVED', 'Barev dzez', CURRENT_TIMESTAMP),
+('55555555-5555-5555-5555-555555555555', 'hy', 'Բարեւ ձեզ, խնդրում եմ մեկ հաց:', 'APPROVED', 'Barev dzez, khndrum em mek hats', CURRENT_TIMESTAMP),
+('66666666-6666-6666-6666-666666666666', 'hy', 'Ահա, խնդրեմ:', 'APPROVED', 'Aha, khndrem', CURRENT_TIMESTAMP);
 
 INSERT INTO translations (id, phrase_id, iso_language_code, translation_text, created_at) VALUES
 ('77777777-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'en', 'In the bakery', CURRENT_TIMESTAMP),
