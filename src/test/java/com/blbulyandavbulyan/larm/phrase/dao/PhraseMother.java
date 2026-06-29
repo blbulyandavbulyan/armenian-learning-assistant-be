@@ -11,26 +11,6 @@ import com.blbulyandavbulyan.larm.phrase.dao.projections.PhraseRecord;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
 
 public interface PhraseMother {
-    interface DefaultPhrase {
-        UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
-        String ISO_LANGUAGE_CODE = "hy";
-        String PHRASE = "Որտե՞ղ է հացի բաժինը:";
-        String TRANSCRIPTION = "Vortegh e hatsi bazhiny?";
-        String EMBEDDING_TEXT = PhraseMother.DefaultPhrase.PHRASE + " ("
-                + TranslationMother.DefaultTranslation.TRANSLATION_TEXT + ")";
-
-        static Builder builder() {
-            return PhraseMother.builder()
-                    .withId(ID)
-                    .withStatus(STATUS)
-                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
-                    .withPhrase(PHRASE)
-                    .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DefaultTranslation.build());
-        }
-    }
 
     interface DialogueTitlePhrase {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111112");
@@ -48,9 +28,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DialogueTitleTranslation.build())
-                    .withMedias(MediaMother.DefaultMedia.builder().build());
+                    .withTranslations(TranslationMother.DialogueTitleTranslation.build());
         }
 
         static PhraseRecord build() {
@@ -74,9 +52,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DialogueSpeaker1NameTranslation.build())
-                    .withMedias(MediaMother.DefaultMedia.builder().build());
+                    .withTranslations(TranslationMother.DialogueSpeaker1NameTranslation.build());
         }
 
         static PhraseRecord build() {
@@ -100,9 +76,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DialogueSpeaker2NameTranslation.build())
-                    .withMedias(MediaMother.DefaultMedia.builder().build());
+                    .withTranslations(TranslationMother.DialogueSpeaker2NameTranslation.build());
         }
 
         static PhraseRecord build() {
@@ -126,9 +100,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DialoguePhrase1Translation.build())
-                    .withMedias(MediaMother.DefaultMedia.builder().build());
+                    .withTranslations(TranslationMother.DialoguePhrase1Translation.build());
         }
 
         static PhraseRecord build() {
@@ -152,9 +124,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DialoguePhrase2Translation.build())
-                    .withMedias(MediaMother.DefaultMedia.builder().build());
+                    .withTranslations(TranslationMother.DialoguePhrase2Translation.build());
         }
 
         static PhraseRecord build() {
@@ -178,9 +148,7 @@ public interface PhraseMother {
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
-
-                    .withTranslations(TranslationMother.DialoguePhrase3Translation.build())
-                    .withMedias(MediaMother.DefaultMedia.builder().build());
+                    .withTranslations(TranslationMother.DialoguePhrase3Translation.build());
         }
 
         static PhraseRecord build() {
