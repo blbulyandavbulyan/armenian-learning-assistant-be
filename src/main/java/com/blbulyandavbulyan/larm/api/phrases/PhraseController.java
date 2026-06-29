@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 class PhraseController implements PhrasesApi {
     private final PhraseStoringService phraseService;
     private final PhraseResponseMapper phraseResponseMapper;
-    private final PhraseRequestMapper phraseRequestMapper;
 
     @Override
     public PhrasesPagedResponse getPhrases(PageRequest pageRequest) {

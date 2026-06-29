@@ -74,7 +74,4 @@ public class PhraseResponseMapper {
                 .build();
     }
 
-    public List<PhraseResponse> mapToCreatePhrasesResponse(List<Phrase> savedPhrases) {
-        return savedPhrases.stream().map(this::mapToPhraseResponse).toList();
-    }
 }

@@ -49,8 +49,6 @@ class DialogueControllerIT extends BaseIT {
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase2.PHRASE, new byte[]{5});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase3.PHRASE, new byte[]{6});
 
-
-
         when(embeddingModel.embed(DialogueMother.DefaultDialogue.EMBEDDING_TEXT))
                 .thenReturn(DialogueMother.DefaultDialogue.embedding());
 

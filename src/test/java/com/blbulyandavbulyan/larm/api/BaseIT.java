@@ -6,7 +6,6 @@ import java.nio.file.Path;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
 import org.junit.jupiter.api.AfterEach;
@@ -68,8 +67,6 @@ public abstract class BaseIT {
 
     @Autowired
     protected MockMvc mockMvc;
-
-
 
     @Autowired
     protected DialogueRecordAssertHelper dialogueRecordAssertHelper;
