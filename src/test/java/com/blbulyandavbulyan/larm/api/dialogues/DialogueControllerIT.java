@@ -20,6 +20,8 @@ import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -118,6 +120,7 @@ class DialogueControllerIT extends BaseIT {
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase1.PHRASE);
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase2.PHRASE);
         piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase3.PHRASE);
+        verify(embeddingModel).embed(anyString());
     }
 
     private byte[] readMediaBytes(Media media) {
