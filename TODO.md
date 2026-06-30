@@ -43,6 +43,10 @@ There should be some kind of smart learning algorithm for repeating phrases and 
 ## Medium Priority (Enhancements leveraging existing tech & educational value):
 
 ### Technical Enhancements
+- [ ] Investigate and fix duplicate TTS generation and storage for identical phrases.
+  - **Problem Statement**: Currently, `PhraseProcessor` generates TTS audio and uploads it to object storage *before* the database layer checks if the phrase already exists. 
+  - **Why this is a problem**: If a single dialogue request (or subsequent requests) contains identical phrase texts (e.g. "Բարեւ"), the application calls the Text-to-Speech service multiple times and stores duplicate audio files on disk with different keys. This wastes processing time and disk space.
+  - **Why it's tricky to fix**: We can't simply use Spring's `@Cacheable` on the `PhraseProcessor.process()` method. The `SavePhraseParameters` returned by the processor carries the contextual `translations` tied to that specific phrase occurrence. If we cache it using the phrase text as the key, a subsequent identical phrase (with potentially different translations) will receive a cache hit and falsely inherit the translations of the first phrase occurrence. The deduplication logic must decouple the shared audio generation from the context-specific translations. *Keep in mind that translations are currently unused in the PhraseProcessor, at the moment when this todo was written*
 - [ ] Semantic search/similarity for "related phrases" discovery using pgvector
 
 ### Linguistic & Cultural Depth
