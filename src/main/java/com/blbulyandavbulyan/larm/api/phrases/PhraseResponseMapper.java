@@ -27,10 +27,8 @@ public class PhraseResponseMapper {
     }
 
     private List<TranslationResponse> mapToTranslationResponses(Collection<? extends ContextualTranslation> translations) {
-        if (translations == null) {
-            return List.of();
-        }
-        return translations.stream()
+        return Stream.ofNullable(translations)
+                .flatMap(Collection::stream)
                 .map(this::mapToTranslationResponse)
                 .toList();
     }
