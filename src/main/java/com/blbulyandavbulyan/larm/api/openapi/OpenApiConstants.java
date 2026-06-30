@@ -9,6 +9,7 @@ public interface OpenApiConstants {
     /**
      * Holds descriptions for open api, which are used in {@link io.swagger.v3.oas.annotations.media.Schema}.
      */
+    @SuppressWarnings("java:S1214")
     interface Descriptions {
 
         String CHAT_REQUEST_MESSAGE = "Request message, to tell the AI what to do";
@@ -25,9 +26,6 @@ public interface OpenApiConstants {
         String CONTENT_TYPE = "Content type";
         String ASSET_URL = "Asset URL";
         String TRANSLATION_ID = "Translation ID";
-        String PAGE_NUMBER = "Page number (starting from 1)";
-        String PAGE_SIZE = "Page size in [10; 100]";
-        String TOTAL_PAGES = "Total pages";
         String TIMESTAMP_OF_THE_ERROR = "Timestamp of the error";
         String HTTP_STATUS_CODE = "HTTP status code";
         String ERROR_TYPE_SUMMARY = "Error type summary";
@@ -45,6 +43,7 @@ public interface OpenApiConstants {
     /**
      * Holds examples which are used in {@link io.swagger.v3.oas.annotations.media.Schema} and in {@link OpenApiConfiguration}.
      */
+    @SuppressWarnings("java:S1214")
     interface Examples {
 
         String CHAT_REQUEST_MESSAGE = "Hello, could you please generate phrases for going into groceries store?";
@@ -58,13 +57,11 @@ public interface OpenApiConstants {
         String CONTENT_TYPE = "audio/wav";
         String ASSET_URL = "http://localhost:8080/assets/c9b251f7-0824-4675-854d-354c063f8045";
         String TRANSLATION_ID = "1ae940f2-1798-4b64-8f04-2f845df8dfe5";
-        String PAGE_NUMBER = "1";
-        String PAGE_SIZE = "10";
-        String TOTAL_PAGES = "5";
         String PHRASE_ISO_LANGUAGE_CODE = "hy";
         String TIMESTAMP_OF_THE_ERROR = "2023-10-27T10:00:00";
         String HTTP_STATUS_CODE = "400";
         String ERROR_TYPE_SUMMARY = "Validation Failed";
+        @SuppressWarnings("java:S1075") // don't care, this is for open api docs
         String ERROR_PATH = "/phrases";
         String SPEAKER_TITLE = "Գնորդ";
         String SPEAKER_TRANSCRIPTION = "Gnord";
@@ -80,6 +77,7 @@ public interface OpenApiConstants {
      * Holds schema names, which are used in {@link io.swagger.v3.oas.annotations.media.Schema}.
      * Constans should be put here only if they are used in {@link OpenApiConfiguration}.
      */
+    @SuppressWarnings("java:S1214")
     interface SchemaNames {
         String DIALOGUE_TITLE_RESPONSE = "Dialogue Title Response";
         String SPEAKER_RESPONSE = "Speaker Response";
@@ -92,6 +90,7 @@ public interface OpenApiConstants {
     /**
      * Holds property names which are used in {@link OpenApiConfiguration}.
      */
+    @SuppressWarnings("java:S1214")
     interface PropertyNames {
         String TRANSLATIONS = "translations";
     }

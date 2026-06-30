@@ -10,16 +10,12 @@ import com.blbulyandavbulyan.larm.dao.repository.PhraseRepository;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.CreateTranslationParameters;
 import com.blbulyandavbulyan.larm.phrase.InvalidIsoLanguageCodeException;
-import com.blbulyandavbulyan.larm.phrase.PageParameters;
-import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.PhrasesAlreadyExistException;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import com.blbulyandavbulyan.larm.validation.IsoLanguageValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,19 +47,6 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
         if (!alreadySavedPhrases.isEmpty()) {
             throw new PhrasesAlreadyExistException(alreadySavedPhrases);
         }
-    }
-
-    @Override
-    public PagedPhraseResource findAll(PageParameters pageParameters) {
-        Pageable pageable = Pageable.ofSize(pageParameters.pageSize()).withPage(pageParameters.pageNumber() - 1);
-        Page<Phrase> phrasePage = phraseRepository.findAll(pageable);
-        return PagedPhraseResource.builder()
-                .page(PagedPhraseResource.Page.builder().pageNumber(phrasePage.getNumber() + 1)
-                        .totalPages(phrasePage.getTotalPages())
-                        .pageSize(phrasePage.getSize())
-                        .build())
-                .phrases(phrasePage.getContent())
-                .build();
     }
 
     private void validate(BatchSavePhrasesParameters batchParameters) {

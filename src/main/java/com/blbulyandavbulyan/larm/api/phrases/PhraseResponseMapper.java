@@ -9,22 +9,11 @@ import java.util.stream.Stream;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import com.blbulyandavbulyan.larm.dao.entities.Translation;
-import com.blbulyandavbulyan.larm.phrase.PagedPhraseResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Component
 public class PhraseResponseMapper {
-    PhrasesPagedResponse mapToResponse(PagedPhraseResource resource) {
-        return PhrasesPagedResponse.builder()
-                .page(mapToPageResponse(resource.page()))
-                .phrases(mapToPhrases(resource.phrases()))
-                .build();
-    }
-
-    private List<PhraseResponse> mapToPhrases(List<Phrase> phrases) {
-        return phrases.stream().map(this::mapToPhraseResponse).toList();
-    }
 
     public PhraseResponse mapToPhraseResponse(Phrase phraseResource) {
         return PhraseResponse.builder()
@@ -63,14 +52,6 @@ public class PhraseResponseMapper {
                 .id(translationResource.getId())
                 .translationText(translationResource.getTranslationText())
                 .isoLanguageCode(translationResource.getIsoLanguageCode())
-                .build();
-    }
-
-    private PageResponse mapToPageResponse(PagedPhraseResource.Page page) {
-        return PageResponse.builder()
-                .totalPages(page.totalPages())
-                .pageSize(page.pageSize())
-                .pageNumber(page.pageNumber())
                 .build();
     }
 

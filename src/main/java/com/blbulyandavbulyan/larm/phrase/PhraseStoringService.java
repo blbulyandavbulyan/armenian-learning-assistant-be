@@ -16,12 +16,4 @@ public interface PhraseStoringService {
      */
     @Transactional
     List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters);
-
-    /**
-     * Finds all phrases by page parameters.
-     *
-     * @param pageParameters sets the expected page and size
-     * @return phrases corresponding to the given page
-     */
-    PagedPhraseResource findAll(PageParameters pageParameters);
 }
