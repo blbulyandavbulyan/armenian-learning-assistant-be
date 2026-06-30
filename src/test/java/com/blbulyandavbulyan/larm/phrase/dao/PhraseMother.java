@@ -156,6 +156,116 @@ public interface PhraseMother {
         }
     }
 
+    interface RealisticDialogueTitlePhrase {
+        UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111112");
+        PhraseStatus STATUS = PhraseStatus.DRAFT;
+        String ISO_LANGUAGE_CODE = "hy";
+        String PHRASE = "Հանդիպում ընկերոջ հետ";
+        String TRANSCRIPTION = "Handipum @nzeroch het";
+
+        static Builder builder() {
+            return PhraseMother.builder()
+                    .withId(ID)
+                    .withStatus(STATUS)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withPhrase(PHRASE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TranslationMother.RealisticDialogueTitleTranslation.build());
+        }
+
+        static PhraseRecord build() {
+            return RealisticDialogueTitlePhrase.builder().build();
+        }
+    }
+
+    interface RealisticDialogueSpeaker1NamePhrase {
+        UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111113");
+        PhraseStatus STATUS = PhraseStatus.DRAFT;
+        String ISO_LANGUAGE_CODE = "hy";
+        String PHRASE = "Արամ";
+        String TRANSCRIPTION = "Aram";
+
+        static Builder builder() {
+            return PhraseMother.builder()
+                    .withId(ID)
+                    .withStatus(STATUS)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withPhrase(PHRASE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TranslationMother.RealisticDialogueSpeaker1NameTranslation.build());
+        }
+
+        static PhraseRecord build() {
+            return RealisticDialogueSpeaker1NamePhrase.builder().build();
+        }
+    }
+
+    interface RealisticDialogueSpeaker2NamePhrase {
+        UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111114");
+        PhraseStatus STATUS = PhraseStatus.DRAFT;
+        String ISO_LANGUAGE_CODE = "hy";
+        String PHRASE = "Աննա";
+        String TRANSCRIPTION = "Anna";
+
+        static Builder builder() {
+            return PhraseMother.builder()
+                    .withId(ID)
+                    .withStatus(STATUS)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withPhrase(PHRASE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TranslationMother.RealisticDialogueSpeaker2NameTranslation.build());
+        }
+
+        static PhraseRecord build() {
+            return RealisticDialogueSpeaker2NamePhrase.builder().build();
+        }
+    }
+
+    interface RealisticDialoguePhrase1 {
+        UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111115");
+        PhraseStatus STATUS = PhraseStatus.DRAFT;
+        String ISO_LANGUAGE_CODE = "hy";
+        String PHRASE = "Բարեւ";
+        String TRANSCRIPTION = "Barev";
+
+        static Builder builder() {
+            return PhraseMother.builder()
+                    .withId(ID)
+                    .withStatus(STATUS)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withPhrase(PHRASE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TranslationMother.RealisticDialoguePhrase1Translation.build());
+        }
+
+        static PhraseRecord build() {
+            return RealisticDialoguePhrase1.builder().build();
+        }
+    }
+
+    interface RealisticDialoguePhrase2 {
+        UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111117");
+        PhraseStatus STATUS = PhraseStatus.DRAFT;
+        String ISO_LANGUAGE_CODE = "hy";
+        String PHRASE = "Ինչպես ես:";
+        String TRANSCRIPTION = "Inchpes es:";
+
+        static Builder builder() {
+            return PhraseMother.builder()
+                    .withId(ID)
+                    .withStatus(STATUS)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withPhrase(PHRASE)
+                    .withTranscription(TRANSCRIPTION)
+                    .withTranslations(TranslationMother.RealisticDialoguePhrase2Translation.build());
+        }
+
+        static PhraseRecord build() {
+            return RealisticDialoguePhrase2.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }

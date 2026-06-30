@@ -6,19 +6,12 @@ INSERT INTO phrases (id, iso_language_code, phrase, status, transcription, creat
 ('55555555-5555-5555-5555-555555555555', 'hy', 'Բարեւ ձեզ, խնդրում եմ մեկ հաց:', 'APPROVED', 'Barev dzez, khndrum em mek hats', CURRENT_TIMESTAMP),
 ('66666666-6666-6666-6666-666666666666', 'hy', 'Ահա, խնդրեմ:', 'APPROVED', 'Aha, khndrem', CURRENT_TIMESTAMP);
 
-INSERT INTO translations (id, phrase_id, iso_language_code, translation_text, created_at) VALUES
-('77777777-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'en', 'In the bakery', CURRENT_TIMESTAMP),
-('77777777-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', 'en', 'Baker', CURRENT_TIMESTAMP),
-('77777777-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', 'en', 'Customer', CURRENT_TIMESTAMP),
-('77777777-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 'en', 'Hello', CURRENT_TIMESTAMP),
-('77777777-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 'en', 'Hello, one bread please', CURRENT_TIMESTAMP),
-('77777777-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', 'en', 'Here you go', CURRENT_TIMESTAMP);
 
 INSERT INTO medias (id, phrase_id, storage_provider, storage_bucket, storage_key, content_type, file_size_bytes, ai_model_used, voice_identifier, created_at) VALUES
 ('88888888-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'LOCAL', 'bucket', 'key1', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-2222-2222-2222-222222222222', '22222222-2222-2222-2222-222222222222', 'LOCAL', 'bucket', 'key2', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-3333-3333-3333-333333333333', '33333333-3333-3333-3333-333333333333', 'LOCAL', 'bucket', 'key3', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
-('88888888-4444-4444-4444-4444-44444444', '44444444-4444-4444-4444-444444444444', 'LOCAL', 'bucket', 'key4', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
+('88888888-4444-4444-4444-444444444444', '44444444-4444-4444-4444-444444444444', 'LOCAL', 'bucket', 'key4', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-5555-5555-5555-555555555555', '55555555-5555-5555-5555-555555555555', 'LOCAL', 'bucket', 'key5', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP),
 ('88888888-6666-6666-6666-666666666666', '66666666-6666-6666-6666-666666666666', 'LOCAL', 'bucket', 'key6', 'audio/wav', 1234, 'model', 'voice', CURRENT_TIMESTAMP);
 
@@ -33,3 +26,15 @@ INSERT INTO dialogue_phrases (id, dialogue_id, phrase_id, speaker_id, order_inde
 ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '99999999-9999-9999-9999-999999999999', '66666666-6666-6666-6666-666666666666', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 2),
 ('cccccccc-cccc-cccc-cccc-cccccccccccc', '99999999-9999-9999-9999-999999999999', '44444444-4444-4444-4444-444444444444', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 0),
 ('dddddddd-dddd-dddd-dddd-dddddddddddd', '99999999-9999-9999-9999-999999999999', '55555555-5555-5555-5555-555555555555', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 1);
+
+INSERT INTO dialogue_title_translations (id, dialogue_id, iso_language_code, translation_text) VALUES
+('77777777-1111-1111-1111-111111111111', '99999999-9999-9999-9999-999999999999', 'en', 'In the bakery');
+
+INSERT INTO dialogue_speaker_translations (id, dialogue_speaker_id, iso_language_code, translation_text) VALUES
+('77777777-2222-2222-2222-222222222222', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'en', 'Baker'),
+('77777777-3333-3333-3333-333333333333', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'en', 'Customer');
+
+INSERT INTO dialogue_phrase_translations (id, dialogue_phrase_id, iso_language_code, translation_text) VALUES
+('77777777-4444-4444-4444-444444444444', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'en', 'Hello'),
+('77777777-5555-5555-5555-555555555555', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'en', 'Hello, one bread please'),
+('77777777-6666-6666-6666-666666666666', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'en', 'Here you go');

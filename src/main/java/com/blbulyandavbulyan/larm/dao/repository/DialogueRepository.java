@@ -10,9 +10,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface DialogueRepository extends CrudRepository<Dialogue, UUID> {
-    @EntityGraph(attributePaths = {"title", "title.translations", "title.mediaSet",
-            "speakers.namePhrase", "speakers.namePhrase.translations", "speakers.namePhrase.mediaSet",
-            "dialoguePhrases.phrase", "dialoguePhrases.phrase.translations", "dialoguePhrases.phrase.mediaSet"})
+    @EntityGraph(attributePaths = {"title", "title.mediaSet", "titleTranslations",
+            "speakers.namePhrase", "speakers.namePhrase.mediaSet", "speakers.translations",
+            "dialoguePhrases.phrase", "dialoguePhrases.phrase.mediaSet", "dialoguePhrases.translations"})
     @Query("SELECT d FROM Dialogue d WHERE d.id = :id")
     Optional<Dialogue> findByIdEagerly(@Param("id") UUID id);
 }

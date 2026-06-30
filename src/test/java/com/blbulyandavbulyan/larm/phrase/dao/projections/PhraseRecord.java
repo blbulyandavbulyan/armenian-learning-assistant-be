@@ -15,17 +15,14 @@ public record PhraseRecord(
         String transcription,
         Set<TranslationRecord> translations,
         Set<MediaRecord> mediaSet) {
-    public PhraseRecord(Phrase phrase) {
+
+    public PhraseRecord(Phrase phrase, Set<TranslationRecord> translations) {
         this(phrase.getId(), phrase.getStatus(), phrase.getIsoLanguageCode(), phrase.getPhrase(),
-                phrase.getTranscription(), getTranslationRecords(phrase), getMediaRecords(phrase));
+                phrase.getTranscription(), translations, getMediaRecords(phrase));
     }
 
     private static Set<MediaRecord> getMediaRecords(Phrase phrase) {
         return phrase.getMediaSet().stream().map(MediaRecord::new).collect(Collectors.toSet());
-    }
-
-    private static Set<TranslationRecord> getTranslationRecords(Phrase phrase) {
-        return phrase.getTranslations().stream().map(TranslationRecord::new).collect(Collectors.toSet());
     }
 
 }

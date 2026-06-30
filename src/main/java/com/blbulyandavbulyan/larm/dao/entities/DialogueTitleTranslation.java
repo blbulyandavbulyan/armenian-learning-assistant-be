@@ -1,17 +1,11 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,35 +14,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "phrases")
+@Table(name = "dialogue_title_translations")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Phrase {
+public class DialogueTitleTranslation implements ContextualTranslation {
+
     @Id
     private UUID id;
-
-    @Enumerated(EnumType.STRING)
-    private PhraseStatus status;
 
     @Column(name = "iso_language_code")
     private String isoLanguageCode;
 
-    private String phrase;
-    private String transcription;
-
-    @OneToMany(mappedBy = "phrase", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("createdAt ASC")
-    private Set<Media> mediaSet;
+    @Column(name = "translation_text")
+    private String translationText;
 
     @Override
     public final boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Phrase that)) {
+        if (!(o instanceof DialogueTitleTranslation that)) {
             return false;
         }
         return getId() != null && getId().equals(that.getId());
@@ -58,5 +46,4 @@ public class Phrase {
     public final int hashCode() {
         return Objects.hashCode(getId());
     }
-
 }

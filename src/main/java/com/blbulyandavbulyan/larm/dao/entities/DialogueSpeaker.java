@@ -1,15 +1,19 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +42,11 @@ public class DialogueSpeaker {
 
     @Column(name = "created_at")
     private Instant createdAt;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "dialogue_speaker_id", nullable = false)
+    @Builder.Default
+    private Set<DialogueSpeakerTranslation> translations = new HashSet<>();
 
     @Override
     public final boolean equals(Object o) {

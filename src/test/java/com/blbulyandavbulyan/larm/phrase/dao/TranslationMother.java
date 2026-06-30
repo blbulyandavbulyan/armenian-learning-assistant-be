@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.phrase.dao;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
@@ -109,6 +108,91 @@ public interface TranslationMother {
         }
     }
 
+    interface RealisticDialogueTitleTranslation {
+        UUID ID = UUID.fromString("cc5333d4-c70b-4121-8bdc-4b94547de420");
+        String ISO_LANGUAGE_CODE = "en";
+        String TRANSLATION_TEXT = "Meeting a friend";
+
+        static Builder builder() {
+            return TranslationMother.builder()
+                    .withId(ID)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withTranslationText(TRANSLATION_TEXT);
+        }
+
+        static TranslationRecord build() {
+            return RealisticDialogueTitleTranslation.builder().build();
+        }
+    }
+
+    interface RealisticDialogueSpeaker1NameTranslation {
+        UUID ID = UUID.fromString("cc5333d4-c70b-4121-8bdc-4b94547de421");
+        String ISO_LANGUAGE_CODE = "en";
+        String TRANSLATION_TEXT = "Aram";
+
+        static Builder builder() {
+            return TranslationMother.builder()
+                    .withId(ID)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withTranslationText(TRANSLATION_TEXT);
+        }
+
+        static TranslationRecord build() {
+            return RealisticDialogueSpeaker1NameTranslation.builder().build();
+        }
+    }
+
+    interface RealisticDialogueSpeaker2NameTranslation {
+        UUID ID = UUID.fromString("cc5333d4-c70b-4121-8bdc-4b94547de422");
+        String ISO_LANGUAGE_CODE = "en";
+        String TRANSLATION_TEXT = "Anna";
+
+        static Builder builder() {
+            return TranslationMother.builder()
+                    .withId(ID)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withTranslationText(TRANSLATION_TEXT);
+        }
+
+        static TranslationRecord build() {
+            return RealisticDialogueSpeaker2NameTranslation.builder().build();
+        }
+    }
+
+    interface RealisticDialoguePhrase1Translation {
+        UUID ID = UUID.fromString("cc5333d4-c70b-4121-8bdc-4b94547de423");
+        String ISO_LANGUAGE_CODE = "en";
+        String TRANSLATION_TEXT = "Hello";
+
+        static Builder builder() {
+            return TranslationMother.builder()
+                    .withId(ID)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withTranslationText(TRANSLATION_TEXT);
+        }
+
+        static TranslationRecord build() {
+            return RealisticDialoguePhrase1Translation.builder().build();
+        }
+    }
+
+    interface RealisticDialoguePhrase2Translation {
+        UUID ID = UUID.fromString("cc5333d4-c70b-4121-8bdc-4b94547de425");
+        String ISO_LANGUAGE_CODE = "en";
+        String TRANSLATION_TEXT = "How are you?";
+
+        static Builder builder() {
+            return TranslationMother.builder()
+                    .withId(ID)
+                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
+                    .withTranslationText(TRANSLATION_TEXT);
+        }
+
+        static TranslationRecord build() {
+            return RealisticDialoguePhrase2Translation.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }
@@ -117,7 +201,6 @@ public interface TranslationMother {
         private UUID id;
         private String isoLanguageCode;
         private String translationText;
-        private Instant createdAt;
 
         public Builder withId(UUID id) {
             this.id = id;
@@ -134,13 +217,8 @@ public interface TranslationMother {
             return this;
         }
 
-        public Builder withCreatedAt(Instant createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
         public TranslationRecord build() {
-            return new TranslationRecord(id, isoLanguageCode, translationText, createdAt);
+            return new TranslationRecord(id, isoLanguageCode, translationText);
         }
     }
 }

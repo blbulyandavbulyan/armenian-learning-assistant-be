@@ -6,24 +6,31 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import com.blbulyandavbulyan.larm.dao.entities.ContextualTranslation;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
-import com.blbulyandavbulyan.larm.dao.entities.Translation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Component
 public class PhraseResponseMapper {
 
-    public PhraseResponse mapToPhraseResponse(Phrase phraseResource) {
+    public PhraseResponse mapToPhraseResponse(Phrase phraseResource, Collection<? extends ContextualTranslation> translations) {
         return PhraseResponse.builder()
                 .id(phraseResource.getId())
                 .phrase(phraseResource.getPhrase())
                 .transcription(phraseResource.getTranscription())
                 .isoLanguageCode(phraseResource.getIsoLanguageCode())
-                .translations(phraseResource.getTranslations().stream().map(this::mapToTranslationResponse).toList())
+                .translations(mapToTranslationResponses(translations))
                 .assets(mapToAssets(phraseResource.getMediaSet()))
                 .build();
+    }
+
+    private List<TranslationResponse> mapToTranslationResponses(Collection<? extends ContextualTranslation> translations) {
+        return Stream.ofNullable(translations)
+                .flatMap(Collection::stream)
+                .map(this::mapToTranslationResponse)
+                .toList();
     }
 
     private List<AssetResponse> mapToAssets(Set<Media> mediaSet) {
@@ -47,11 +54,11 @@ public class PhraseResponseMapper {
                 .toUriString();
     }
 
-    private TranslationResponse mapToTranslationResponse(Translation translationResource) {
+    private TranslationResponse mapToTranslationResponse(ContextualTranslation translation) {
         return TranslationResponse.builder()
-                .id(translationResource.getId())
-                .translationText(translationResource.getTranslationText())
-                .isoLanguageCode(translationResource.getIsoLanguageCode())
+                .id(translation.getId())
+                .isoLanguageCode(translation.getIsoLanguageCode())
+                .translationText(translation.getTranslationText())
                 .build();
     }
 

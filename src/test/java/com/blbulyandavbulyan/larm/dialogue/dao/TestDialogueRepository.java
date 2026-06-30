@@ -11,12 +11,16 @@ import org.springframework.data.repository.Repository;
 public interface TestDialogueRepository extends Repository<Dialogue, UUID> {
     
     @EntityGraph(attributePaths = {
-            "title", "title.translations", "title.mediaSet",
-            "speakers", "speakers.namePhrase", "speakers.namePhrase.translations",
+            "title", "title.mediaSet",
+            "titleTranslations",
+            "speakers", "speakers.namePhrase",
             "speakers.namePhrase.mediaSet",
-            "dialoguePhrases", "dialoguePhrases.phrase", "dialoguePhrases.phrase.translations",
+            "speakers.translations",
+            "dialoguePhrases", "dialoguePhrases.phrase",
             "dialoguePhrases.phrase.mediaSet",
             "dialoguePhrases.speaker", "dialoguePhrases.speaker.namePhrase",
+            "dialoguePhrases.speaker.translations",
+            "dialoguePhrases.translations",
             "embedding"
     })
     @Query("SELECT d FROM Dialogue d WHERE d.id = :id")

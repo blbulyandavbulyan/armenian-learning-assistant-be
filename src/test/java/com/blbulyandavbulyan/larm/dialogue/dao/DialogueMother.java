@@ -47,6 +47,36 @@ public interface DialogueMother {
         }
     }
 
+    interface RealisticDialogue {
+        UUID ID = UUID.fromString("50000000-0000-0000-0000-000000000000");
+
+        static float[] embedding() {
+            float[] embedding = new float[3072];
+            embedding[0] = 0.9f;
+            return embedding;
+        }
+
+        static Builder builder() {
+            return DialogueMother.builder()
+                    .withId(ID)
+                    .withTitle(PhraseMother.RealisticDialogueTitlePhrase.build())
+                    .withSpeakers(
+                            DialogueSpeakerMother.RealisticDialogueSpeaker1.build(), 
+                            DialogueSpeakerMother.RealisticDialogueSpeaker2.build()
+                    )
+                    .withEmbedding(embedding())
+                    .withDialoguePhrases(
+                            DialoguePhraseMother.RealisticDialoguePhrase1.build(), 
+                            DialoguePhraseMother.RealisticDialoguePhrase2.build(), 
+                            DialoguePhraseMother.RealisticDialoguePhrase3.build()
+                    );
+        }
+
+        static DialogueRecord build() {
+            return RealisticDialogue.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }
