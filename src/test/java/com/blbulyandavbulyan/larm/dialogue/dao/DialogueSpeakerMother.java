@@ -41,7 +41,9 @@ public interface DialogueSpeakerMother {
         UUID ID = UUID.fromString("32222222-2222-2222-2222-222222222221");
 
         static Builder builder() {
-            return DialogueSpeakerMother.builder().withId(ID).withNamePhrase(PhraseMother.RealisticDialogueSpeaker1NamePhrase.build());
+            return DialogueSpeakerMother.builder()
+                    .withId(ID)
+                    .withNamePhrase(PhraseMother.RealisticDialogueSpeaker1NamePhrase.build());
         }
 
         static DialogueSpeakerRecord build() {
@@ -53,7 +55,9 @@ public interface DialogueSpeakerMother {
         UUID ID = UUID.fromString("32222222-2222-2222-2222-222222222222");
 
         static Builder builder() {
-            return DialogueSpeakerMother.builder().withId(ID).withNamePhrase(PhraseMother.RealisticDialogueSpeaker2NamePhrase.build());
+            return DialogueSpeakerMother.builder()
+                    .withId(ID)
+                    .withNamePhrase(PhraseMother.RealisticDialogueSpeaker2NamePhrase.build());
         }
 
         static DialogueSpeakerRecord build() {
