@@ -2,6 +2,8 @@ package com.blbulyandavbulyan.larm.ai;
 
 import java.util.List;
 
+import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
+
 public interface StructuredDialogueResourceMother {
 
     interface DefaultStructuredDialogueResource {

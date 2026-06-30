@@ -1,9 +1,7 @@
-package com.blbulyandavbulyan.larm.ai;
+package com.blbulyandavbulyan.larm.ai.chat;
 
 import java.util.List;
 
-import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
-import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResource;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

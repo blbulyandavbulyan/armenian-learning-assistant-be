@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.ai;
 
 import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResourceMother;
+import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
 
 public interface DialoguePhraseMother {
 

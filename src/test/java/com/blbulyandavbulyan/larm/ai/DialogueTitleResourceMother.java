@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResourceMother;
+import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
 
 public interface DialogueTitleResourceMother {
 

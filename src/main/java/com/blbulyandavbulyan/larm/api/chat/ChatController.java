@@ -1,8 +1,7 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
-import com.blbulyandavbulyan.larm.ai.PhrasesChatService;
-import com.blbulyandavbulyan.larm.ai.StructuredDialogueResource;
-import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
+import com.blbulyandavbulyan.larm.ai.chat.DialogueChatService;
+import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,19 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 class ChatController implements ChatApi {
-    private final PhrasesChatService phrasesChatService;
+    private final DialogueChatService dialogueChatService;
     private final ChatMapper chatMapper;
 
     @Override
-    public PhraseChatResponse phrasesChat(ChatRequest request) {
-        final StructuredPhrasesResource structuredPhrasesResource = phrasesChatService.phrasesChat(request.message(), request.chatId());
-        return chatMapper.mapToChatResponse(structuredPhrasesResource);
-
-    }
-
-    @Override
     public DialogueChatResponse dialogueChat(ChatRequest request) {
-        StructuredDialogueResource structuredDialogueResource = phrasesChatService.dialogueChat(request.message(), request.chatId());
+        StructuredDialogueResource structuredDialogueResource = dialogueChatService.dialogueChat(request.message(), request.chatId());
         return chatMapper.mapToDialogueResponse(structuredDialogueResource);
     }
 
