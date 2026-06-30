@@ -9,7 +9,7 @@ CREATE TABLE dialogues
 CREATE TABLE dialogue_speakers
 (
     id               UUID PRIMARY KEY,
-    dialogue_id      UUID NOT NULL REFERENCES dialogues (id),
+    dialogue_id      UUID NOT NULL REFERENCES dialogues (id) ON DELETE CASCADE,
     name_phrase_id   UUID NOT NULL REFERENCES phrases (id),
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -17,7 +17,7 @@ CREATE TABLE dialogue_speakers
 CREATE TABLE dialogue_phrases
 (
     id          UUID    PRIMARY KEY,
-    dialogue_id UUID    NOT NULL REFERENCES dialogues (id),
+    dialogue_id UUID    NOT NULL REFERENCES dialogues (id) ON DELETE CASCADE,
     phrase_id   UUID    NOT NULL REFERENCES phrases (id),
     speaker_id  UUID    NOT NULL REFERENCES dialogue_speakers (id) DEFERRABLE INITIALLY DEFERRED,
     order_index INTEGER NOT NULL,
@@ -26,9 +26,11 @@ CREATE TABLE dialogue_phrases
 );
 
 CREATE INDEX idx_dialogue_speakers_name_phrase_id ON dialogue_speakers (name_phrase_id);
+CREATE INDEX idx_dialogue_speakers_dialogue_id ON dialogue_speakers (dialogue_id);
 CREATE INDEX idx_dialogues_title_phrase_id ON dialogues (title_phrase_id);
 CREATE INDEX idx_dialogue_phrases_phrase_id ON dialogue_phrases (phrase_id);
 CREATE INDEX idx_dialogue_phrases_speaker_id ON dialogue_phrases (speaker_id);
+CREATE INDEX idx_dialogue_phrases_dialogue_id ON dialogue_phrases (dialogue_id);
 
 CREATE TABLE dialogue_title_translations (
     id UUID PRIMARY KEY,
@@ -50,3 +52,7 @@ CREATE TABLE dialogue_phrase_translations (
     iso_language_code CHAR(2) NOT NULL CHECK (iso_language_code ~ '^[a-z]{2}$'),
     translation_text TEXT NOT NULL
 );
+
+CREATE INDEX idx_dialogue_title_translations_dialogue_id ON dialogue_title_translations (dialogue_id);
+CREATE INDEX idx_dialogue_speaker_translations_speaker_id ON dialogue_speaker_translations (dialogue_speaker_id);
+CREATE INDEX idx_dialogue_phrase_translations_phrase_id ON dialogue_phrase_translations (dialogue_phrase_id);

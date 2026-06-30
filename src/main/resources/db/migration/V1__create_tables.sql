@@ -13,7 +13,7 @@ CREATE TABLE phrases
 CREATE TABLE medias
 (
     id               UUID PRIMARY KEY,
-    phrase_id        UUID         NOT NULL REFERENCES phrases (id),
+    phrase_id        UUID         NOT NULL REFERENCES phrases (id) ON DELETE CASCADE,
 
 -- Future-proofing fields
     storage_provider VARCHAR(50)  NOT NULL, -- 'LOCAL', 'AWS_S3', 'SUPABASE_STORAGE'
@@ -29,3 +29,5 @@ CREATE TABLE medias
 
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+CREATE INDEX idx_medias_phrase_id ON medias (phrase_id);
