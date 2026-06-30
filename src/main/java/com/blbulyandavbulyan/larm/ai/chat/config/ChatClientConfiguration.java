@@ -20,13 +20,10 @@ public class ChatClientConfiguration {
     }
 
     @Bean
-    public ChatClient armenianPhrasesGeneratorChatClient(
+    public ChatClient chatClient(
             ChatClient.Builder chatClientBuilder,
             ChatMemory chatMemory) {
         return chatClientBuilder
-                // TODO most probably we need here the tool which checks the existing phrases in the database
-                //  probably it should check 'exact match' and 'similar' phrases
-                // .defaultTools()
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }

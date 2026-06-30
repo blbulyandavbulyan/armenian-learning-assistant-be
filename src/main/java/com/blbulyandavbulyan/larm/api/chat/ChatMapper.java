@@ -1,20 +1,12 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
-import com.blbulyandavbulyan.larm.ai.StructuredDialogueResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftPhraseResource;
 import com.blbulyandavbulyan.larm.ai.chat.DraftTranslationResource;
-import com.blbulyandavbulyan.larm.ai.chat.StructuredPhrasesResource;
+import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
 import org.springframework.stereotype.Component;
 
 @Component
 class ChatMapper {
-
-    public PhraseChatResponse mapToChatResponse(StructuredPhrasesResource structuredPhrasesResource) {
-        return PhraseChatResponse.builder()
-                .message(structuredPhrasesResource.message())
-                .phrases(structuredPhrasesResource.phrases().stream().map(this::mapPhrase).toList())
-                .build();
-    }
 
     private DraftPhraseResponse mapPhrase(DraftPhraseResource p) {
         return DraftPhraseResponse.builder()

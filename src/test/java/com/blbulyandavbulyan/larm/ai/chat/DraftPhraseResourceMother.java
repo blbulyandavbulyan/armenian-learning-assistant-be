@@ -4,25 +4,6 @@ import java.util.List;
 
 public interface DraftPhraseResourceMother {
 
-    interface DefaultDraftPhrase {
-        String PHRASE = "Որտե՞ղ է հացը:";
-        String ISO_LANGUAGE_CODE = "hy";
-        String TRANSCRIPTION = "Vortegh e hatsy?";
-        List<DraftTranslationResource> TRANSLATIONS = List.of(DraftTranslationResourceMother.DefaultDraftTranslation.build());
-
-        static Builder builder() {
-            return DraftPhraseResourceMother.builder()
-                    .withPhrase(PHRASE)
-                    .withIsoLanguageCode(ISO_LANGUAGE_CODE)
-                    .withTranscription(TRANSCRIPTION)
-                    .withTranslations(TRANSLATIONS);
-        }
-
-        static DraftPhraseResource build() {
-            return DefaultDraftPhrase.builder().build();
-        }
-    }
-
     interface DefaultDialoguePhrase {
         String PHRASE = "Բարև ձեզ";
         String ISO_LANGUAGE_CODE = "hy";

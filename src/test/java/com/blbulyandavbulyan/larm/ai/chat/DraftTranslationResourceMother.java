@@ -2,21 +2,6 @@ package com.blbulyandavbulyan.larm.ai.chat;
 
 public interface DraftTranslationResourceMother {
 
-    interface DefaultDraftTranslation {
-        String TRANSLATION_TEXT = "Где находится хлеб?";
-        String ISO_LANGUAGE_CODE = "ru";
-
-        static Builder builder() {
-            return DraftTranslationResourceMother.builder()
-                    .withTranslationText(TRANSLATION_TEXT)
-                    .withIsoLanguageCode(ISO_LANGUAGE_CODE);
-        }
-
-        static DraftTranslationResource build() {
-            return DefaultDraftTranslation.builder().build();
-        }
-    }
-
     interface DefaultDialoguePhraseTranslation {
         String TRANSLATION_TEXT = "Здравствуйте";
         String ISO_LANGUAGE_CODE = "ru";
