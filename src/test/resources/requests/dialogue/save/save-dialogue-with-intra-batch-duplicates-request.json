@@ -1,0 +1,80 @@
+{
+  "info": {
+    "title": "Հանդիպում ընկերոջ հետ",
+    "transcription": "Handipum @nzeroch het",
+    "translations": [
+      {
+        "translationText": "Meeting a friend",
+        "isoLanguageCode": "en"
+      }
+    ]
+  },
+  "speakers": [
+    {
+      "id": "speaker1",
+      "title": "Արամ",
+      "transcription": "Aram",
+      "translations": [
+        {
+          "translationText": "Aram",
+          "isoLanguageCode": "en"
+        }
+      ]
+    },
+    {
+      "id": "speaker2",
+      "title": "Աննա",
+      "transcription": "Anna",
+      "translations": [
+        {
+          "translationText": "Anna",
+          "isoLanguageCode": "en"
+        }
+      ]
+    }
+  ],
+  "dialoguePhrases": [
+    {
+      "speakerId": "speaker1",
+      "phrase": {
+        "phrase": "Բարեւ",
+        "isoLanguageCode": "hy",
+        "transcription": "Barev",
+        "translations": [
+          {
+            "translationText": "Hello",
+            "isoLanguageCode": "en"
+          }
+        ]
+      }
+    },
+    {
+      "speakerId": "speaker2",
+      "phrase": {
+        "phrase": "Բարեւ",
+        "isoLanguageCode": "hy",
+        "transcription": "Barev",
+        "translations": [
+          {
+            "translationText": "Hello",
+            "isoLanguageCode": "en"
+          }
+        ]
+      }
+    },
+    {
+      "speakerId": "speaker1",
+      "phrase": {
+        "phrase": "Ինչպես ես:",
+        "isoLanguageCode": "hy",
+        "transcription": "Inchpes es:",
+        "translations": [
+          {
+            "translationText": "How are you?",
+            "isoLanguageCode": "en"
+          }
+        ]
+      }
+    }
+  ]
+}

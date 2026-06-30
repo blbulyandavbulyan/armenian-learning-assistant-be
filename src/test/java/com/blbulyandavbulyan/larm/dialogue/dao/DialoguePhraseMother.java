@@ -60,6 +60,57 @@ public interface DialoguePhraseMother {
         }
     }
 
+    interface RealisticDialoguePhrase1 {
+        UUID ID = UUID.fromString("43333333-3333-3333-3333-333333333331");
+        int ORDER_INDEX = 0;
+
+        static Builder builder() {
+            return DialoguePhraseMother.builder()
+                    .withId(ID)
+                    .withOrderIndex(ORDER_INDEX)
+                    .withPhrase(PhraseMother.RealisticDialoguePhrase1.build())
+                    .withSpeaker(DialogueSpeakerMother.RealisticDialogueSpeaker1.build());
+        }
+
+        static DialoguePhraseRecord build() {
+            return RealisticDialoguePhrase1.builder().build();
+        }
+    }
+
+    interface RealisticDialoguePhrase2 {
+        UUID ID = UUID.fromString("43333333-3333-3333-3333-333333333332");
+        int ORDER_INDEX = 1;
+
+        static Builder builder() {
+            return DialoguePhraseMother.builder()
+                    .withId(ID)
+                    .withOrderIndex(ORDER_INDEX)
+                    .withPhrase(PhraseMother.RealisticDialoguePhrase1.build())
+                    .withSpeaker(DialogueSpeakerMother.RealisticDialogueSpeaker2.build());
+        }
+
+        static DialoguePhraseRecord build() {
+            return DialoguePhraseMother.RealisticDialoguePhrase2.builder().build();
+        }
+    }
+
+    interface RealisticDialoguePhrase3 {
+        UUID ID = UUID.fromString("43333333-3333-3333-3333-333333333333");
+        int ORDER_INDEX = 2;
+
+        static Builder builder() {
+            return DialoguePhraseMother.builder()
+                    .withId(ID)
+                    .withOrderIndex(ORDER_INDEX)
+                    .withPhrase(PhraseMother.RealisticDialoguePhrase2.build())
+                    .withSpeaker(DialogueSpeakerMother.RealisticDialogueSpeaker1.build());
+        }
+
+        static DialoguePhraseRecord build() {
+            return RealisticDialoguePhrase3.builder().build();
+        }
+    }
+
     static Builder builder() {
         return new Builder();
     }

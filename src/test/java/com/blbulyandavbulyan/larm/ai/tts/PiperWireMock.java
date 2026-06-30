@@ -16,7 +16,7 @@ public class PiperWireMock {
                         .withBody(audioData)));
     }
 
-    public void verifyTtsCalledWith(String text) {
+    public void verifyTtsCalledOnceWith(String text) {
         wireMockServer.verify(1, WireMock.postRequestedFor(WireMock.urlEqualTo("/"))
                 .withRequestBody(WireMock.matchingJsonPath("$.text", WireMock.equalTo(text))));
     }

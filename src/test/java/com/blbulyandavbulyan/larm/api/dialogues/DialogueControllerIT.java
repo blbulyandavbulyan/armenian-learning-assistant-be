@@ -120,12 +120,12 @@ class DialogueControllerIT extends BaseIT {
                 });
 
         // Verify TTS service was called for each phrase and nothing was skipped
-        piperWireMock.verifyTtsCalledWith(com.blbulyandavbulyan.larm.phrase.dao.PhraseMother.DialogueTitlePhrase.PHRASE);
-        piperWireMock.verifyTtsCalledWith(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE);
-        piperWireMock.verifyTtsCalledWith(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE);
-        piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase1.PHRASE);
-        piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase2.PHRASE);
-        piperWireMock.verifyTtsCalledWith(PhraseMother.DialoguePhrase3.PHRASE);
+        piperWireMock.verifyTtsCalledOnceWith(com.blbulyandavbulyan.larm.phrase.dao.PhraseMother.DialogueTitlePhrase.PHRASE);
+        piperWireMock.verifyTtsCalledOnceWith(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE);
+        piperWireMock.verifyTtsCalledOnceWith(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE);
+        piperWireMock.verifyTtsCalledOnceWith(PhraseMother.DialoguePhrase1.PHRASE);
+        piperWireMock.verifyTtsCalledOnceWith(PhraseMother.DialoguePhrase2.PHRASE);
+        piperWireMock.verifyTtsCalledOnceWith(PhraseMother.DialoguePhrase3.PHRASE);
         verify(embeddingModel).embed(anyString());
     }
 
@@ -155,6 +155,49 @@ class DialogueControllerIT extends BaseIT {
         // Out of 6 distinct phrases in the request, 3 are already in the DB (inserted by SQL script).
         // Therefore, exactly 3 NEW phrases should be inserted.
         assertThat(finalPhraseCount).isEqualTo(6);
+    }
+
+    @Test
+    void saveDialogue_withPhraseDuplicatesInOneRequest() throws Exception {
+        piperWireMock.stubTtsWithAudio(PhraseMother.RealisticDialogueTitlePhrase.PHRASE, new byte[]{1});
+        piperWireMock.stubTtsWithAudio(PhraseMother.RealisticDialogueSpeaker1NamePhrase.PHRASE, new byte[]{2});
+        piperWireMock.stubTtsWithAudio(PhraseMother.RealisticDialogueSpeaker2NamePhrase.PHRASE, new byte[]{3});
+        piperWireMock.stubTtsWithAudio(PhraseMother.RealisticDialoguePhrase1.PHRASE, new byte[]{4});
+        piperWireMock.stubTtsWithAudio(PhraseMother.RealisticDialoguePhrase2.PHRASE, new byte[]{5});
+
+        when(embeddingModel.embed(anyString()))
+                .thenReturn(DialogueMother.RealisticDialogue.embedding());
+
+        String requestJson = readResourceToString("/requests/dialogue/save/save-dialogue-with-intra-batch-duplicates-request.json");
+
+        String responseContent = mockMvc.perform(post(RequestMapping.SAVE_DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists())
+                .andReturn().getResponse().getContentAsString();
+
+        UUID dialogueId = UUID.fromString(JsonPath.read(responseContent, "$.id"));
+
+        var expectedDialogue = DialogueMother.RealisticDialogue.build();
+
+        dialogueRecordAssertHelper.assertThatDialogueWithId(dialogueId)
+                .isPresent()
+                .get()
+                .usingRecursiveComparison()
+                .ignoringCollectionOrder()
+                .ignoringFieldsOfTypes(UUID.class, java.time.Instant.class)
+                .ignoringFields("title.mediaSet",
+                        "dialoguePhrases.phrase.mediaSet",
+                        "speakers.namePhrase.mediaSet",
+                        "dialoguePhrases.speaker.namePhrase.mediaSet")
+                .isEqualTo(expectedDialogue);
+
+        Long finalPhraseCount = jdbcTemplate.queryForObject("SELECT count(*) FROM phrases", Long.class);
+
+        // There are 6 phrase objects in the JSON payload, but "Բարեւ" is used twice.
+        // Therefore, exactly 5 distinct phrases should be inserted into the database.
+        assertThat(finalPhraseCount).isEqualTo(5);
     }
 
     private byte[] readMediaBytes(Media media) {
