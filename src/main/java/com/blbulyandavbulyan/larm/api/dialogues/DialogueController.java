@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dialogue.DialogueRetrievalService;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
+import com.blbulyandavbulyan.larm.dialogue.service.DialogueSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ class DialogueController implements DialoguesApi {
     private final DialogueRequestMapper dialogueRequestMapper;
     private final DialogueRetrievalService dialogueRetrievalService;
     private final DialogueResponseMapper dialogueResponseMapper;
+    private final DialogueSearchService dialogueSearchService;
 
     @Override
     public SaveDialogueResponse saveDialogue(SaveDialogueRequest request) {
@@ -33,5 +35,11 @@ class DialogueController implements DialoguesApi {
         return dialogueRetrievalService.getDialogue(id)
                 .map(dialogueResponseMapper::toResponse)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dialogue not found"));
+    }
+
+    @Override
+    public SearchDialoguesResponse searchDialogues(String query) {
+        var results = dialogueSearchService.searchDialogues(query);
+        return dialogueResponseMapper.toSearchDialoguesResponse(results);
     }
 }
