@@ -71,7 +71,7 @@ public class ValidationControllerAdvice {
     @ExceptionHandler(UnfixableValidationException.class)
     public ResponseEntity<ProblemDetail> handleUnfixableValidationError() {
         ProblemDetail body = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
-                "Sorry, we could not fullfill your request please try again later");
+                "Sorry, we could not fulfill your request please try again later");
         return ResponseEntity.of(body)
                 .build();
     }

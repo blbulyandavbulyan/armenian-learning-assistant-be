@@ -83,7 +83,7 @@ class ChatControllerIT extends BaseIT {
                         .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
                 // 500: the service failed to fulfill the request; 5xx is correct, 500 is appropriate since this is not a simple proxy
                 .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.detail").value("Sorry, we could not fullfill your request please try again later"));
+                .andExpect(jsonPath("$.detail").value("Sorry, we could not fulfill your request please try again later"));
     }
 
     @Test

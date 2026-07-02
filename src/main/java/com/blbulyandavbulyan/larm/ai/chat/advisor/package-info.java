@@ -1,4 +1,4 @@
 @NullMarked
 package com.blbulyandavbulyan.larm.ai.chat.advisor;
 
-import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NullMarked;

@@ -70,7 +70,7 @@ public class DialogueChatService {
                     .entity(StructuredDialogueResource.class);
 
         } catch (ConstraintViolationException e) {
-            log.error("Unfixable constraint validation error ocurred, LLM generated bad response.", e);
+            log.error("Unfixable constraint validation error occurred, LLM generated bad response.", e);
             throw new UnfixableValidationException();
         }
     }

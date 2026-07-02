@@ -5,6 +5,6 @@ package com.blbulyandavbulyan.larm.ai.chat;
  */
 public class UnfixableValidationException extends RuntimeException {
     public UnfixableValidationException() {
-        super("Unfixable constraint validation error ocurred, LLM generated bad response.");
+        super("Unfixable constraint validation error occurred, LLM generated bad response.");
     }
 }
