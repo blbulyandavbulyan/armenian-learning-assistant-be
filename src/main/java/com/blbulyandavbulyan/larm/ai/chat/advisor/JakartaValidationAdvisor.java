@@ -9,7 +9,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
@@ -19,7 +18,6 @@ import org.springframework.ai.chat.prompt.Prompt;
 import tools.jackson.databind.json.JsonMapper;
 
 @Builder
-@RequiredArgsConstructor
 @Slf4j
 public class JakartaValidationAdvisor implements CallAdvisor {
 
@@ -86,7 +84,7 @@ public class JakartaValidationAdvisor implements CallAdvisor {
         } while (!isValidationSuccess && repeatCounter <= this.maxRepeatAttempts);
 
         if (!violations.isEmpty()) {
-            log.debug("All attempts to adjust the output to pass the validation were failed");
+            log.warn("All attempts to adjust the output to pass the validation were exhausted");
             throw new ConstraintViolationException(violations);
         }
 
