@@ -5,9 +5,11 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.blbulyandavbulyan.larm.ai.chat.UnfixableValidationException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -64,5 +66,13 @@ public class ValidationControllerAdvice {
                 .build();
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnfixableValidationException.class)
+    public ResponseEntity<ProblemDetail> handleUnfixableValidationError() {
+        ProblemDetail body = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Sorry, we could not fulfill your request please try again later");
+        return ResponseEntity.of(body)
+                .build();
     }
 }
