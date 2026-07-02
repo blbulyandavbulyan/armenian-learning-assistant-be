@@ -3,7 +3,7 @@ package com.blbulyandavbulyan.larm.ai.chat;
 import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.ai.chat.advisor.JakartaValidationAdvisor;
-import com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingAdvisor;
+import com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingProxyAdvisor;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -44,27 +44,19 @@ public class DialogueChatService {
             return chatClient.prompt()
                     .system(new ClassPathResource("prompts/ARMENIAN-DIALOGUE-GENERATOR.md"))
                     .user(message)
-                    // the idea of injecting several logging advisors is to see what happens in between them
-                    // Response path (inner -> outer):
-                    //   LoggingAdvisor(-1997) -> StructuredOutputValidationAdvisor(-1998, fixes JSON/schema)
-                    //   -> LoggingAdvisor(-1999) -> JakartaValidationAdvisor(-2000, validates bean constraints)
-                    //   -> LoggingAdvisor(HIGHEST_PRECEDENCE)
-                    .advisors(LoggingAdvisor.forOrder(Ordered.HIGHEST_PRECEDENCE))
-                    .advisors(JakartaValidationAdvisor.builder()
+                    .advisors(new LoggingProxyAdvisor(JakartaValidationAdvisor.builder()
                             .outputType(StructuredDialogueResource.class)
                             .order(Ordered.LOWEST_PRECEDENCE - 2000)
                             .maxRepeatAttempts(5)
                             .validator(validator)
                             .jsonMapper(jsonMapper)
-                            .build())
-                    .advisors(LoggingAdvisor.forOrder(Ordered.LOWEST_PRECEDENCE - 1999))
-                    .advisors(StructuredOutputValidationAdvisor.builder()
+                            .build()))
+                    .advisors(new LoggingProxyAdvisor(StructuredOutputValidationAdvisor.builder()
                             .outputType(StructuredDialogueResource.class)
                             .jsonMapper(jsonMapper)
                             .maxRepeatAttempts(5)
                             .advisorOrder(Ordered.LOWEST_PRECEDENCE - 1998)
-                            .build())
-                    .advisors(LoggingAdvisor.forOrder(Ordered.LOWEST_PRECEDENCE - 1997))
+                            .build()))
                     .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId.toString()))
                     .call()
                     .entity(StructuredDialogueResource.class);
