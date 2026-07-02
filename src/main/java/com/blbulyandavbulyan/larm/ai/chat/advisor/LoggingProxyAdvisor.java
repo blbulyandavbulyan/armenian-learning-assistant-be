@@ -75,6 +75,11 @@ public class LoggingProxyAdvisor implements CallAdvisor {
 
         @Override
         public CallAdvisorChain copy(CallAdvisor after) {
+            // The underlying chain only knows about the proxy, not the delegate.
+            // If the delegate requests to copy the chain after itself, translate it to the proxy.
+            if (after == delegate) {
+                return originalChain.copy(LoggingProxyAdvisor.this);
+            }
             return originalChain.copy(after);
         }
     }
