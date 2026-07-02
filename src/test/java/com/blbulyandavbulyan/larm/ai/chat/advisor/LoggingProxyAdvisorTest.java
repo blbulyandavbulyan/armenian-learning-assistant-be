@@ -35,7 +35,7 @@ class LoggingProxyAdvisorTest {
     private CallAdvisorChain copiedChain;
 
     @Test
-    void getName_appendsProxyToDelegateName() {
+    void getName() {
         when(delegate.getName()).thenReturn("TestAdvisor");
         LoggingProxyAdvisor proxy = new LoggingProxyAdvisor(delegate);
 
@@ -43,7 +43,7 @@ class LoggingProxyAdvisorTest {
     }
 
     @Test
-    void getOrder_returnsDelegateOrder() {
+    void getOrder() {
         when(delegate.getOrder()).thenReturn(42);
         LoggingProxyAdvisor proxy = new LoggingProxyAdvisor(delegate);
 
@@ -65,9 +65,8 @@ class LoggingProxyAdvisorTest {
             
             // simulate delegate doing a nextCall
             when(originalChain.nextCall(request)).thenReturn(mockResponse);
-            ChatClientResponse innerResponse = wrappedChain.nextCall(request);
-            
-            return innerResponse;
+
+            return wrappedChain.nextCall(request);
         });
 
         LoggingProxyAdvisor proxy = new LoggingProxyAdvisor(delegate);
