@@ -16,17 +16,22 @@ spring:
           text:
             dimensions: 3072
             model: gemini-embedding-001
-
-storage:
-  local:
-    folder-name: ${STORAGE_FOLDER_NAME:/home/david/arm-learn-files}
-piper:
-  url: http://localhost:5000
-  # TODO hardcoding these properties here might not be the best choice to be honest, maybe we should get them from the webserver which we use here
-  model-name: hy_AM-medium
-  voice-identifier: gor-medium
+app:
+  security:
+    enabled: false # TODO, should be changed to true, when security is fully implemented
+    cors:
+      allowed-origins: "http://localhost:8081"
+  storage:
+    local:
+      folder-name: ${STORAGE_FOLDER_NAME:/home/david/arm-learn-files}
+  piper:
+    url: http://localhost:5000
+    # TODO hardcoding these properties here might not be the best choice to be honest, maybe we should get them from the webserver which we use here
+    model-name: hy_AM-medium
+    voice-identifier: gor-medium
 logging:
   level:
     com.blbulyandavbulyan.larm: DEBUG
     org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder:
+    com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingProxyAdvisor: INFO

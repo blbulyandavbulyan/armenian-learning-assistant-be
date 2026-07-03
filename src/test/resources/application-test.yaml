@@ -1,6 +1,14 @@
-piper:
-  model-name: hy_AM-medium
-  voice-identifier: gor-medium
+app:
+  storage:
+    local:
+      folder-name: target/test-storage
+  security:
+    enabled: false
+    cors:
+      allowed-origins: "http://localhost:8081"
+  piper:
+    model-name: hy_AM-medium
+    voice-identifier: gor-medium
 logging:
   level:
     com.blbulyandavbulyan.larm: DEBUG

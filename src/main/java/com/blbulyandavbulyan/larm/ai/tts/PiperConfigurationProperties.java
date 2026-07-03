@@ -2,7 +2,7 @@ package com.blbulyandavbulyan.larm.ai.tts;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "piper")
+@ConfigurationProperties(prefix = "app.piper")
 public record PiperConfigurationProperties(
         String url,
         String modelName,

@@ -36,7 +36,7 @@ import org.wiremock.spring.InjectWireMock;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @EnableWireMock({
-    @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "piper.url")
+    @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "app.piper.url")
 })
 @Import({DialogueRecordAssertHelper.class})
 @Sql(scripts = "/sql-test-scripts/drop-all-data-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -63,7 +63,7 @@ public abstract class BaseIT {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("storage.local.folder-name", TEMP_DIR::toString);
+        registry.add("app.storage.local.folder-name", TEMP_DIR::toString);
     }
 
     @Autowired

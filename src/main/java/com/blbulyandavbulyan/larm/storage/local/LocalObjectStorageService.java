@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 class LocalObjectStorageService implements ObjectStorageService {
     private final Path storagePath;
 
-    public LocalObjectStorageService(@Value("${storage.local.folder-name}") String storageFolder) {
+    public LocalObjectStorageService(@Value("${app.storage.local.folder-name}") String storageFolder) {
         storagePath = Paths.get(storageFolder).toAbsolutePath().normalize();
     }
 
