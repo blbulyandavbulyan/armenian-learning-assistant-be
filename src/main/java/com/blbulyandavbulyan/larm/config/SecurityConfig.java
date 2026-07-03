@@ -20,7 +20,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // Explicitly allow your Webpack Dev Server
     @Value("${app.security.cors.allowed-origins}")
     private final List<String> allowedOrigins;
 
