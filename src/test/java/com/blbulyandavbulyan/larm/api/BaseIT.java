@@ -63,7 +63,7 @@ public abstract class BaseIT {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("storage.local.folder-name", TEMP_DIR::toString);
+        registry.add("app.storage.local.folder-name", TEMP_DIR::toString);
     }
 
     @Autowired
