@@ -66,6 +66,7 @@ There should be some kind of smart learning algorithm for repeating phrases and 
 - [ ] Export to Anki? (CSV/Apkg)
 - [ ] Bulk audio generation for existing phrases without media
 - [ ] Multi-voice TTS support (switching between different Piper voices)
+- [ ] *See, improve, and implement design spec: [docs/design/multiple-voices-for-dialogues.md](docs/design/multiple-voices-for-dialogues.md)*
 
 ### Gamification & Engagement
 - [ ] Sentence reconstruction mini-game (unscramble Armenian words)
