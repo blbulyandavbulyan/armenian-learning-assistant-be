@@ -9,8 +9,7 @@ updates:
     groups:
       spring-framework:
         patterns:
-          - "org.springframework.boot:*"
-          - "org.springframework:*"
+          - "org.springframework*:*"
       other-dependencies:
         patterns:
           - "*"
