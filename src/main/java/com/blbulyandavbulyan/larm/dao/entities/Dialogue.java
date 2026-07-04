@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +25,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
+import static com.blbulyandavbulyan.larm.dao.entities.LazyLoadingStringConstants.LAZY_LOADING;
 
 @Entity
 @Table(name = "dialogues")
@@ -76,4 +79,9 @@ public class Dialogue {
         return Objects.hashCode(getId());
     }
 
+    @Override
+    public String toString() {
+        return "Dialogue{id=%s, embedding=%s, title=%s, createdAt=%s, speakers=%s, dialoguePhrases=%s, titleTranslations=%s}"
+                .formatted(id, LAZY_LOADING, LAZY_LOADING, createdAt, speakers, dialoguePhrases, titleTranslations);
+    }
 }

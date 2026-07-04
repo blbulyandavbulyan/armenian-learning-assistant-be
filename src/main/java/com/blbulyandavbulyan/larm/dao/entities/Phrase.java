@@ -59,4 +59,9 @@ public class Phrase {
         return Objects.hashCode(getId());
     }
 
+    @Override
+    public String toString() {
+        return "Phrase{id=%s, status=%s, isoLanguageCode='%s', phrase='%s', transcription='%s', mediaSet=%s}"
+                .formatted(id, status, isoLanguageCode, phrase, transcription, mediaSet);
+    }
 }

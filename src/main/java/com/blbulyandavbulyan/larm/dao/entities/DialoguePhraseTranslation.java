@@ -23,12 +23,15 @@ import lombok.Setter;
 public class DialoguePhraseTranslation implements ContextualTranslation {
 
     @Id
+    @Getter(onMethod_ = {@Override})
     private UUID id;
 
     @Column(name = "iso_language_code")
+    @Getter(onMethod_ = {@Override})
     private String isoLanguageCode;
 
     @Column(name = "translation_text")
+    @Getter(onMethod_ = {@Override})
     private String translationText;
 
     @Override
@@ -45,5 +48,11 @@ public class DialoguePhraseTranslation implements ContextualTranslation {
     @Override
     public final int hashCode() {
         return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "DialoguePhraseTranslation{id=%s, isoLanguageCode='%s', translationText='%s'}"
+                .formatted(id, isoLanguageCode, translationText);
     }
 }

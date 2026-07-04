@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import static com.blbulyandavbulyan.larm.dao.entities.LazyLoadingStringConstants.LAZY_LOADING;
+
 @Entity
 @Table(name = "medias")
 @Getter
@@ -77,4 +79,12 @@ public class Media {
         return Objects.hashCode(getId());
     }
 
+    @Override
+    public String toString() {
+        return """
+                Media{id=%s, phrase=%s, storageProvider=%s, storageBucket='%s', storageKey='%s',\
+                 contentType='%s', sizeInBytes=%d, aiModelUsed='%s', voiceIdentifier='%s', createdAt=%s}"""
+                .formatted(id, LAZY_LOADING, storageProvider, storageBucket, storageKey,
+                        contentType, sizeInBytes, aiModelUsed, voiceIdentifier, createdAt);
+    }
 }
