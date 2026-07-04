@@ -81,10 +81,11 @@ public class Media {
 
     @Override
     public String toString() {
-        return """
+        return
+                """
                 Media{id=%s, phrase=%s, storageProvider=%s, storageBucket='%s', storageKey='%s',\
-                 contentType='%s', sizeInBytes=%d, aiModelUsed='%s', voiceIdentifier='%s', createdAt=%s}"""
-                .formatted(id, LAZY_LOADING, storageProvider, storageBucket, storageKey,
+                 contentType='%s', sizeInBytes=%d, aiModelUsed='%s', voiceIdentifier='%s', createdAt=%s}
+                """.formatted(id, LAZY_LOADING, storageProvider, storageBucket, storageKey,
                         contentType, sizeInBytes, aiModelUsed, voiceIdentifier, createdAt);
     }
 }
