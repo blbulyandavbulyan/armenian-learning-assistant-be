@@ -3,7 +3,7 @@ package com.blbulyandavbulyan.larm.api.dialogues;
 import java.nio.file.Files;
 import java.util.UUID;
 
-import com.blbulyandavbulyan.larm.api.BaseIT;
+import com.blbulyandavbulyan.larm.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;

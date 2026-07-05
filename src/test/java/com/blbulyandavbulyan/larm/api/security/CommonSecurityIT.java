@@ -1,6 +1,6 @@
 package com.blbulyandavbulyan.larm.api.security;
 
-import com.blbulyandavbulyan.larm.api.BaseIT;
+import com.blbulyandavbulyan.larm.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;

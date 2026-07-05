@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.api;
+package com.blbulyandavbulyan.larm;
 
 import java.io.IOException;
 import java.nio.file.Files;

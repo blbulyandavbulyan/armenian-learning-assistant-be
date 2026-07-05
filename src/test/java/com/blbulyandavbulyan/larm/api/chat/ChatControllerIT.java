@@ -3,9 +3,9 @@ package com.blbulyandavbulyan.larm.api.chat;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.blbulyandavbulyan.larm.BaseIT;
 import com.blbulyandavbulyan.larm.ai.StructuredDialogueResourceMother;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
-import com.blbulyandavbulyan.larm.api.BaseIT;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.client.ChatClient;

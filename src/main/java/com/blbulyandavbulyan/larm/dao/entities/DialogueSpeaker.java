@@ -21,6 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.blbulyandavbulyan.larm.dao.entities.LazyLoadingStringConstants.LAZY_LOADING;
+
 @Entity
 @Table(name = "dialogue_speakers")
 @Getter
@@ -62,5 +64,11 @@ public class DialogueSpeaker {
     @Override
     public final int hashCode() {
         return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "DialogueSpeaker{id=%s, dialogue=%s, namePhrase=%s, createdAt=%s, translations=%s}"
+                .formatted(id, LAZY_LOADING, LAZY_LOADING, createdAt, LAZY_LOADING);
     }
 }
