@@ -1,7 +1,5 @@
 package com.blbulyandavbulyan.larm.ai.chat;
 
-import java.util.UUID;
-
 import com.blbulyandavbulyan.larm.ai.chat.advisor.JakartaValidationAdvisor;
 import com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingProxyAdvisor;
 import io.micrometer.core.annotation.Timed;
@@ -36,7 +34,7 @@ public class DialogueChatService {
      */
     @Valid
     @Timed(value = "chat.dialogue_chat.latency", description = "Time taken to generate dialogue using LLM")
-    public StructuredDialogueResource dialogueChat(String message, UUID chatId) {
+    public StructuredDialogueResource dialogueChat(String message, String chatId) {
         // TODO most probably we need here the tool which checks the existing phrases in the database
         //  probably it should check 'exact match' and 'similar' phrases
         // .tools()
@@ -50,7 +48,7 @@ public class DialogueChatService {
                         .validator(validator)
                         .jsonMapper(jsonMapper)
                         .build()))
-                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId.toString()))
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
                 .call()
                 .entity(StructuredDialogueResource.class);
     }

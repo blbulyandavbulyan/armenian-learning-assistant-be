@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
 import com.blbulyandavbulyan.larm.api.advice.ValidationErrorResponse;
+import com.blbulyandavbulyan.larm.security.DatabaseUserJwtAuthenticationToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,5 +44,5 @@ interface ChatApi {
                     )
             }
     )
-    DialogueChatResponse dialogueChat(@Valid @RequestBody ChatRequest request);
+    DialogueChatResponse dialogueChat(DatabaseUserJwtAuthenticationToken auth, @Valid @RequestBody ChatRequest request);
 }

@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.validation;
+package com.blbulyandavbulyan.larm.validation.validators;
 
 import java.util.Arrays;
 import java.util.Locale;

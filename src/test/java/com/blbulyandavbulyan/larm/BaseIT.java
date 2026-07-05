@@ -24,6 +24,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -86,6 +87,9 @@ public abstract class BaseIT {
 
     @MockitoBean
     protected EmbeddingModel embeddingModel;
+
+    @MockitoBean
+    protected JwtDecoder jwtDecoder;
 
     @InjectWireMock("piper-tts-service")
     protected WireMockServer wireMockServer;

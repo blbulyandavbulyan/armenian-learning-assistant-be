@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.config.validation;
 
+import com.blbulyandavbulyan.larm.validation.srategies.HybridGetterStrategy;
 import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.springframework.boot.validation.autoconfigure.ValidationConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;

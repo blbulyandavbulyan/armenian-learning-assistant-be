@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @ConfigurationProperties(prefix = "app.security")
 public record AppSecurityProperties(
         CorsProperties cors,
+
+        @DefaultValue("true")
         boolean enabled) {
     public record CorsProperties(List<String> allowedOriginPatterns) {
     }

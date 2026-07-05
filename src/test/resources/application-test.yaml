@@ -3,7 +3,7 @@ app:
     local:
       folder-name: target/test-storage
   security:
-    enabled: false
+    enabled: true
     cors:
       allowed-origin-patterns: "http://localhost:8081"
   piper:

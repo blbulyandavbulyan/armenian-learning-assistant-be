@@ -3,6 +3,7 @@ package com.blbulyandavbulyan.larm.api.assets;
 import java.nio.file.Files;
 
 import com.blbulyandavbulyan.larm.BaseIT;
+import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockDatabaseUser
 class AssetsControllerIT extends BaseIT {
 
     interface RequestMapping {
