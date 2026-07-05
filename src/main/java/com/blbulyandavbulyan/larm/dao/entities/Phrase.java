@@ -19,6 +19,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.blbulyandavbulyan.larm.dao.entities.LazyLoadingStringConstants.LAZY_LOADING;
+
 @Entity
 @Table(name = "phrases")
 @Getter
@@ -62,6 +64,6 @@ public class Phrase {
     @Override
     public String toString() {
         return "Phrase{id=%s, status=%s, isoLanguageCode='%s', phrase='%s', transcription='%s', mediaSet=%s}"
-                .formatted(id, status, isoLanguageCode, phrase, transcription, mediaSet);
+                .formatted(id, status, isoLanguageCode, phrase, transcription, LAZY_LOADING);
     }
 }

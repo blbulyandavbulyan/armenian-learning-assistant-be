@@ -81,6 +81,6 @@ public class Dialogue {
     @Override
     public String toString() {
         return "Dialogue{id=%s, embedding=%s, title=%s, createdAt=%s, speakers=%s, dialoguePhrases=%s, titleTranslations=%s}"
-                .formatted(id, LAZY_LOADING, LAZY_LOADING, createdAt, speakers, dialoguePhrases, titleTranslations);
+                .formatted(id, LAZY_LOADING, LAZY_LOADING, createdAt, LAZY_LOADING, LAZY_LOADING, LAZY_LOADING);
     }
 }
