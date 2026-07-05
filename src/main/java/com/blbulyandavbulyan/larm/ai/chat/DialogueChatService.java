@@ -1,7 +1,5 @@
 package com.blbulyandavbulyan.larm.ai.chat;
 
-import java.util.UUID;
-
 import com.blbulyandavbulyan.larm.ai.chat.advisor.JakartaValidationAdvisor;
 import com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingProxyAdvisor;
 import jakarta.validation.ConstraintViolationException;

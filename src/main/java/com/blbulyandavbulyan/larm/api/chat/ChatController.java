@@ -1,10 +1,9 @@
 package com.blbulyandavbulyan.larm.api.chat;
 
+import com.blbulyandavbulyan.larm.ai.chat.DialogueChatService;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
-import com.blbulyandavbulyan.larm.core.DialogueChatParameters;
-import com.blbulyandavbulyan.larm.core.UserAwareDialogueChatService;
+import com.blbulyandavbulyan.larm.security.DatabaseUserJwtAuthenticationToken;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,17 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Validated
 class ChatController implements ChatApi {
-    private final UserAwareDialogueChatService dialogueChatService;
+    private final DialogueChatService dialogueChatService;
     private final ChatMapper chatMapper;
 
     @Override
-    public DialogueChatResponse dialogueChat(Jwt jwt, ChatRequest request) {
-        StructuredDialogueResource structuredDialogueResource = dialogueChatService.dialogueChat(DialogueChatParameters.builder()
-                        .chatId(request.chatId())
-                        .message(request.message())
-                        .issuer(jwt.getIssuer().toString())
-                        .subject(jwt.getSubject())
-                .build());
+    public DialogueChatResponse dialogueChat(DatabaseUserJwtAuthenticationToken auth, ChatRequest request) {
+        String secureChatId = auth.getUserId() + ":" + request.chatId();
+        StructuredDialogueResource structuredDialogueResource = dialogueChatService.dialogueChat(
+                request.message(), secureChatId);
         return chatMapper.mapToDialogueResponse(structuredDialogueResource);
     }
 

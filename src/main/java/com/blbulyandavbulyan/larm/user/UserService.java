@@ -15,7 +15,7 @@ public class UserService {
 
     @Cacheable(value = "users")// TODO is such value even ok here?
     public UUID aquireUserId(String iss, String sub) {
-        return userRepository.findByIssAndSub(iss, sub)
+        return userRepository.findByIssuerAndSubject(iss, sub)
                 .orElseGet(() -> userRepository.save(User.builder()
                         .id(UUID.randomUUID())
                         .issuer(iss)
