@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +45,5 @@ interface ChatApi {
                     )
             }
     )
-    DialogueChatResponse dialogueChat(@Valid @RequestBody ChatRequest request);
+    DialogueChatResponse dialogueChat(@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody ChatRequest request);
 }

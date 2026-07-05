@@ -36,7 +36,7 @@ public class DialogueChatService {
      * @throws UnfixableValidationException in case if LLM continued to generate bad response which failed the jakarta validation
      */
     @Valid
-    public StructuredDialogueResource dialogueChat(String message, UUID chatId) {
+        public StructuredDialogueResource dialogueChat(String message, String chatId) {
         // TODO most probably we need here the tool which checks the existing phrases in the database
         //  probably it should check 'exact match' and 'similar' phrases
         // .tools()
@@ -57,7 +57,7 @@ public class DialogueChatService {
                             .maxRepeatAttempts(5)
                             .advisorOrder(Ordered.LOWEST_PRECEDENCE - 1998)
                             .build()))
-                    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId.toString()))
+                    .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, chatId))
                     .call()
                     .entity(StructuredDialogueResource.class);
 

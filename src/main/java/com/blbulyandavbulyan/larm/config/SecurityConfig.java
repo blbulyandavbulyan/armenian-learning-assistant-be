@@ -10,6 +10,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -31,17 +33,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         // important to have cors configuration, cause otherwise ui does not work properly
         http.cors(Customizer.withDefaults())
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> {
             if (securityEnabled) {
-                // TODO, this might be dumb, but it is better then no security, will be adjusted later when
-                //  real security is going to be implemented
                 auth.anyRequest().authenticated();
             } else {
                 auth.anyRequest().permitAll();
             }
         });
+        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(_ -> {}));
 
         return http.build();
     }
