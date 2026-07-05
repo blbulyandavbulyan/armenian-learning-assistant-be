@@ -2,7 +2,7 @@ package com.blbulyandavbulyan.larm.api.assets;
 
 import java.nio.file.Files;
 
-import com.blbulyandavbulyan.larm.api.BaseIT;
+import com.blbulyandavbulyan.larm.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.jdbc.Sql;
