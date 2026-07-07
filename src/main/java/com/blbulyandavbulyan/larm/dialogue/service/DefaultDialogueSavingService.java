@@ -51,14 +51,15 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                 .title(dialogueSavedPhrases.titlePhrase())
                 .createdAt(dialogueCreatedAt)
                 .embedding(parameters.embedding())
-                .titleTranslations(
-                        parameters.titlePhrase().translations().stream()
-                                .map(t -> DialogueTitleTranslation.builder()
-                                        .isoLanguageCode(t.isoLanguageCode())
-                                        .translationText(t.translationText())
-                                        .build())
-                                .collect(Collectors.toSet()))
                 .build();
+        Set<DialogueTitleTranslation> titleTranslations = parameters.titlePhrase().translations().stream()
+                .map(t -> DialogueTitleTranslation.builder()
+                        .dialogue(dialogue)
+                        .isoLanguageCode(t.isoLanguageCode())
+                        .translationText(t.translationText())
+                        .build())
+                .collect(Collectors.toSet());
+        dialogue.setTitleTranslations(titleTranslations);
 
         Map<String, DialogueSpeaker> speakerRefToSpeaker = new HashMap<>();
         Set<DialogueSpeaker> speakers = new LinkedHashSet<>();
@@ -70,14 +71,15 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                     .dialogue(dialogue)
                     .namePhrase(speakerName)
                     .createdAt(dialogueCreatedAt)
-                    .translations(
-                            sp.namePhrase().translations().stream()
-                                    .map(t -> DialogueSpeakerTranslation.builder()
-                                            .isoLanguageCode(t.isoLanguageCode())
-                                            .translationText(t.translationText())
-                                            .build())
-                                    .collect(Collectors.toSet()))
                     .build();
+            Set<DialogueSpeakerTranslation> speakerTranslations = sp.namePhrase().translations().stream()
+                    .map(t -> DialogueSpeakerTranslation.builder()
+                            .dialogueSpeaker(speaker)
+                            .isoLanguageCode(t.isoLanguageCode())
+                            .translationText(t.translationText())
+                            .build())
+                    .collect(Collectors.toSet());
+            speaker.setTranslations(speakerTranslations);
             speakers.add(speaker);
             speakerRefToSpeaker.put(sp.speakerRefId(), speaker);
         }
@@ -90,20 +92,22 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                     Phrase savedPhrase = dialogueSavedPhrases.dialoguePhrases().get(i);
 
                     DialogueSpeaker speaker = speakerRefToSpeaker.get(dp.speakerRefId());
-                    return DialoguePhrase.builder()
+                    DialoguePhrase dialoguePhrase = DialoguePhrase.builder()
                             .dialogue(dialogue)
                             .phrase(savedPhrase)
                             .speaker(speaker)
                             .orderIndex(i)
                             .createdAt(dialogueCreatedAt)
-                            .translations(
-                                    dp.phrase().translations().stream()
-                                            .map(t -> DialoguePhraseTranslation.builder()
-                                                    .isoLanguageCode(t.isoLanguageCode())
-                                                    .translationText(t.translationText())
-                                                    .build())
-                                            .collect(Collectors.toSet()))
                             .build();
+                    Set<DialoguePhraseTranslation> phraseTranslations = dp.phrase().translations().stream()
+                            .map(t -> DialoguePhraseTranslation.builder()
+                                    .dialoguePhrase(dialoguePhrase)
+                                    .isoLanguageCode(t.isoLanguageCode())
+                                    .translationText(t.translationText())
+                                    .build())
+                            .collect(Collectors.toSet());
+                    dialoguePhrase.setTranslations(phraseTranslations);
+                    return dialoguePhrase;
                 })
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 

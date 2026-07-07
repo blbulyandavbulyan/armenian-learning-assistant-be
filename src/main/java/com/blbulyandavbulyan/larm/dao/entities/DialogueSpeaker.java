@@ -48,8 +48,7 @@ public class DialogueSpeaker {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "dialogue_speaker_id", nullable = false)
+    @OneToMany(mappedBy = "dialogueSpeaker", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<DialogueSpeakerTranslation> translations = new HashSet<>();
 

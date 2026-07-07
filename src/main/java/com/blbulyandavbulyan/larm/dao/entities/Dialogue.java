@@ -60,8 +60,7 @@ public class Dialogue {
     @OrderBy("orderIndex ASC")
     private Set<DialoguePhrase> dialoguePhrases;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "dialogue_id", nullable = false)
+    @OneToMany(mappedBy = "dialogue", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<DialogueTitleTranslation> titleTranslations = new HashSet<>();
 
