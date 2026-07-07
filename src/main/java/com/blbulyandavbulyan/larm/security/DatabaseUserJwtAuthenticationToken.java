@@ -23,8 +23,12 @@ public class DatabaseUserJwtAuthenticationToken extends JwtAuthenticationToken {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof DatabaseUserJwtAuthenticationToken that)) return false;
-        if (!super.equals(o)) return false;
+        if (!(o instanceof DatabaseUserJwtAuthenticationToken that)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         return Objects.equals(userId, that.userId);
     }
 
