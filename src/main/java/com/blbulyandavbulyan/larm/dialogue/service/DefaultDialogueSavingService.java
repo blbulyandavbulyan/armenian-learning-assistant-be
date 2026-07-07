@@ -7,7 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,14 +44,12 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
         DialogueSavedPhrases dialogueSavedPhrases = saveAllPhrases(parameters);
 
         Dialogue dialogue = Dialogue.builder()
-                .id(UUID.randomUUID())
                 .title(dialogueSavedPhrases.titlePhrase())
                 .createdAt(dialogueCreatedAt)
                 .embedding(parameters.embedding())
                 .titleTranslations(
                         parameters.titlePhrase().translations().stream()
                                 .map(t -> DialogueTitleTranslation.builder()
-                                        .id(UUID.randomUUID())
                                         .isoLanguageCode(t.isoLanguageCode())
                                         .translationText(t.translationText())
                                         .build())
@@ -66,14 +63,12 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
             Phrase speakerName = dialogueSavedPhrases.speakerNames().get(i);
 
             final var speaker = DialogueSpeaker.builder()
-                    .id(UUID.randomUUID())
                     .dialogue(dialogue)
                     .namePhrase(speakerName)
                     .createdAt(dialogueCreatedAt)
                     .translations(
                             sp.namePhrase().translations().stream()
                                     .map(t -> DialogueSpeakerTranslation.builder()
-                                            .id(UUID.randomUUID())
                                             .isoLanguageCode(t.isoLanguageCode())
                                             .translationText(t.translationText())
                                             .build())
@@ -92,7 +87,6 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
 
                     DialogueSpeaker speaker = speakerRefToSpeaker.get(dp.speakerRefId());
                     return DialoguePhrase.builder()
-                            .id(UUID.randomUUID())
                             .dialogue(dialogue)
                             .phrase(savedPhrase)
                             .speaker(speaker)
@@ -101,7 +95,6 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
                             .translations(
                                     dp.phrase().translations().stream()
                                             .map(t -> DialoguePhraseTranslation.builder()
-                                                    .id(UUID.randomUUID())
                                                     .isoLanguageCode(t.isoLanguageCode())
                                                     .translationText(t.translationText())
                                                     .build())

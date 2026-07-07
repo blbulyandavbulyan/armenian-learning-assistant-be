@@ -15,7 +15,6 @@ public class PhraseMapper {
 
     public Phrase mapToPhrase(SavePhraseParameters resource) {
         Phrase phrase = Phrase.builder()
-                .id(resource.id())
                 .phrase(resource.phrase())
                 .transcription(resource.transcription())
                 .isoLanguageCode(resource.isoLanguageCode())

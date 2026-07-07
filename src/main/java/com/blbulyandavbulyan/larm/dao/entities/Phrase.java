@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -30,10 +32,11 @@ import static com.blbulyandavbulyan.larm.dao.entities.LazyLoadingStringConstants
 @Builder
 public class Phrase {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    private PhraseStatus status;
+    private PhraseStatus status; // TODO with current flow this field does not make sense anymore, probably should clean it up
 
     @Column(name = "iso_language_code")
     private String isoLanguageCode;
