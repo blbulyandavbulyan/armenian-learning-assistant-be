@@ -19,6 +19,7 @@ public class DialogueVectorizationService {
     private final EmbeddingModel embeddingModel;
 
     public float[] vectorize(SaveDialogueParameters params) {
+        log.trace("Vectorizing dialogue: {}", params);
         final var speakerRefIdToSpeaker = params.speakers()
                 .stream()
                 .collect(Collectors.toMap(SaveDialogueParameters.SpeakerParameters::speakerRefId, Function.identity()));
@@ -42,7 +43,7 @@ public class DialogueVectorizationService {
         textBuilder.append(dialogueLines);
         final var embeddingText = textBuilder.toString();
         
-        log.debug("Converted dialogue parameters: {} into embedding text: {}", params, embeddingText);
+        log.trace("Converted dialogue parameters: {} into embedding text:\n {}", params, embeddingText);
         return embeddingModel.embed(embeddingText);
     }
 }

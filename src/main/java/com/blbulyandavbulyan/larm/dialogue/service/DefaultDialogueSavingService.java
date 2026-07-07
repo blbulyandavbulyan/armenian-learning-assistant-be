@@ -21,16 +21,19 @@ import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import com.blbulyandavbulyan.larm.dialogue.DialogueSavingService;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
 import com.blbulyandavbulyan.larm.dialogue.StoreDialogueParameters;
+import com.blbulyandavbulyan.larm.logging.Loggable;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DefaultDialogueSavingService implements DialogueSavingService {
 
     private final DialogueRepository dialogueRepository;
@@ -38,6 +41,7 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
 
     @Override
     @Transactional
+    @Loggable(logLevel = Loggable.LogLevel.DEBUG)
     public SavedDialogueResource saveDialogue(StoreDialogueParameters parameters) {
         final Instant dialogueCreatedAt = Instant.now();
 
@@ -105,6 +109,8 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
 
         dialogue.setSpeakers(speakers);
         dialogue.setDialoguePhrases(dialoguePhrases);
+
+        log.trace("Saving dialogue: {}", dialogue);
         dialogueRepository.save(dialogue);
 
         return SavedDialogueResource.builder().id(dialogue.getId()).build();

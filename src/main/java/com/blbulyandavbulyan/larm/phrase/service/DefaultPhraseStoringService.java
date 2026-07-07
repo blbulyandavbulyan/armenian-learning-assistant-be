@@ -9,6 +9,7 @@ import java.util.stream.StreamSupport;
 
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
 import com.blbulyandavbulyan.larm.dao.repository.PhraseRepository;
+import com.blbulyandavbulyan.larm.logging.Loggable;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
@@ -26,8 +27,11 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
 
     @Transactional
     @Override
+    @Loggable(logLevel = Loggable.LogLevel.DEBUG)
     public List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters) {
+        log.trace("Finding existing phrases by: {}", parameters.phrases());
         List<Phrase> existingEntities = phraseRepository.findByPhraseIn(parameters.phrases());
+        log.trace("Existing phrases: {}", existingEntities);
         Map<String, Phrase> existingPhrasesMap = existingEntities.stream()
                 .collect(Collectors.toMap(Phrase::getPhrase, Function.identity()));
 
@@ -43,6 +47,7 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
                 assembledPhrases.add(newPhrase);
             }
         }
+        log.trace("Saving phrases {}", assembledPhrases);
 
         Iterable<Phrase> savedPhrases = phraseRepository.saveAll(assembledPhrases);
 
