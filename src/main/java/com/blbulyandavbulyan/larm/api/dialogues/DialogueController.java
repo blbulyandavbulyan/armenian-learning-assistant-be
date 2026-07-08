@@ -6,6 +6,7 @@ import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dialogue.DialogueRetrievalService;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
 import com.blbulyandavbulyan.larm.dialogue.service.DialogueSearchService;
+import com.blbulyandavbulyan.larm.logging.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,7 @@ class DialogueController implements DialoguesApi {
     private final DialogueSearchService dialogueSearchService;
 
     @Override
+    @Loggable(logLevel = Loggable.LogLevel.DEBUG)
     public SaveDialogueResponse saveDialogue(SaveDialogueRequest request) {
         SavedDialogueResource saved = dialogueOrchestrator.saveDialogue(
                 dialogueRequestMapper.toParameters(request));

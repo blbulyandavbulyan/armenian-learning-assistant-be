@@ -5,7 +5,12 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +29,7 @@ public class DialogueSpeakerTranslation implements ContextualTranslation {
 
     @Id
     @Getter(onMethod_ = {@Override})
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "iso_language_code")
@@ -33,6 +39,10 @@ public class DialogueSpeakerTranslation implements ContextualTranslation {
     @Column(name = "translation_text")
     @Getter(onMethod_ = {@Override})
     private String translationText;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dialogue_speaker_id")
+    private DialogueSpeaker dialogueSpeaker;
 
     @Override
     public final boolean equals(Object o) {

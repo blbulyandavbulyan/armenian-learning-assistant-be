@@ -11,7 +11,6 @@ class MediaMapper {
 
     public Media toMedia(CreateMediaResource createMediaResource) {
         return Media.builder()
-                .id(createMediaResource.id())
                 .storageProvider(createMediaResource.storageProvider())
                 .storageBucket(createMediaResource.storageBucket())
                 .storageKey(createMediaResource.storageKey())

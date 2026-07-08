@@ -335,6 +335,18 @@
                     <printFailingErrors>true</printFailingErrors>
                     <failOnViolation>true</failOnViolation>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-core</artifactId>
+                        <version>7.26.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-java</artifactId>
+                        <version>7.26.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>pmd-validate</id>

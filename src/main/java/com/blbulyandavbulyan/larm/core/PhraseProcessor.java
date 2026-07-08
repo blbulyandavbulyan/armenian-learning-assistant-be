@@ -23,14 +23,10 @@ public class PhraseProcessor {
      * ready to be persisted.
      */
     public SavePhraseParameters process(CreateNewPhraseParameters parameters) {
-        final var phraseId = UUID.randomUUID();
-        final var mediaId = UUID.randomUUID();
         final SpeechResource speechResource = textToSpeechService.convert(parameters.phrase(), parameters.isoLanguageCode());
-        final var objectName = phraseId.toString() + mediaId + ".%s".formatted(speechResource.fileExtension());
+        final var objectName = UUID.randomUUID() + ".%s".formatted(speechResource.fileExtension());
         final StoredObject storedObject = objectStorageService.storeObject(speechResource.bytes(), objectName);
         final var mediaResource = CreateMediaResource.builder()
-                .id(mediaId)
-                .phraseId(phraseId)
                 .aiModelUsed(speechResource.modelName())
                 .sizeInBytes(speechResource.sizeInBytes())
                 .storageKey(storedObject.storageKey())
@@ -41,7 +37,6 @@ public class PhraseProcessor {
                 .build();
 
         return SavePhraseParameters.builder()
-                .id(phraseId)
                 .phrase(parameters.phrase())
                 .transcription(parameters.transcription())
                 .isoLanguageCode(parameters.isoLanguageCode())

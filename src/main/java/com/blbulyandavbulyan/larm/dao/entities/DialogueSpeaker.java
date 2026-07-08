@@ -10,6 +10,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -32,6 +34,7 @@ import static com.blbulyandavbulyan.larm.dao.entities.LazyLoadingStringConstants
 @Builder
 public class DialogueSpeaker {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,8 +48,7 @@ public class DialogueSpeaker {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "dialogue_speaker_id", nullable = false)
+    @OneToMany(mappedBy = "dialogueSpeaker", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<DialogueSpeakerTranslation> translations = new HashSet<>();
 
