@@ -4,7 +4,6 @@ CREATE TABLE phrases
     id            UUID PRIMARY KEY,
     iso_language_code         CHAR(2) NOT NULL CHECK (iso_language_code ~ '^[a-z]{2}$') DEFAULT 'am',
     phrase        TEXT NOT NULL,
-    status VARCHAR(25) NOT NULL,
     transcription TEXT,
     created_at       TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_phrase UNIQUE (phrase)

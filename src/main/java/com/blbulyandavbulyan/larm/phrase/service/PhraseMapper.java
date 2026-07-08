@@ -3,7 +3,6 @@ package com.blbulyandavbulyan.larm.phrase.service;
 import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
-import com.blbulyandavbulyan.larm.dao.entities.PhraseStatus;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,6 @@ public class PhraseMapper {
                 .phrase(resource.phrase())
                 .transcription(resource.transcription())
                 .isoLanguageCode(resource.isoLanguageCode())
-                .status(PhraseStatus.DRAFT)
                 .build();
 
 

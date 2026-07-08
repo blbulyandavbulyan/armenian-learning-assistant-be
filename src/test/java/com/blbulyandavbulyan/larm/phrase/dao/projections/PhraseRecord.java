@@ -5,11 +5,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
-import com.blbulyandavbulyan.larm.dao.entities.PhraseStatus;
 
 public record PhraseRecord(
         UUID id,
-        PhraseStatus status,
         String isoLanguageCode,
         String phrase,
         String transcription,
@@ -17,7 +15,7 @@ public record PhraseRecord(
         Set<MediaRecord> mediaSet) {
 
     public PhraseRecord(Phrase phrase, Set<TranslationRecord> translations) {
-        this(phrase.getId(), phrase.getStatus(), phrase.getIsoLanguageCode(), phrase.getPhrase(),
+        this(phrase.getId(), phrase.getIsoLanguageCode(), phrase.getPhrase(),
                 phrase.getTranscription(), translations, getMediaRecords(phrase));
     }
 

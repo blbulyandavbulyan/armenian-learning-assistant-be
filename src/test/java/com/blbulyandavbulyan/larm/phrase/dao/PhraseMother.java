@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.blbulyandavbulyan.larm.dao.entities.PhraseStatus;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.MediaRecord;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.PhraseRecord;
 import com.blbulyandavbulyan.larm.phrase.dao.projections.TranslationRecord;
@@ -14,7 +13,6 @@ public interface PhraseMother {
 
     interface DialogueTitlePhrase {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111112");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Հացի փռում";
         String TRANSCRIPTION = "Hatsi prrum";
@@ -24,7 +22,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -38,7 +35,6 @@ public interface PhraseMother {
 
     interface DialogueSpeaker1NamePhrase {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111113");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Հացթուխ";
         String TRANSCRIPTION = "Hatstukh";
@@ -48,7 +44,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -62,7 +57,6 @@ public interface PhraseMother {
 
     interface DialogueSpeaker2NamePhrase {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111114");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Գնորդ";
         String TRANSCRIPTION = "Gnord";
@@ -72,7 +66,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -86,7 +79,6 @@ public interface PhraseMother {
 
     interface DialoguePhrase1 {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111115");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Բարեւ ձեզ";
         String TRANSCRIPTION = "Barev dzez";
@@ -96,7 +88,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -110,7 +101,6 @@ public interface PhraseMother {
 
     interface DialoguePhrase2 {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111116");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Բարեւ ձեզ, խնդրում եմ մեկ հաց:";
         String TRANSCRIPTION = "Barev dzez, khndrum em mek hats.";
@@ -120,7 +110,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -134,7 +123,6 @@ public interface PhraseMother {
 
     interface DialoguePhrase3 {
         UUID ID = UUID.fromString("11111111-1111-1111-1111-111111111117");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Ահա, խնդրեմ:";
         String TRANSCRIPTION = "Aha, khndrem.";
@@ -144,7 +132,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -158,7 +145,6 @@ public interface PhraseMother {
 
     interface RealisticDialogueTitlePhrase {
         UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111112");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Հանդիպում ընկերոջ հետ";
         String TRANSCRIPTION = "Handipum @nzeroch het";
@@ -166,7 +152,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -180,7 +165,6 @@ public interface PhraseMother {
 
     interface RealisticDialogueSpeaker1NamePhrase {
         UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111113");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Արամ";
         String TRANSCRIPTION = "Aram";
@@ -188,7 +172,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -202,7 +185,6 @@ public interface PhraseMother {
 
     interface RealisticDialogueSpeaker2NamePhrase {
         UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111114");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Աննա";
         String TRANSCRIPTION = "Anna";
@@ -210,7 +192,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -224,7 +205,6 @@ public interface PhraseMother {
 
     interface RealisticDialoguePhrase1 {
         UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111115");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Բարեւ";
         String TRANSCRIPTION = "Barev";
@@ -232,7 +212,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -246,7 +225,6 @@ public interface PhraseMother {
 
     interface RealisticDialoguePhrase2 {
         UUID ID = UUID.fromString("21111111-1111-1111-1111-111111111117");
-        PhraseStatus STATUS = PhraseStatus.DRAFT;
         String ISO_LANGUAGE_CODE = "hy";
         String PHRASE = "Ինչպես ես:";
         String TRANSCRIPTION = "Inchpes es:";
@@ -254,7 +232,6 @@ public interface PhraseMother {
         static Builder builder() {
             return PhraseMother.builder()
                     .withId(ID)
-                    .withStatus(STATUS)
                     .withIsoLanguageCode(ISO_LANGUAGE_CODE)
                     .withPhrase(PHRASE)
                     .withTranscription(TRANSCRIPTION)
@@ -272,7 +249,6 @@ public interface PhraseMother {
 
     class Builder {
         private UUID id;
-        private PhraseStatus status;
         private String isoLanguageCode;
         private String phrase;
         private String transcription;
@@ -281,11 +257,6 @@ public interface PhraseMother {
 
         public Builder withId(UUID id) {
             this.id = id;
-            return this;
-        }
-
-        public Builder withStatus(PhraseStatus status) {
-            this.status = status;
             return this;
         }
 
@@ -315,7 +286,7 @@ public interface PhraseMother {
         }
 
         public PhraseRecord build() {
-            return new PhraseRecord(id, status, isoLanguageCode, phrase, transcription, translations, mediaSet);
+            return new PhraseRecord(id, isoLanguageCode, phrase, transcription, translations, mediaSet);
         }
     }
 }
