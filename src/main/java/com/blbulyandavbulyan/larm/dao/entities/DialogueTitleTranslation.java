@@ -27,10 +27,6 @@ import lombok.Setter;
 @Builder
 public class DialogueTitleTranslation implements ContextualTranslation {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dialogue_id")
-    private Dialogue dialogue;
-
     @Id
     @Getter(onMethod_ = {@Override})
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,6 +39,10 @@ public class DialogueTitleTranslation implements ContextualTranslation {
     @Column(name = "translation_text")
     @Getter(onMethod_ = {@Override})
     private String translationText;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dialogue_id")
+    private Dialogue dialogue;
 
     @Override
     public final boolean equals(Object o) {
