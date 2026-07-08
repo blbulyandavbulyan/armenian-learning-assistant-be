@@ -7,8 +7,6 @@ import java.util.UUID;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,9 +32,6 @@ public class Phrase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Enumerated(EnumType.STRING)
-    private PhraseStatus status; // TODO with current flow this field does not make sense anymore, probably should clean it up
 
     @Column(name = "iso_language_code")
     private String isoLanguageCode;
@@ -66,7 +61,7 @@ public class Phrase {
 
     @Override
     public String toString() {
-        return "Phrase{id=%s, status=%s, isoLanguageCode='%s', phrase='%s', transcription='%s', mediaSet=%s}"
-                .formatted(id, status, isoLanguageCode, phrase, transcription, LAZY_LOADING);
+        return "Phrase{id=%s, isoLanguageCode='%s', phrase='%s', transcription='%s', mediaSet=%s}"
+                .formatted(id, isoLanguageCode, phrase, transcription, LAZY_LOADING);
     }
 }

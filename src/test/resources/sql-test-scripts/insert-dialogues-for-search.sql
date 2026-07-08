@@ -1,8 +1,8 @@
 -- Insert phrases that will act as titles
-INSERT INTO phrases (id, phrase, iso_language_code, status, transcription, created_at)
+INSERT INTO phrases (id, phrase, iso_language_code, transcription, created_at)
 VALUES 
-    ('11111111-1111-1111-1111-111111111111', 'Շուկայում', 'hy', 'APPROVED', 'Shukayum', NOW()),
-    ('22222222-2222-2222-2222-222222222222', 'Հիվանդանոցում', 'hy', 'APPROVED', 'Hivandanotsum', NOW());
+    ('11111111-1111-1111-1111-111111111111', 'Շուկայում', 'hy', 'Shukayum', NOW()),
+    ('22222222-2222-2222-2222-222222222222', 'Հիվանդանոցում', 'hy', 'Hivandanotsum', NOW());
 
 
 -- Insert medias for titles
@@ -24,9 +24,9 @@ VALUES
     ('22222222-2222-2222-2222-22222222222a', '44444444-4444-4444-4444-444444444444', 'en', 'At the hospital');
 
 -- Insert speakers (Phrase for name)
-INSERT INTO phrases (id, phrase, iso_language_code, status, transcription, created_at)
+INSERT INTO phrases (id, phrase, iso_language_code, transcription, created_at)
 VALUES 
-    ('55555555-5555-5555-5555-555555555555', 'Աննա', 'hy', 'APPROVED', 'Anna', NOW());
+    ('55555555-5555-5555-5555-555555555555', 'Աննա', 'hy', 'Anna', NOW());
 
 INSERT INTO dialogue_speakers (id, dialogue_id, name_phrase_id, created_at)
 VALUES 
@@ -34,9 +34,9 @@ VALUES
     ('77777777-7777-7777-7777-777777777777', '44444444-4444-4444-4444-444444444444', '55555555-5555-5555-5555-555555555555', NOW());
 
 -- Insert phrases for dialogue
-INSERT INTO phrases (id, phrase, iso_language_code, status, transcription, created_at)
+INSERT INTO phrases (id, phrase, iso_language_code, transcription, created_at)
 VALUES 
-    ('88888888-8888-8888-8888-888888888888', 'Բարեւ', 'hy', 'APPROVED', 'Barev', NOW());
+    ('88888888-8888-8888-8888-888888888888', 'Բարեւ', 'hy', 'Barev', NOW());
 
 -- Insert dialogue phrases
 INSERT INTO dialogue_phrases (id, dialogue_id, speaker_id, phrase_id, order_index, created_at)
