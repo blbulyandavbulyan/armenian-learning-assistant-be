@@ -97,6 +97,7 @@ This document outlines the architectural boundaries and engineering standards fo
   - Mock at the **lowest possible external infrastructure boundary** — i.e., the actual outbound call. For Spring AI / Gemini, this means mocking the `ChatClient` bean (which represents the HTTP call to the AI provider), not the service layer on top of it. This ensures you can safely refactor any internal implementation without touching tests, as long as the observable API contract doesn't change.
   - For database-backed flows, use Testcontainers. For AI-backed flows, mock `ChatClient`. For message brokers, mock the broker client.
 - **Coverage:** Every new feature must include corresponding tests before completion. If a behaviour is fully exercised end-to-end by an IT (controller → service → mapper → response JSON), a separate unit test for each internal layer is **not required** unless the layer has complex logic that is not reachable via the happy path IT.
+- **JPA Entities:** If a new JPA entity is created, and there is `toString`, `equals`, or `hashCode` defined, that entity must be tested in the scope of `JpaEntitiesIT` to prevent LazyInitializationException or StackOverflowError.
 
 ### 3. Scope of Work (The "Do Not Touch" Rule)
 - Do not refactor unrelated files or change configuration properties unless it is a direct dependency of the task.

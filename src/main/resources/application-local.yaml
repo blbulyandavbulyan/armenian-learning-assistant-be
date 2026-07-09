@@ -18,7 +18,7 @@ spring:
             model: gemini-embedding-001
 app:
   security:
-    enabled: false # TODO, should be changed to true, when security is fully implemented
+    enabled: true
     cors:
       allowed-origins: "http://localhost:8081"
   storage:

@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.config;
 
 import java.util.List;
 
+import com.blbulyandavbulyan.larm.security.DatabaseUserJwtConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,27 +23,31 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     @Value("${app.security.cors.allowed-origins}")
-    private final List<String> allowedOrigins;
+    private List<String> allowedOrigins;
 
     @Value("${app.security.enabled:true}")
-    private final boolean securityEnabled;
+    private boolean securityEnabled;
+
+    private final DatabaseUserJwtConverter jwtConverter;
 
     @Bean
     @SuppressWarnings("java:S4502")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         // important to have cors configuration, cause otherwise ui does not work properly
         http.cors(Customizer.withDefaults())
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> {
             if (securityEnabled) {
-                // TODO, this might be dumb, but it is better then no security, will be adjusted later when
-                //  real security is going to be implemented
                 auth.anyRequest().authenticated();
             } else {
                 auth.anyRequest().permitAll();
             }
         });
+        http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> 
+                jwtConfigurer.jwtAuthenticationConverter(jwtConverter)
+        ));
 
         return http.build();
     }
