@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.ai.chat.advisor.JakartaValidationAdvisor;
 import com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingProxyAdvisor;
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -36,6 +37,7 @@ public class DialogueChatService {
      * @throws UnfixableValidationException in case if LLM continued to generate bad response which failed the jakarta validation
      */
     @Valid
+    @Timed(value = "chat.dialogue_chat.latency", description = "Time taken to generate dialogue using LLM")
     public StructuredDialogueResource dialogueChat(String message, UUID chatId) {
         // TODO most probably we need here the tool which checks the existing phrases in the database
         //  probably it should check 'exact match' and 'similar' phrases

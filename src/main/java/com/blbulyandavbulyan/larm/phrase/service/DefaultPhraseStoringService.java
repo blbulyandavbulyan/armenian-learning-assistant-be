@@ -13,6 +13,7 @@ import com.blbulyandavbulyan.larm.logging.Loggable;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class DefaultPhraseStoringService implements PhraseStoringService {
     @Transactional
     @Override
     @Loggable(logLevel = Loggable.LogLevel.DEBUG)
+    @Timed(value = "phrase.batch_save_latency.latency",
+            description = "The amount of time it takes to batch save phrases (does not include external API calls which were made before)")
     public List<Phrase> batchSavePhrases(BatchSavePhrasesParameters parameters) {
         log.trace("Finding existing phrases by: {}", parameters.phrases());
         List<Phrase> existingEntities = phraseRepository.findByPhraseIn(parameters.phrases());

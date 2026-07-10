@@ -25,6 +25,7 @@ import com.blbulyandavbulyan.larm.logging.Loggable;
 import com.blbulyandavbulyan.larm.phrase.BatchSavePhrasesParameters;
 import com.blbulyandavbulyan.larm.phrase.PhraseStoringService;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
+import io.micrometer.core.annotation.Timed;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,8 @@ public class DefaultDialogueSavingService implements DialogueSavingService {
     @Override
     @Transactional
     @Loggable(logLevel = Loggable.LogLevel.DEBUG)
+    @Timed(value = "dialogue.save.latency",
+            description = "The amount of time it takes to save a dialogue (does not include external API calls which were made before)")
     public SavedDialogueResource saveDialogue(StoreDialogueParameters parameters) {
         final Instant dialogueCreatedAt = Instant.now();
 

@@ -5,6 +5,7 @@ import com.blbulyandavbulyan.larm.dialogue.DialogueSavingService;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
 import com.blbulyandavbulyan.larm.dialogue.StoreDialogueParameters;
 import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class DialogueOrchestrator {
     private final DialogueSavingService dialogueSavingService;
     private final DialogueVectorizationService dialogueVectorizationService;
 
+    @Timed(value = "orchestrator.save_dialogue.latency", description = "Time taken to save dialogue (including all external API calls)")
     public SavedDialogueResource saveDialogue(SaveDialogueParameters parameters) {
         float[] embedding = dialogueVectorizationService.vectorize(parameters);
         return dialogueSavingService.saveDialogue(
