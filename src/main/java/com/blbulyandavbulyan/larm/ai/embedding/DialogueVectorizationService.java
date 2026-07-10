@@ -4,6 +4,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.core.SaveDialogueParameters;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -18,6 +19,7 @@ public class DialogueVectorizationService {
 
     private final EmbeddingModel embeddingModel;
 
+    @Timed(value = "dialogue.vectorization.latency", description = "Time taken to vectorize dialogue")
     public float[] vectorize(SaveDialogueParameters params) {
         log.trace("Vectorizing dialogue: {}", params);
         final var speakerRefIdToSpeaker = params.speakers()
