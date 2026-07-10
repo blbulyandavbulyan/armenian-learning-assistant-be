@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dialogue.DialogueRetrievalService;
+import com.blbulyandavbulyan.larm.dialogue.DialogueSearchService;
 import com.blbulyandavbulyan.larm.dialogue.SavedDialogueResource;
-import com.blbulyandavbulyan.larm.dialogue.service.DialogueSearchService;
 import com.blbulyandavbulyan.larm.logging.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
