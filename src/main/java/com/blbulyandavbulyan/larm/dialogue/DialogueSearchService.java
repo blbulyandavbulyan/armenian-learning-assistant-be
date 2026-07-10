@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.dialogue.service;
+package com.blbulyandavbulyan.larm.dialogue;
 
 import java.util.List;
 

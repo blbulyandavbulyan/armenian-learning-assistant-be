@@ -1,9 +1,8 @@
-package com.blbulyandavbulyan.larm.phrase.service;
+package com.blbulyandavbulyan.larm.phrase;
 
 import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.dao.entities.Phrase;
-import com.blbulyandavbulyan.larm.phrase.SavePhraseParameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
