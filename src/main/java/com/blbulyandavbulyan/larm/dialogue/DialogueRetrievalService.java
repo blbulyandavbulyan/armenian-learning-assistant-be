@@ -7,6 +7,7 @@ import com.blbulyandavbulyan.larm.dao.entities.Dialogue;
 import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class DialogueRetrievalService {
     private final DialogueRepository dialogueRepository;
 
+    @Cacheable("dialogues")
     public Optional<Dialogue> getDialogue(UUID id) {
         return dialogueRepository.findByIdEagerly(id);
     }
