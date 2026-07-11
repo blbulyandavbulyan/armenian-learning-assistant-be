@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -349,6 +350,7 @@ class DialogueControllerIT extends BaseIT {
 
         mockMvc.perform(get(RequestMapping.GET_DIALOGUE, dialogueId))
                 .andExpect(status().isOk())
+                .andExpect(header().string("Cache-Control", "max-age=604800, public"))
                 .andExpect(content().json(expectedJson, JsonCompareMode.STRICT));
     }
 

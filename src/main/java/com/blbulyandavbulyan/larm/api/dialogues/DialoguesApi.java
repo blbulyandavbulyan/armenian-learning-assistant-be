@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,7 +82,7 @@ interface DialoguesApi {
                     )
             }
     )
-    GetDialogueResponse getDialogue(@PathVariable("id") UUID id);
+    ResponseEntity<GetDialogueResponse> getDialogue(@PathVariable("id") UUID id);
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
