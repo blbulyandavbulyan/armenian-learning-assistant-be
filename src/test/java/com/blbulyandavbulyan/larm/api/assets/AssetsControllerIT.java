@@ -29,6 +29,7 @@ class AssetsControllerIT extends BaseIT {
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, "audio/wav"))
                 .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"some-existing-file.wav\""))
+                .andExpect(header().string("Cache-Control", "max-age=604800, public"))
                 .andExpect(content().bytes("dummy audio content".getBytes()));
     }
 
