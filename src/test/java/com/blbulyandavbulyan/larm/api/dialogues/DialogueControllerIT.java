@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.blbulyandavbulyan.larm.BaseIT;
 import com.blbulyandavbulyan.larm.core.DialogueOrchestrator;
 import com.blbulyandavbulyan.larm.dao.entities.Media;
+import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseMother;
@@ -43,6 +44,9 @@ class DialogueControllerIT extends BaseIT {
 
     @MockitoSpyBean
     private DialogueOrchestrator dialogueOrchestrator;
+
+    @MockitoSpyBean
+    private DialogueRepository dialogueRepository;
 
     @Autowired
     private TestDialogueRepository testDialogueRepository;
@@ -360,6 +364,23 @@ class DialogueControllerIT extends BaseIT {
 
         mockMvc.perform(get(RequestMapping.GET_DIALOGUE, dialogueId))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Sql("/sql-test-scripts/insert-dialogue.sql")
+    void getDialogue_cachesResults() throws Exception {
+        UUID dialogueId = UUID.fromString("99999999-9999-9999-9999-999999999999");
+
+        // First call
+        mockMvc.perform(get(RequestMapping.GET_DIALOGUE, dialogueId))
+                .andExpect(status().isOk());
+
+        // Second call
+        mockMvc.perform(get(RequestMapping.GET_DIALOGUE, dialogueId))
+                .andExpect(status().isOk());
+
+        // Verify repository was hit only once due to caching
+        verify(dialogueRepository, times(1)).findByIdEagerly(dialogueId);
     }
 
     private float[] generateMockEmbedding(float firstValue) {
