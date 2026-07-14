@@ -36,7 +36,7 @@
 		<!-- SonarCloud Properties -->
 		<sonar.organization>blbulyandavbulyan</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>blbulyandavbulyan_armenian-learning-assistant</sonar.projectKey>
+		<sonar.projectKey>blbulyandavbulyan_armenian-learning-assistant-be</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml,${project.reporting.outputDirectory}/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
