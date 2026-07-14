@@ -2,7 +2,6 @@ package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 

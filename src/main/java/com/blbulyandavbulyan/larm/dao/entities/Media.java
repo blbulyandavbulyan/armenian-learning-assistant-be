@@ -1,7 +1,6 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
