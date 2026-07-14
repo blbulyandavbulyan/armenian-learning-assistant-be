@@ -53,7 +53,7 @@ public class DialogueSpeaker {
     private Set<DialogueSpeakerTranslation> translations = new HashSet<>();
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -64,8 +64,8 @@ public class DialogueSpeaker {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hashCode(getId());
+    public int hashCode() {
+        return "DialogueSpeaker".hashCode();
     }
 
     @Override

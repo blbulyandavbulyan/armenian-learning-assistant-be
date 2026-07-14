@@ -60,7 +60,7 @@ public class DialoguePhrase {
     private Set<DialoguePhraseTranslation> translations = new HashSet<>();
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -71,8 +71,8 @@ public class DialoguePhrase {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hashCode(getId());
+    public int hashCode() {
+        return "DialoguePhrase".hashCode();
     }
 
     @Override

@@ -45,7 +45,7 @@ public class DialogueTitleTranslation implements ContextualTranslation {
     private Dialogue dialogue;
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -56,8 +56,8 @@ public class DialogueTitleTranslation implements ContextualTranslation {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hashCode(getId());
+    public int hashCode() {
+        return "DialogueTitleTranslation".hashCode();
     }
 
     @Override

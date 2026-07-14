@@ -65,7 +65,7 @@ public class Dialogue {
     private Set<DialogueTitleTranslation> titleTranslations = new HashSet<>();
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -76,8 +76,8 @@ public class Dialogue {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hashCode(getId());
+    public int hashCode() {
+        return "Dialogue".hashCode();
     }
 
     @Override
