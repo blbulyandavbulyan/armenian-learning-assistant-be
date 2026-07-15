@@ -1,7 +1,6 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -67,7 +66,7 @@ public class Media {
     private Instant createdAt;
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -78,8 +77,8 @@ public class Media {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hashCode(getId());
+    public int hashCode() {
+        return "Media".hashCode();
     }
 
     @Override

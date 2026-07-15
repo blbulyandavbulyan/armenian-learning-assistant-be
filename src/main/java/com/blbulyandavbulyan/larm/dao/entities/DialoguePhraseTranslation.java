@@ -1,6 +1,5 @@
 package com.blbulyandavbulyan.larm.dao.entities;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -45,7 +44,7 @@ public class DialoguePhraseTranslation implements ContextualTranslation {
     private DialoguePhrase dialoguePhrase;
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -56,8 +55,8 @@ public class DialoguePhraseTranslation implements ContextualTranslation {
     }
 
     @Override
-    public final int hashCode() {
-        return Objects.hashCode(getId());
+    public int hashCode() {
+        return "DialoguePhraseTranslation".hashCode();
     }
 
     @Override
