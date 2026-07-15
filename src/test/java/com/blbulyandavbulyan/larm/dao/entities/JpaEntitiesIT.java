@@ -248,7 +248,7 @@ class JpaEntitiesIT extends BaseIT {
                 entityManager.find(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
 
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> speaker.getDialogue().getEmbedding())
+            softly.assertThatThrownBy(() -> speaker.getDialogue().getCreatedAt())
                     .as("Dialogue property must be LAZY loaded")
                     .isInstanceOf(LazyInitializationException.class);
             softly.assertThatThrownBy(() -> speaker.getNamePhrase().getPhrase())
@@ -305,7 +305,7 @@ class JpaEntitiesIT extends BaseIT {
                 entityManager.find(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
 
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> dialoguePhrase.getDialogue().getEmbedding())
+            softly.assertThatThrownBy(() -> dialoguePhrase.getDialogue().getCreatedAt())
                     .as("Dialogue property must be LAZY loaded")
                     .isInstanceOf(LazyInitializationException.class);
             softly.assertThatThrownBy(() -> dialoguePhrase.getPhrase().getPhrase())
@@ -364,7 +364,7 @@ class JpaEntitiesIT extends BaseIT {
                 entityManager.find(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
 
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> translation.getDialogue().getEmbedding())
+            softly.assertThatThrownBy(() -> translation.getDialogue().getCreatedAt())
                     .as("Dialogue property must be LAZY loaded")
                     .isInstanceOf(LazyInitializationException.class);
         });
