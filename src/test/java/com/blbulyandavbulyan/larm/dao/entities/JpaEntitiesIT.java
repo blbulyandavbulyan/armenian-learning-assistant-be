@@ -54,9 +54,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueEquals() {
         Dialogue proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
+                entityManager.find(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
         Dialogue proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
+                entityManager.find(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -69,7 +69,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueHashCode() {
         Dialogue proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
+                entityManager.find(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -117,9 +117,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void phraseEquals() {
         Phrase proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(Phrase.class, UUID.fromString("11111111-1111-1111-1111-111111111111")));
+                entityManager.find(Phrase.class, UUID.fromString("11111111-1111-1111-1111-111111111111")));
         Phrase proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(Phrase.class, UUID.fromString("11111111-1111-1111-1111-111111111111")));
+                entityManager.find(Phrase.class, UUID.fromString("11111111-1111-1111-1111-111111111111")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -132,7 +132,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void phraseHashCode() {
         Phrase proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(Phrase.class, UUID.fromString("11111111-1111-1111-1111-111111111111")));
+                entityManager.find(Phrase.class, UUID.fromString("11111111-1111-1111-1111-111111111111")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -168,9 +168,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void mediaEquals() {
         Media proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(Media.class, UUID.fromString("88888888-1111-1111-1111-111111111111")));
+                entityManager.find(Media.class, UUID.fromString("88888888-1111-1111-1111-111111111111")));
         Media proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(Media.class, UUID.fromString("88888888-1111-1111-1111-111111111111")));
+                entityManager.find(Media.class, UUID.fromString("88888888-1111-1111-1111-111111111111")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -183,7 +183,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void mediaHashCode() {
         Media proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(Media.class, UUID.fromString("88888888-1111-1111-1111-111111111111")));
+                entityManager.find(Media.class, UUID.fromString("88888888-1111-1111-1111-111111111111")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -219,9 +219,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueSpeakerEquals() {
         DialogueSpeaker proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
+                entityManager.find(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
         DialogueSpeaker proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
+                entityManager.find(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -234,7 +234,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueSpeakerHashCode() {
         DialogueSpeaker proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
+                entityManager.find(DialogueSpeaker.class, UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -276,9 +276,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialoguePhraseEquals() {
         DialoguePhrase proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
+                entityManager.find(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
         DialoguePhrase proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
+                entityManager.find(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -291,7 +291,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialoguePhraseHashCode() {
         DialoguePhrase proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
+                entityManager.find(DialoguePhrase.class, UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -335,9 +335,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueTitleTranslationEquals() {
         DialogueTitleTranslation proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
+                entityManager.find(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
         DialogueTitleTranslation proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
+                entityManager.find(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -350,7 +350,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueTitleTranslationHashCode() {
         DialogueTitleTranslation proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
+                entityManager.find(DialogueTitleTranslation.class, UUID.fromString("77777777-1111-1111-1111-111111111111")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -385,9 +385,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueSpeakerTranslationEquals() {
         DialogueSpeakerTranslation proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueSpeakerTranslation.class, UUID.fromString("77777777-2222-2222-2222-222222222222")));
+                entityManager.find(DialogueSpeakerTranslation.class, UUID.fromString("77777777-2222-2222-2222-222222222222")));
         DialogueSpeakerTranslation proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueSpeakerTranslation.class, UUID.fromString("77777777-2222-2222-2222-222222222222")));
+                entityManager.find(DialogueSpeakerTranslation.class, UUID.fromString("77777777-2222-2222-2222-222222222222")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -400,7 +400,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialogueSpeakerTranslationHashCode() {
         DialogueSpeakerTranslation proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialogueSpeakerTranslation.class, UUID.fromString("77777777-2222-2222-2222-222222222222")));
+                entityManager.find(DialogueSpeakerTranslation.class, UUID.fromString("77777777-2222-2222-2222-222222222222")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
@@ -435,9 +435,9 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialoguePhraseTranslationEquals() {
         DialoguePhraseTranslation proxy1 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialoguePhraseTranslation.class, UUID.fromString("77777777-4444-4444-4444-444444444444")));
+                entityManager.find(DialoguePhraseTranslation.class, UUID.fromString("77777777-4444-4444-4444-444444444444")));
         DialoguePhraseTranslation proxy2 = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialoguePhraseTranslation.class, UUID.fromString("77777777-4444-4444-4444-444444444444")));
+                entityManager.find(DialoguePhraseTranslation.class, UUID.fromString("77777777-4444-4444-4444-444444444444")));
 
         assertThatCode(() -> {
             assertThat(proxy1).isEqualTo(proxy2);
@@ -450,7 +450,7 @@ class JpaEntitiesIT extends BaseIT {
     @Test
     void dialoguePhraseTranslationHashCode() {
         DialoguePhraseTranslation proxy = transactionTemplate.execute(_ ->
-                entityManager.getReference(DialoguePhraseTranslation.class, UUID.fromString("77777777-4444-4444-4444-444444444444")));
+                entityManager.find(DialoguePhraseTranslation.class, UUID.fromString("77777777-4444-4444-4444-444444444444")));
 
         assertThatCode(() -> {
             int hashCode = proxy.hashCode();
