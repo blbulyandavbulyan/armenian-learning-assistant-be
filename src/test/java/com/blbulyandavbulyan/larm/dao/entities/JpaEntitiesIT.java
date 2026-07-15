@@ -83,7 +83,7 @@ class JpaEntitiesIT extends BaseIT {
                 entityManager.find(Dialogue.class, UUID.fromString("99999999-9999-9999-9999-999999999999")));
 
         SoftAssertions.assertSoftly(softly -> {
-            softly.assertThatThrownBy(() -> dialogue.getEmbedding())
+            softly.assertThatThrownBy(dialogue::getEmbedding)
                     .as("Embedding property must be LAZY loaded")
                     .isInstanceOf(LazyInitializationException.class);
             softly.assertThatThrownBy(() -> dialogue.getTitle().getPhrase())
