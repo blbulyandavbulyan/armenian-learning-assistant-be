@@ -40,8 +40,40 @@ jobs:
       - name: Verify
         run: mvn verify
 
+      - name: Cache Pitest history
+        uses: actions/cache@v6
+        with:
+          # Match the path you set in the pom.xml
+          path: .pitest
+          # Use SHA so it successfully saves on every single commit
+          key: ${{ runner.os }}-pitest-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            # 1st priority: Previous commits on this exact MR
+            ${{ runner.os }}-pitest-${{ github.ref }}-
+            # 2nd priority: The main branch baseline
+            ${{ runner.os }}-pitest-refs/heads/main-
+
+      - name: Run Pitest
+        run: mvn pitest:mutationCoverage
+
       - name: SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+
+      - name: Upload Coverage Reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-reports
+          path: |
+            target/site/jacoco/
+            target/site/jacoco-it/
+
+      - name: Upload Pitest Reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pitest-reports
+          path: target/pit-reports/

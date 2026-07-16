@@ -434,7 +434,8 @@
                     <mutationThreshold>80</mutationThreshold>
 
                     <!-- 2. Use History -->
-                    <withHistory>true</withHistory>
+                    <historyInputFile>${project.basedir}/.pitest/pitest-history.bin</historyInputFile>
+                    <historyOutputFile>${project.basedir}/.pitest/pitest-history.bin</historyOutputFile>
 
                     <!-- 3. STOP mutating data objects and config (CRITICAL for ITs) -->
                     <targetClasses>
