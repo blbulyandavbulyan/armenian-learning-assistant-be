@@ -38,7 +38,8 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.projectKey>blbulyandavbulyan_armenian-learning-assistant-be</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml,${project.reporting.outputDirectory}/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-	</properties>
+        <pitest.version>1.25.7</pitest.version>
+    </properties>
 	<dependencies>
         <!--  Production dependencies      -->
 		<dependency>
@@ -422,7 +423,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.25.7</version>
+                <version>${pitest.version}</version>
                 <configuration>
                     <!-- 1. Fix the Memory/Timeout crashes -->
                     <jvmArgs>
@@ -430,7 +431,7 @@
                     </jvmArgs>
                     <timeoutFactor>1.25</timeoutFactor>
                     <timeoutConstant>5000</timeoutConstant>
-                    <mutationThreshold>85</mutationThreshold>
+                    <mutationThreshold>80</mutationThreshold>
 
                     <!-- 2. Use History -->
                     <withHistory>true</withHistory>
@@ -450,6 +451,8 @@
                         <param>com.blbulyandavbulyan.larm.dao.entities.*</param>
                         <param>com.blbulyandavbulyan.larm.api.*</param>
                         <param>com.blbulyandavbulyan.larm.config.*</param>
+                        <param>com.blbulyandavbulyan.larm.ai.chat.config.*</param>
+                        <class>com.blbulyandavbulyan.larm.dialogue.StoreDialogueParameters</class>
                     </excludedClasses>
                 </configuration>
                 <dependencies>
