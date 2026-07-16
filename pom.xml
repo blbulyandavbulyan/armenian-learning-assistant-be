@@ -38,7 +38,8 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.projectKey>blbulyandavbulyan_armenian-learning-assistant-be</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml,${project.reporting.outputDirectory}/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-	</properties>
+        <pitest.version>1.25.7</pitest.version>
+    </properties>
 	<dependencies>
         <!--  Production dependencies      -->
 		<dependency>
@@ -418,6 +419,55 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <configuration>
+                    <!-- 1. Fix the Memory/Timeout crashes -->
+                    <jvmArgs>
+                        <value>-Xmx2048m</value>
+                    </jvmArgs>
+                    <timeoutFactor>1.25</timeoutFactor>
+                    <timeoutConstant>5000</timeoutConstant>
+                    <mutationThreshold>80</mutationThreshold>
+
+                    <!-- 2. Use History -->
+                    <historyInputFile>${project.basedir}/.pitest/pitest-history.bin</historyInputFile>
+                    <historyOutputFile>${project.basedir}/.pitest/pitest-history.bin</historyOutputFile>
+
+                    <!-- 3. STOP mutating data objects and config (CRITICAL for ITs) -->
+                    <targetClasses>
+                        <!-- ONLY mutate your core business logic packages -->
+                        <param>com.blbulyandavbulyan.larm.core.*</param>
+                        <param>com.blbulyandavbulyan.larm.dialogue.*</param>
+                        <param>com.blbulyandavbulyan.larm.ai.*</param>
+                        <param>com.blbulyandavbulyan.larm.asset.*</param>
+                        <param>com.blbulyandavbulyan.larm.storage.*</param>
+                        <param>com.blbulyandavbulyan.larm.phrase.*</param>
+                        <param>com.blbulyandavbulyan.larm.validation.*</param>
+                    </targetClasses>
+                    <excludedClasses>
+                        <param>com.blbulyandavbulyan.larm.dao.entities.*</param>
+                        <param>com.blbulyandavbulyan.larm.api.*</param>
+                        <param>com.blbulyandavbulyan.larm.config.*</param>
+                        <param>com.blbulyandavbulyan.larm.ai.chat.config.*</param>
+                        <class>com.blbulyandavbulyan.larm.dialogue.StoreDialogueParameters</class>
+                    </excludedClasses>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-history-plugin</artifactId>
+                        <version>0.0.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.3</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 		</plugins>
 	</build>

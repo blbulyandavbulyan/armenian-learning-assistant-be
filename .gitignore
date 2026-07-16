@@ -36,5 +36,8 @@ build/
 ### VS Code ###
 .vscode/
 
-## Env
+### Env
 .env
+
+### Pitest cache
+.pitest

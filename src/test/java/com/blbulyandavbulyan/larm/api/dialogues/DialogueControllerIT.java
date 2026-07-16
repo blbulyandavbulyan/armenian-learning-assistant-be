@@ -57,8 +57,8 @@ class DialogueControllerIT extends BaseIT {
     @Test
     void saveDialogue() throws Exception {
         piperWireMock.stubTtsWithAudio(PhraseMother.DialogueTitlePhrase.PHRASE, new byte[]{1});
-        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE, new byte[]{2});
-        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE, new byte[]{3});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE, new byte[]{2, 3});
+        piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE, new byte[]{3, 4, 5});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase1.PHRASE, new byte[]{4});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase2.PHRASE, new byte[]{5});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialoguePhrase3.PHRASE, new byte[]{6});
@@ -95,34 +95,45 @@ class DialogueControllerIT extends BaseIT {
         assertThat(dialogue.getTitle().getMediaSet()).hasSize(1);
         Media titleMedia = dialogue.getTitle().getMediaSet().iterator().next();
         assertThat(readMediaBytes(titleMedia)).isEqualTo(new byte[]{1});
+        assertThat(titleMedia.getSizeInBytes()).isEqualTo(1);
 
         assertThat(dialogue.getSpeakers())
                 .anySatisfy(speaker -> {
                     assertThat(speaker.getNamePhrase().getPhrase()).isEqualTo(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE);
                     assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
-                    assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{2});
+                    Media media = speaker.getNamePhrase().getMediaSet().iterator().next();
+                    assertThat(readMediaBytes(media)).isEqualTo(new byte[]{2, 3});
+                    assertThat(media.getSizeInBytes()).isEqualTo(2);
                 })
                 .anySatisfy(speaker -> {
                     assertThat(speaker.getNamePhrase().getPhrase()).isEqualTo(PhraseMother.DialogueSpeaker2NamePhrase.PHRASE);
                     assertThat(speaker.getNamePhrase().getMediaSet()).hasSize(1);
-                    assertThat(readMediaBytes(speaker.getNamePhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{3});
+                    Media media = speaker.getNamePhrase().getMediaSet().iterator().next();
+                    assertThat(readMediaBytes(media)).isEqualTo(new byte[]{3, 4, 5});
+                    assertThat(media.getSizeInBytes()).isEqualTo(3);
                 });
 
         assertThat(dialogue.getDialoguePhrases())
                 .anySatisfy(dp -> {
                     assertThat(dp.getPhrase().getPhrase()).isEqualTo(PhraseMother.DialoguePhrase1.PHRASE);
                     assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
-                    assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{4});
+                    Media media = dp.getPhrase().getMediaSet().iterator().next();
+                    assertThat(readMediaBytes(media)).isEqualTo(new byte[]{4});
+                    assertThat(media.getSizeInBytes()).isEqualTo(1);
                 })
                 .anySatisfy(dp -> {
                     assertThat(dp.getPhrase().getPhrase()).isEqualTo(PhraseMother.DialoguePhrase2.PHRASE);
                     assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
-                    assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{5});
+                    Media media = dp.getPhrase().getMediaSet().iterator().next();
+                    assertThat(readMediaBytes(media)).isEqualTo(new byte[]{5});
+                    assertThat(media.getSizeInBytes()).isEqualTo(1);
                 })
                 .anySatisfy(dp -> {
                     assertThat(dp.getPhrase().getPhrase()).isEqualTo(PhraseMother.DialoguePhrase3.PHRASE);
                     assertThat(dp.getPhrase().getMediaSet()).hasSize(1);
-                    assertThat(readMediaBytes(dp.getPhrase().getMediaSet().iterator().next())).isEqualTo(new byte[]{6});
+                    Media media = dp.getPhrase().getMediaSet().iterator().next();
+                    assertThat(readMediaBytes(media)).isEqualTo(new byte[]{6});
+                    assertThat(media.getSizeInBytes()).isEqualTo(1);
                 });
 
         // Verify TTS service was called for each phrase and nothing was skipped
