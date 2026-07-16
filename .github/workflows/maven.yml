@@ -54,7 +54,7 @@ jobs:
             ${{ runner.os }}-pitest-refs/heads/main-
 
       - name: Run Pitest
-        run: mvn pitest:mutationCoverage
+        run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
 
       - name: SonarCloud Scan
         env:
