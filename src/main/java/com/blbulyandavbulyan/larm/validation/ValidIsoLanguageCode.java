@@ -11,7 +11,7 @@ import jakarta.validation.Payload;
 
 @Documented
 @Constraint(validatedBy = IsoLanguageCodeValidatorBridge.class)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidIsoLanguageCode {
     

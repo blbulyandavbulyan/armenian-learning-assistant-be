@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DialogueResponseMapper {
+class DialogueResponseMapper {
     private final PhraseResponseMapper phraseResponseMapper;
 
-    public GetDialogueResponse toResponse(Dialogue dialogue) {
+    GetDialogueResponse toResponse(Dialogue dialogue) {
         return GetDialogueResponse.builder()
                 .id(dialogue.getId())
                 .title(phraseResponseMapper.mapToPhraseResponse(dialogue.getTitle(), dialogue.getTitleTranslations()))
@@ -43,7 +43,7 @@ public class DialogueResponseMapper {
                 .toList();
     }
 
-    public SearchDialoguesResponse toSearchDialoguesResponse(List<Dialogue> results) {
+    SearchDialoguesResponse toSearchDialoguesResponse(List<Dialogue> results) {
         List<DialogueSummaryResponse> dialogues = results.stream()
                 .map(dialogue -> DialogueSummaryResponse.builder()
                         .id(dialogue.getId())
