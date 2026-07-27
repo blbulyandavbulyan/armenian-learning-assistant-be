@@ -16,6 +16,7 @@ Every time user requests code review on this project.
 5. [ ] **Formulate Feedback:** Structure the response using a "Plan-Validate-Execute" pattern, providing the specific violations and the corrected code.
 
 ## Instructions
+Assume this code is going into a high-throughput, mission-critical production environment today. Drop the polite tone. Act as a ruthless Principal Engineer who hates tech debt. Using our rules, find the weakest link, the most fragile design choice, or the worst potential edge-case in these changes. Do not sugarcoat anything.
 
 ### 1. Architectural Boundaries & State
 
