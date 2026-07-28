@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.validation;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,12 +48,14 @@ public class ValidDialogueSpeakersValidator implements ConstraintValidator<Valid
 
     private static Set<String> getReferencedSpeakers(DraftGeneratedDialogue request) {
         return request.dialoguePhrases().stream()
+                .filter(Objects::nonNull)
                 .map(DraftGeneratedDialogue.DraftDialoguePhrase::speakerId)
                 .collect(Collectors.toSet());
     }
 
     private static Set<String> getDefinedSpeakers(DraftGeneratedDialogue request) {
         return request.speakers().stream()
+                .filter(Objects::nonNull)
                 .map(DraftGeneratedDialogue.DraftSpeaker::id)
                 .collect(Collectors.toSet());
     }
