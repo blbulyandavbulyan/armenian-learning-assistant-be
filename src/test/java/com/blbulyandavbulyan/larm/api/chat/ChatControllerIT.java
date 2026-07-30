@@ -7,9 +7,11 @@ import com.blbulyandavbulyan.larm.BaseIT;
 import com.blbulyandavbulyan.larm.ai.StructuredDialogueResourceMother;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.MessageType;
@@ -18,6 +20,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.json.JsonCompareMode;
@@ -46,9 +49,17 @@ class ChatControllerIT extends BaseIT {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Autowired
+    private ChatMemory chatMemory;
+
     @BeforeEach
     void setUp() {
         when(chatModel.getDefaultOptions()).thenReturn(mock(ChatOptions.class, RETURNS_DEEP_STUBS));
+    }
+
+    @AfterEach
+    void tearDown() {
+        chatMemory.clear("73c68128-48b4-4e2b-b6d3-13835e5d38cc");
     }
 
     @Test
@@ -76,7 +87,7 @@ class ChatControllerIT extends BaseIT {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
-        assertThat(userMessage).isEqualTo("Create a shop dialogue");
+        assertThat(userMessage).startsWith("Create a shop dialogue");
     }
 
     @Test
@@ -89,8 +100,59 @@ class ChatControllerIT extends BaseIT {
                         .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.detail").value("Sorry, we could not fulfill your request please try again later"));
-        // TODO, verify that it was called here with the right message first time (which user provided)
-        //  and then other times with the 'modified' message which contains the error (you should include the full error here)
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+        
+        String firstUserMessage = getFirstUserMessage(allPrompts.get(0));
+        assertThat(firstUserMessage).startsWith("Create a shop dialogue");
+
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).startsWith("Create a shop dialogue");
+            assertThat(retryMessage).containsOnlyOnce("info must not be null");
+            assertThat(retryMessage).containsOnlyOnce("dialoguePhrases must not be empty");
+            assertThat(retryMessage).containsOnlyOnce("peakers must not be empty");
+        }
+    }
+
+    private static String getFirstUserMessage(Prompt prompt) {
+        return prompt.getInstructions().stream()
+                .filter(m -> m.getMessageType() == MessageType.USER)
+                .map(Message::getText)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse("");
+    }
+
+    @Test
+    void dialogueChat_whenLlmReturnsNullLiteral() throws Exception {
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage("null")))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.detail").value("Sorry, we could not fulfill your request please try again later"));
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        assertThat(allPrompts).first().satisfies(prompt ->
+                assertThat(getFirstUserMessage(prompt))
+                        .containsOnlyOnce("Create a shop dialogue")
+                        .doesNotContain("Output was null. You must return a valid JSON object matching the requested schema."));
+
+        String expectedMessageFragmentForFailedValidation =
+                        """
+                        Create a shop dialogue
+                        Output validation failed because of: Output was null. You must return a valid JSON object matching the requested schema. Please correct these fields and regenerate.
+                        """;
+        assertThat(allPrompts).elements(1, 2, 3, 4, 5)
+                .allSatisfy(prompt -> assertThat(getFirstUserMessage(prompt)).containsOnlyOnce(expectedMessageFragmentForFailedValidation));
     }
 
     @Test

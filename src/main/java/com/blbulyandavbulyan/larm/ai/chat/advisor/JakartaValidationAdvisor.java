@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.blbulyandavbulyan.larm.ai.chat.UnfixableValidationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -61,36 +62,55 @@ public class JakartaValidationAdvisor implements CallAdvisor {
                         || chatClientResponse.chatResponse().getResult().getOutput() == null
                         || chatClientResponse.chatResponse().getResult().getOutput().getText() == null) {
                     log.warn("ChatClientResponse is missing required json output for validation.");
+                    processedChatClientRequest = augmentPromptWithErrors(
+                            chatClientRequest,
+                            "Output was null. You must return a valid JSON object matching the requested schema"
+                    );
                     continue;
                 }
 
                 String json = chatClientResponse.chatResponse().getResult().getOutput().getText();
-
+                log.debug("Got the following output from model: {}", json);
                 Object targetObject = jsonMapper.readValue(json, outputType);
-
+                if (targetObject == null) {
+                    log.warn("Model returned null literal");
+                    processedChatClientRequest = augmentPromptWithErrors(
+                            chatClientRequest,
+                            "Output was null. You must return a valid JSON object matching the requested schema"
+                    );
+                    continue;
+                }
                 violations = validator.validate(targetObject);
 
-                if (violations.isEmpty()) {
-                    isValidationSuccess = true;
-                } else {
-                    String violationsMessage = violations.stream()
-                            .map(v -> v.getPropertyPath() + " " + v.getMessage())
-                            .collect(Collectors.joining(", "));
+                if (!violations.isEmpty()) {
+                    String violationsMessage = violationsToMessage(violations);
                     log.debug("Got the following constraint validation errors: {}", violations);
-
                     processedChatClientRequest = augmentPromptWithErrors(chatClientRequest, violationsMessage);
+                } else {
+                    isValidationSuccess = true;
                 }
             }
         } while (!isValidationSuccess && repeatCounter <= this.maxRepeatAttempts);
 
         if (!violations.isEmpty()) {
-            log.warn("All attempts to adjust the output to pass the validation were exhausted");
-            throw new ConstraintViolationException(violations);
+            log.warn("All attempts to adjust the output to pass the validation were exhausted, having violations: {}", violations);
+            throw new UnfixableValidationException(new ConstraintViolationException(violations));
+        }
+
+        if (!isValidationSuccess) {
+            log.warn("All attempts to adjust the output to pass the validation were exhausted, llm returned null literal or null response");
+            throw new UnfixableValidationException("LLM returned null literal or null response");
         }
 
         log.debug("The LLM output has been validated successfully");
 
         return chatClientResponse;
+    }
+
+    private static String violationsToMessage(Set<ConstraintViolation<Object>> violations) {
+        return violations.stream()
+                .map(v -> v.getPropertyPath() + " " + v.getMessage())
+                .collect(Collectors.joining(", "));
     }
 
     private ChatClientRequest augmentPromptWithErrors(ChatClientRequest request, String errors) {
