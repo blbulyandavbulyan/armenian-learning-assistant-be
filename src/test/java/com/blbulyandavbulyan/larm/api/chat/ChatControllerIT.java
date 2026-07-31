@@ -54,7 +54,8 @@ class ChatControllerIT extends BaseIT {
 
     @BeforeEach
     void setUp() {
-        when(chatModel.getDefaultOptions()).thenReturn(mock(ChatOptions.class, RETURNS_DEEP_STUBS));
+        ChatOptions mock = mock(ChatOptions.class, RETURNS_DEEP_STUBS);
+        when(chatModel.getDefaultOptions()).thenReturn(mock);
     }
 
     @AfterEach
@@ -79,7 +80,7 @@ class ChatControllerIT extends BaseIT {
                 .andExpect(content().json(readResourceToString("responses/dialogue-chat-success-response.json"), JsonCompareMode.STRICT));
         ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
         verify(chatModel, times(1)).call(promptCaptor.capture());
-        
+
         Prompt actualPrompt = promptCaptor.getValue();
         String userMessage = actualPrompt.getInstructions().stream()
                 .filter(m -> m.getMessageType() == MessageType.USER)
@@ -103,7 +104,7 @@ class ChatControllerIT extends BaseIT {
         ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
         verify(chatModel, times(6)).call(promptCaptor.capture());
         List<Prompt> allPrompts = promptCaptor.getAllValues();
-        
+
         String firstUserMessage = getFirstUserMessage(allPrompts.get(0));
         assertThat(firstUserMessage).startsWith("Create a shop dialogue");
 
@@ -153,6 +154,28 @@ class ChatControllerIT extends BaseIT {
                         """;
         assertThat(allPrompts).elements(1, 2, 3, 4, 5)
                 .allSatisfy(prompt -> assertThat(getFirstUserMessage(prompt)).containsOnlyOnce(expectedMessageFragmentForFailedValidation));
+    }
+
+    @Test
+    void dialogueChat_whenValidationFailsThenSucceeds() throws Exception {
+        StructuredDialogueResource serviceResponse = StructuredDialogueResourceMother.DefaultStructuredDialogueResource.build();
+        String jsonResponse = objectMapper.writeValueAsString(serviceResponse);
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(
+                        new ChatResponse(List.of(new Generation(new AssistantMessage("{}")))),
+                        new ChatResponse(List.of(new Generation(new AssistantMessage("null")))),
+                        new ChatResponse(List.of(new Generation(new AssistantMessage(jsonResponse)))));
+
+        String requestJson = readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json");
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(readResourceToString("responses/dialogue-chat-success-response.json"), JsonCompareMode.STRICT));
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(3)).call(promptCaptor.capture());
     }
 
     @Test
