@@ -27,6 +27,7 @@ import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
@@ -346,14 +347,14 @@ class ChatControllerIT extends BaseIT {
         String expectedMessageFragmentForFailedValidation =
                         """
                         Create a shop dialogue
-                        Output validation failed because of: Output was null. You must return a valid JSON object matching the requested schema. Please correct these fields and regenerate.
+                        Output validation failed because of: Output evaluated to null. You must return a valid JSON object matching the requested schema. Please correct these fields and regenerate.
                         """;
         assertThat(allPrompts).elements(1, 2, 3, 4, 5)
                 .allSatisfy(prompt -> assertThat(getFirstUserMessage(prompt)).containsOnlyOnce(expectedMessageFragmentForFailedValidation));
     }
 
     @Test
-    void dialogueChat_whenValidationFailsThenSucceeds() throws Exception {
+    void dialogueChat_whenLlmOutputValidationFailsThenSucceeds() throws Exception {
         StructuredDialogueResource serviceResponse = StructuredDialogueResourceMother.DefaultStructuredDialogueResource.build();
         String jsonResponse = objectMapper.writeValueAsString(serviceResponse);
 
@@ -372,6 +373,11 @@ class ChatControllerIT extends BaseIT {
                 .andExpect(content().json(readResourceToString("responses/dialogue-chat-success-response.json"), JsonCompareMode.STRICT));
         ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
         verify(chatModel, times(3)).call(promptCaptor.capture());
+    }
+
+    @Test
+    void dialogueChat_whenLlmReturnsMalformedJson() {
+        fail("Implement this test!"); // TODO implement this test
     }
 
     @Test
