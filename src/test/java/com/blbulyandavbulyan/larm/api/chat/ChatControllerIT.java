@@ -139,21 +139,21 @@ class ChatControllerIT extends BaseIT {
         for (int i = 1; i < allPrompts.size(); i++) {
             Prompt prompt = allPrompts.get(i);
             String retryMessage = getFirstUserMessage(prompt);
-            assertThat(retryMessage).contains("info.title");
-            assertThat(retryMessage).contains("info.transcription");
-            assertThat(retryMessage).contains("info.translations[0].translationText");
-            assertThat(retryMessage).contains("info.translations[0].isoLanguageCode");
-            assertThat(retryMessage).contains("speakers[0].id");
-            assertThat(retryMessage).contains("speakers[0].title");
-            assertThat(retryMessage).contains("speakers[0].transcription");
-            assertThat(retryMessage).contains("speakers[0].translations[0].translationText");
-            assertThat(retryMessage).contains("speakers[0].translations[0].isoLanguageCode");
-            assertThat(retryMessage).contains("dialoguePhrases[0].speakerId");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.phrase");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.isoLanguageCode");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.transcription");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].translationText");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].isoLanguageCode");
+            assertThat(retryMessage).contains("info.title must not be blank");
+            assertThat(retryMessage).contains("info.transcription must not be blank");
+            assertThat(retryMessage).contains("info.translations[0].translationText must not be blank");
+            assertThat(retryMessage).contains("info.translations[0].isoLanguageCode Invalid ISO 639-1 language code");
+            assertThat(retryMessage).contains("speakers[0].id must not be blank");
+            assertThat(retryMessage).contains("speakers[0].title must not be blank");
+            assertThat(retryMessage).contains("speakers[0].transcription must not be blank");
+            assertThat(retryMessage).contains("speakers[0].translations[0].translationText must not be blank");
+            assertThat(retryMessage).contains("speakers[0].translations[0].isoLanguageCode Invalid ISO 639-1 language code");
+            assertThat(retryMessage).contains("dialoguePhrases[0].speakerId must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.phrase must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.isoLanguageCode Invalid ISO 639-1 language code");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.transcription must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].translationText must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].isoLanguageCode Invalid ISO 639-1 language code");
         }
     }
 
@@ -251,21 +251,21 @@ class ChatControllerIT extends BaseIT {
         for (int i = 1; i < allPrompts.size(); i++) {
             Prompt prompt = allPrompts.get(i);
             String retryMessage = getFirstUserMessage(prompt);
-            assertThat(retryMessage).contains("info.title");
-            assertThat(retryMessage).contains("info.transcription");
-            assertThat(retryMessage).contains("info.translations[0].translationText");
-            assertThat(retryMessage).contains("info.translations[0].isoLanguageCode");
-            assertThat(retryMessage).contains("speakers[0].id");
-            assertThat(retryMessage).contains("speakers[0].title");
-            assertThat(retryMessage).contains("speakers[0].transcription");
-            assertThat(retryMessage).contains("speakers[0].translations[0].translationText");
-            assertThat(retryMessage).contains("speakers[0].translations[0].isoLanguageCode");
-            assertThat(retryMessage).contains("dialoguePhrases[0].speakerId");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.phrase");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.isoLanguageCode");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.transcription");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].translationText");
-            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].isoLanguageCode");
+            assertThat(retryMessage).contains("info.title must not be blank");
+            assertThat(retryMessage).contains("info.transcription must not be blank");
+            assertThat(retryMessage).contains("info.translations[0].translationText must not be blank");
+            assertThat(retryMessage).contains("info.translations[0].isoLanguageCode must not be blank");
+            assertThat(retryMessage).contains("speakers[0].id must not be blank");
+            assertThat(retryMessage).contains("speakers[0].title must not be blank");
+            assertThat(retryMessage).contains("speakers[0].transcription must not be blank");
+            assertThat(retryMessage).contains("speakers[0].translations[0].translationText must not be blank");
+            assertThat(retryMessage).contains("speakers[0].translations[0].isoLanguageCode must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].speakerId must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.phrase must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.isoLanguageCode must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.transcription must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].translationText must not be blank");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].isoLanguageCode must not be blank");
         }
     }
 
