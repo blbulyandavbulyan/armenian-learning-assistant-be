@@ -119,6 +119,202 @@ class ChatControllerIT extends BaseIT {
         }
     }
 
+    @Test
+    void dialogueChat_withInvalidFields() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/invalid-fields.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.detail").value("Sorry, we could not fulfill your request please try again later"));
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("info.title");
+            assertThat(retryMessage).contains("info.transcription");
+            assertThat(retryMessage).contains("info.translations[0].translationText");
+            assertThat(retryMessage).contains("info.translations[0].isoLanguageCode");
+            assertThat(retryMessage).contains("speakers[0].id");
+            assertThat(retryMessage).contains("speakers[0].title");
+            assertThat(retryMessage).contains("speakers[0].transcription");
+            assertThat(retryMessage).contains("speakers[0].translations[0].translationText");
+            assertThat(retryMessage).contains("speakers[0].translations[0].isoLanguageCode");
+            assertThat(retryMessage).contains("dialoguePhrases[0].speakerId");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.phrase");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.isoLanguageCode");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.transcription");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].translationText");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].isoLanguageCode");
+        }
+    }
+
+    @Test
+    void dialogueChat_withNullRootFieldsFields() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/missing-fields.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError());
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("info must not be null");
+            assertThat(retryMessage).contains("speakers must not be empty");
+            assertThat(retryMessage).contains("dialoguePhrases must not be empty");
+        }
+    }
+
+    @Test
+    void dialogueChat_withEmptySpeakersAndEmptyDialoguePhrases() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/empty-speakers-and-dialogue-phrases.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError());
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("info must not be null");
+            assertThat(retryMessage).contains("speakers must not be empty");
+            assertThat(retryMessage).contains("dialoguePhrases must not be empty");
+        }
+    }
+
+    @Test
+    void dialogueChat_withEmptyTranslations() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/empty-translations.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError());
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("info.translations must not be empty");
+            assertThat(retryMessage).contains("speakers[0].translations must not be empty");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations must not be empty");
+        }
+    }
+
+    @Test
+    void dialogueChat_withNullFieldsAndNonEmptyLists() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/null-fields-not-empty-lists.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError());
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("info.title");
+            assertThat(retryMessage).contains("info.transcription");
+            assertThat(retryMessage).contains("info.translations[0].translationText");
+            assertThat(retryMessage).contains("info.translations[0].isoLanguageCode");
+            assertThat(retryMessage).contains("speakers[0].id");
+            assertThat(retryMessage).contains("speakers[0].title");
+            assertThat(retryMessage).contains("speakers[0].transcription");
+            assertThat(retryMessage).contains("speakers[0].translations[0].translationText");
+            assertThat(retryMessage).contains("speakers[0].translations[0].isoLanguageCode");
+            assertThat(retryMessage).contains("dialoguePhrases[0].speakerId");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.phrase");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.isoLanguageCode");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.transcription");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].translationText");
+            assertThat(retryMessage).contains("dialoguePhrases[0].phrase.translations[0].isoLanguageCode");
+        }
+    }
+
+    @Test
+    void dialogueChat_whenPhraseReferencesUndefinedSpeaker() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/phrase-referencing-undefined-speaker.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError());
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("Phrase references undefined speaker: unknown_speaker");
+        }
+    }
+
+    @Test
+    void dialogueChat_whenDefinedSpeakerIsUnused() throws Exception {
+        String llmResponseJson = readResourceToString("/structured-dialogue/unused-defined-speaker.json");
+
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage(llmResponseJson)))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError());
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        for (int i = 1; i < allPrompts.size(); i++) {
+            Prompt prompt = allPrompts.get(i);
+            String retryMessage = getFirstUserMessage(prompt);
+            assertThat(retryMessage).contains("Defined speaker is never used: speaker2");
+        }
+    }
+
     private static String getFirstUserMessage(Prompt prompt) {
         return prompt.getInstructions().stream()
                 .filter(m -> m.getMessageType() == MessageType.USER)
