@@ -27,7 +27,6 @@ import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
@@ -376,8 +375,30 @@ class ChatControllerIT extends BaseIT {
     }
 
     @Test
-    void dialogueChat_whenLlmReturnsMalformedJson() {
-        fail("Implement this test!"); // TODO implement this test
+    void dialogueChat_whenLlmReturnsMalformedJson() throws Exception {
+        when(chatModel.call(any(Prompt.class)))
+                .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage("{ malformed json ]")))));
+
+        mockMvc.perform(post(RequestMapping.DIALOGUE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readResourceToString("/requests/chat/dialogue/dialogue-chat-request.json")))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.detail").value("Sorry, we could not fulfill your request please try again later"));
+
+        ArgumentCaptor<Prompt> promptCaptor = ArgumentCaptor.forClass(Prompt.class);
+        verify(chatModel, times(6)).call(promptCaptor.capture());
+        List<Prompt> allPrompts = promptCaptor.getAllValues();
+
+        assertThat(allPrompts).first().satisfies(prompt ->
+                assertThat(getFirstUserMessage(prompt))
+                        .containsOnlyOnce("Create a shop dialogue")
+                        .doesNotContain("Output validation failed because of: Invalid JSON syntax"));
+
+        assertThat(allPrompts).elements(1, 2, 3, 4, 5)
+                .allSatisfy(prompt -> assertThat(getFirstUserMessage(prompt))
+                        .contains("Output validation failed because of: Invalid JSON syntax")
+                        .contains("Unexpected character ('m' (code 109)): was expecting double-quote to start property name")
+                        .contains("You must return ONLY raw, valid JSON matching the requested schema without commentary."));
     }
 
     @Test
