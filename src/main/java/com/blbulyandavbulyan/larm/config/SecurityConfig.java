@@ -3,7 +3,7 @@ package com.blbulyandavbulyan.larm.config;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,16 +15,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    @Value("${app.security.cors.allowed-origins}")
-    private final List<String> allowedOrigins;
-
-    @Value("${app.security.enabled:true}")
-    private final boolean securityEnabled;
+    private final AppSecurityProperties securityProperties;
 
     @Bean
     @SuppressWarnings("java:S4502")
@@ -34,11 +30,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> {
-            if (securityEnabled) {
+            if (securityProperties.enabled()) {
+                log.info("Security is enabled");
                 // TODO, this might be dumb, but it is better then no security, will be adjusted later when
                 //  real security is going to be implemented
                 auth.anyRequest().authenticated();
             } else {
+                log.warn("Security is disabled");
                 auth.anyRequest().permitAll();
             }
         });
@@ -50,13 +48,15 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(allowedOrigins);
+        List<String> allowedOriginPatterns = securityProperties.allowedOriginPatterns();
+        log.info("Allowed origin patterns: {}", allowedOriginPatterns);
+        configuration.setAllowedOriginPatterns(allowedOriginPatterns);
 
         // Allow all standard methods, including OPTIONS for the preflight
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         // Allow all headers
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of(CorsConfiguration.ALL));
 
         // Required if your frontend sends cookies or authorization headers
         configuration.setAllowCredentials(true);

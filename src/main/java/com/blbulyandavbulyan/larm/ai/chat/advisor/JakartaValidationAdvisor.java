@@ -1,20 +1,22 @@
 package com.blbulyandavbulyan.larm.ai.chat.advisor;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.blbulyandavbulyan.larm.ai.chat.UnfixableValidationException;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.json.JsonMapper;
 
 @Builder
@@ -45,52 +47,87 @@ public class JakartaValidationAdvisor implements CallAdvisor {
 
     @Override
     public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
-        ChatClientResponse chatClientResponse;
-        int repeatCounter = 0;
-        boolean isValidationSuccess = false;
-        var processedChatClientRequest = chatClientRequest;
-        Set<ConstraintViolation<Object>> violations = Collections.emptySet();
+        var currentRequest = chatClientRequest;
+        ValidationResult.Failure lastFailure = null;
 
-        do {
-            log.debug("Attempt {} to validate input", repeatCounter + 1);
-            repeatCounter++;
-            chatClientResponse = callAdvisorChain.copy(this).nextCall(processedChatClientRequest);
+        for (int attempt = 0; attempt <= maxRepeatAttempts; attempt++) {
+            log.debug("Attempt {} to validate input", attempt + 1);
+            ChatClientResponse response = callAdvisorChain.copy(this).nextCall(currentRequest);
+            if (response.chatResponse() == null) {
+                throw new UnfixableValidationException(
+                        "ChatClientResponse contained a null ChatResponse. Upstream provider or advisor failed to return a payload.");
+            }
 
-            if (chatClientResponse.chatResponse() != null && !chatClientResponse.chatResponse().hasToolCalls()) {
-                if (chatClientResponse.chatResponse().getResult() == null
-                        || chatClientResponse.chatResponse().getResult().getOutput() == null
-                        || chatClientResponse.chatResponse().getResult().getOutput().getText() == null) {
-                    log.warn("ChatClientResponse is missing required json output for validation.");
-                    continue;
+            if (response.chatResponse().hasToolCalls()) {
+                log.debug("Response contains tool calls, skipping validation");
+                return response;
+            }
+
+            ValidationResult lastResult = inspectAndValidate(response.chatResponse());
+            switch (lastResult) {
+                case ValidationResult.Success _ -> {
+                    log.debug("The LLM output has been validated successfully");
+                    return response;
                 }
-
-                String json = chatClientResponse.chatResponse().getResult().getOutput().getText();
-
-                Object targetObject = jsonMapper.readValue(json, outputType);
-
-                violations = validator.validate(targetObject);
-
-                if (violations.isEmpty()) {
-                    isValidationSuccess = true;
-                } else {
-                    String violationsMessage = violations.stream()
-                            .map(v -> v.getPropertyPath() + " " + v.getMessage())
-                            .collect(Collectors.joining(", "));
-                    log.debug("Got the following constraint validation errors: {}", violations);
-
-                    processedChatClientRequest = augmentPromptWithErrors(chatClientRequest, violationsMessage);
+                case ValidationResult.Failure failure -> {
+                    log.debug("Validation attempt {} failed: {}", attempt, failure.errorMessage());
+                    currentRequest = augmentPromptWithErrors(chatClientRequest, failure.errorMessage());
+                    lastFailure = failure;
                 }
             }
-        } while (!isValidationSuccess && repeatCounter <= this.maxRepeatAttempts);
+        }
+        String reason = (lastFailure != null)
+                ? lastFailure.errorMessage()
+                : "Validation failed: no attempts were executed or response was invalid.";
+        throw new UnfixableValidationException(reason);
+    }
 
-        if (!violations.isEmpty()) {
-            log.warn("All attempts to adjust the output to pass the validation were exhausted");
-            throw new ConstraintViolationException(violations);
+    private ValidationResult inspectAndValidate(ChatResponse chatResponse) {
+        String rawText = extractRawText(chatResponse);
+        if (rawText == null) {
+            return new ValidationResult.Failure("Output was null. You must return a valid JSON object matching the requested schema");
         }
 
-        log.debug("The LLM output has been validated successfully");
+        log.debug("Got the following output from model: {}", rawText);
 
-        return chatClientResponse;
+        Object targetObject;
+        try {
+            targetObject = jsonMapper.readValue(rawText, outputType);
+        } catch (JacksonException e) {
+            log.warn("Model returned malformed JSON: {}", e.getMessage());
+            return new ValidationResult.Failure(
+                    "Invalid JSON syntax (%s). You must return ONLY raw, valid JSON matching the requested schema without commentary."
+                            .formatted(e.getMessage())
+            );
+        }
+
+        if (targetObject == null) {
+            return new ValidationResult.Failure("Output evaluated to null. You must return a valid JSON object matching the requested schema");
+        }
+
+        Set<ConstraintViolation<Object>> violations = validator.validate(targetObject);
+        if (!violations.isEmpty()) {
+            String message = violationsToMessage(violations);
+            log.debug("Got constraint validation errors: {}", message);
+            return new ValidationResult.Failure(message);
+        }
+
+        return new ValidationResult.Success();
+    }
+
+    @Nullable
+    private static String extractRawText(ChatResponse chatResponse) {
+        var result = chatResponse.getResult();
+        if (result == null) {
+            return null;
+        }
+        return result.getOutput().getText();
+    }
+
+    private static String violationsToMessage(Set<ConstraintViolation<Object>> violations) {
+        return violations.stream()
+                .map(v -> v.getPropertyPath() + " " + v.getMessage())
+                .collect(Collectors.joining(", "));
     }
 
     private ChatClientRequest augmentPromptWithErrors(ChatClientRequest request, String errors) {
@@ -99,5 +136,14 @@ public class JakartaValidationAdvisor implements CallAdvisor {
                 .text(userMessage.getText() + validationErrorMessage)
                 .build());
         return request.mutate().prompt(augmentedPrompt).build();
+    }
+
+    private sealed interface ValidationResult {
+
+        record Success() implements ValidationResult {
+        }
+
+        record Failure(String errorMessage) implements ValidationResult {
+        }
     }
 }

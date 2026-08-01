@@ -2,78 +2,58 @@ package com.blbulyandavbulyan.larm.ai.chat;
 
 import java.util.List;
 
+import com.blbulyandavbulyan.larm.dialogue.DraftGeneratedDialogue;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-@Valid
 public record StructuredDialogueResource(
         @JsonPropertyDescription("Should contain the response description")
         @NotBlank
         String message,
 
-        @NotNull
-        @Valid
         @JsonPropertyDescription("The info of the dialogue")
         DialogueTitleResource info,
 
         @JsonPropertyDescription("The list of speakers participating in the dialogue")
-        @NotEmpty
-        List<@NotNull @Valid SpeakerResource> speakers,
+        List<SpeakerResource> speakers,
 
         @JsonPropertyDescription("The sequential phrases forming the dialogue")
-        @NotEmpty
-        List<@NotNull @Valid DialoguePhrase> dialoguePhrases) {
+        List<DialoguePhrase> dialoguePhrases) implements DraftGeneratedDialogue {
 
-    @Valid
     public record DialogueTitleResource(
             @JsonPropertyDescription("The title text in Armenian")
-            @NotBlank
             String title,
 
             @JsonPropertyDescription("The transcription of the title")
-            @NotBlank
             String transcription,
 
             @JsonPropertyDescription("Translations of the title")
-            @NotEmpty
-            List<@NotNull @Valid DraftTranslationResource> translations) {
+            List<DraftTranslationResource> translations) implements DraftGeneratedDialogue.DraftDialogueTitle {
 
     }
 
-    @Valid
     public record SpeakerResource(
             @JsonPropertyDescription("A unique identifier for the speaker, e.g. 'speaker1'")
-            @NotBlank
             String id,
 
             @JsonPropertyDescription("The speaker title")
-            @NotBlank
             String title,
 
             @JsonPropertyDescription("The transcription of the speaker title in English letters")
-            @NotBlank
             String transcription,
 
             @JsonPropertyDescription("translations for the speaker title")
-            @NotEmpty
-            List<@NotNull @Valid DraftTranslationResource> translations) {
+            List<DraftTranslationResource> translations) implements DraftGeneratedDialogue.DraftSpeaker {
 
     }
 
-    @Valid
     public record DialoguePhrase(
             @JsonPropertyDescription("The id of the speaker saying this phrase")
-            @NotBlank
             String speakerId,
 
-            @Valid
-            @NotNull
-            DraftPhraseResource phrase) {
+            DraftPhraseResource phrase) implements DraftGeneratedDialogue.DraftDialoguePhrase {
     }
 
 }

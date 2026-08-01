@@ -2,7 +2,7 @@ package com.blbulyandavbulyan.larm.ai.chat.advisor;
 
 import java.util.List;
 
-import jakarta.validation.ConstraintViolationException;
+import com.blbulyandavbulyan.larm.ai.chat.UnfixableValidationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotBlank;
@@ -106,7 +106,7 @@ class JakartaValidationAdvisorTest {
 
         // Act & Assert
         assertThatThrownBy(() -> advisor.adviseCall(request, chain))
-                .isInstanceOf(ConstraintViolationException.class);
+                .isInstanceOf(UnfixableValidationException.class);
 
         // Verify: called maxRepeatAttempts + 1 = 3 times
         verify(copiedChain, times(3)).nextCall(any());

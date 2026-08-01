@@ -20,7 +20,8 @@ app:
   security:
     enabled: false # TODO, should be changed to true, when security is fully implemented
     cors:
-      allowed-origins: "http://localhost:8081"
+      allowed-origin-patterns:
+       - "http://localhost:*"
   storage:
     local:
       folder-name: ${STORAGE_FOLDER_NAME:/home/david/arm-learn-files}

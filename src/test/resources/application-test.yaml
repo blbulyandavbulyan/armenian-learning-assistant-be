@@ -5,7 +5,7 @@ app:
   security:
     enabled: false
     cors:
-      allowed-origins: "http://localhost:8081"
+      allowed-origin-patterns: "http://localhost:8081"
   piper:
     model-name: hy_AM-medium
     voice-identifier: gor-medium

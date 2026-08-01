@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.api.dialogues.validation;
+package com.blbulyandavbulyan.larm.validation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

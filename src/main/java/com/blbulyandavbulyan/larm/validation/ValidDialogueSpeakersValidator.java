@@ -1,16 +1,17 @@
-package com.blbulyandavbulyan.larm.api.dialogues.validation;
+package com.blbulyandavbulyan.larm.validation;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.blbulyandavbulyan.larm.api.dialogues.SaveDialogueRequest;
+import com.blbulyandavbulyan.larm.dialogue.DraftGeneratedDialogue;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class ValidDialogueSpeakersValidator implements ConstraintValidator<ValidDialogueSpeakers, SaveDialogueRequest> {
+public class ValidDialogueSpeakersValidator implements ConstraintValidator<ValidDialogueSpeakers, DraftGeneratedDialogue> {
 
     @Override
-    public boolean isValid(SaveDialogueRequest request, ConstraintValidatorContext context) {
+    public boolean isValid(DraftGeneratedDialogue request, ConstraintValidatorContext context) {
         if (request == null || request.speakers() == null || request.dialoguePhrases() == null) {
             return true; // Let @NotNull and @NotEmpty handle this
         }
@@ -45,15 +46,17 @@ public class ValidDialogueSpeakersValidator implements ConstraintValidator<Valid
         return isValid;
     }
 
-    private static Set<String> getReferencedSpeakers(SaveDialogueRequest request) {
+    private static Set<String> getReferencedSpeakers(DraftGeneratedDialogue request) {
         return request.dialoguePhrases().stream()
-                .map(SaveDialogueRequest.DialoguePhraseRequest::speakerId)
+                .filter(Objects::nonNull)
+                .map(DraftGeneratedDialogue.DraftDialoguePhrase::speakerId)
                 .collect(Collectors.toSet());
     }
 
-    private static Set<String> getDefinedSpeakers(SaveDialogueRequest request) {
+    private static Set<String> getDefinedSpeakers(DraftGeneratedDialogue request) {
         return request.speakers().stream()
-                .map(SaveDialogueRequest.SpeakerRequest::id)
+                .filter(Objects::nonNull)
+                .map(DraftGeneratedDialogue.DraftSpeaker::id)
                 .collect(Collectors.toSet());
     }
 }

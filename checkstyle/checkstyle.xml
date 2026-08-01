@@ -30,6 +30,7 @@
     </module>
 
     <module name="SuppressWarningsFilter"/>
+    <module name="NewlineAtEndOfFile"/>
 
     <!-- https://checkstyle.org/filters/suppressionfilter.html -->
     <module name="SuppressionFilter">
