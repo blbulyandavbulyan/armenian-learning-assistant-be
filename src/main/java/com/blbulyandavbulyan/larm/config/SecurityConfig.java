@@ -36,8 +36,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> {
             if (securityProperties.enabled()) {
                 log.info("Security is enabled");
-                // TODO, this might be dumb, but it is better then no security, will be adjusted later when
-                //  real security is going to be implemented
                 auth.anyRequest().authenticated();
             } else {
                 log.warn("Security is disabled");

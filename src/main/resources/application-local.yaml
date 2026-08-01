@@ -16,6 +16,13 @@ spring:
           text:
             dimensions: 3072
             model: gemini-embedding-001
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jws-algorithms: ES256
+          issuer-uri: https://jqpkdioktbnhdrsttyra.supabase.co/auth/v1
+          jwk-set-uri: https://jqpkdioktbnhdrsttyra.supabase.co/auth/v1/.well-known/jwks.json
 app:
   security:
     enabled: true
@@ -36,3 +43,5 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder:
     com.blbulyandavbulyan.larm.ai.chat.advisor.LoggingProxyAdvisor: INFO
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
