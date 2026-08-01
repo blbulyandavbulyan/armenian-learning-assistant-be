@@ -116,6 +116,7 @@ class ChatControllerIT extends BaseIT {
             assertThat(retryMessage).containsOnlyOnce("info must not be null");
             assertThat(retryMessage).containsOnlyOnce("dialoguePhrases must not be empty");
             assertThat(retryMessage).containsOnlyOnce("peakers must not be empty");
+            assertThat(retryMessage).containsOnlyOnce("message must not be blank");
         }
     }
 

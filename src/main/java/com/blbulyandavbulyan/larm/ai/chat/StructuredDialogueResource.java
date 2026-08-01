@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.blbulyandavbulyan.larm.dialogue.DraftGeneratedDialogue;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
 public record StructuredDialogueResource(
         @JsonPropertyDescription("Should contain the response description")
+        @NotBlank
         String message,
 
         @JsonPropertyDescription("The info of the dialogue")
