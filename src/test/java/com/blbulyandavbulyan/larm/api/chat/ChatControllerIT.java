@@ -375,6 +375,7 @@ class ChatControllerIT extends BaseIT {
     }
 
     @Test
+    @SuppressWarnings("java:S5853") // Sonar S5853 false positive on context-switching AssertJ chains
     void dialogueChat_whenLlmReturnsMalformedJson() throws Exception {
         when(chatModel.call(any(Prompt.class)))
                 .thenReturn(new ChatResponse(List.of(new Generation(new AssistantMessage("{ malformed json ]")))));
