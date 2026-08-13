@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.sql.DataSource;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.google.genai.GoogleGenAiEmbeddingConnectionDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,12 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileSystemUtils;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -34,6 +35,7 @@ import org.wiremock.spring.ConfigureWireMock;
 import org.wiremock.spring.EnableWireMock;
 import org.wiremock.spring.InjectWireMock;
 
+@Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -41,7 +43,6 @@ import org.wiremock.spring.InjectWireMock;
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "app.piper.url")
 })
 @Import({DialogueRecordAssertHelper.class})
-@Sql(scripts = "/sql-test-scripts/drop-all-data-after-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -69,6 +70,9 @@ public abstract class BaseIT {
     }
 
     @Autowired
+    protected DataSource dataSource;
+
+    @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
@@ -87,11 +91,10 @@ public abstract class BaseIT {
     protected WireMockServer wireMockServer;
 
     protected PiperWireMock piperWireMock;
-    private static final Logger LOG = LoggerFactory.getLogger(BaseIT.class);
 
     @BeforeEach
     protected void beforeEach(TestInfo testInfo) {
-        LOG.info("Starting test: {}", testInfo);
+        log.info("Starting test: {}", testInfo);
         this.piperWireMock = new PiperWireMock(wireMockServer);
     }
 
@@ -100,7 +103,13 @@ public abstract class BaseIT {
 
     @AfterEach
     protected void afterEach(TestInfo testInfo) {
-        LOG.info("Finished test: {}", testInfo);
+        log.info("Finished test: {}", testInfo);
+        clearCache();
+        clearDb();
+        cleanTempDirectory();
+    }
+
+    private void clearCache() {
         if (cacheManager != null) {
             cacheManager.getCacheNames().forEach(name -> {
                 var cache = cacheManager.getCache(name);
@@ -109,6 +118,11 @@ public abstract class BaseIT {
                 }
             });
         }
+    }
+
+    private void clearDb() {
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator(new ClassPathResource("/sql-test-scripts/drop-all-data-after-test.sql"));
+        populator.execute(dataSource);
         cleanTempDirectory();
     }
 
@@ -118,7 +132,7 @@ public abstract class BaseIT {
                 FileSystemUtils.deleteRecursively(entry);
             }
         } catch (IOException e) {
-            LOG.warn("Failed to clean up TEMP_DIR", e);
+            log.warn("Failed to clean up TEMP_DIR", e);
         }
     }
 }
