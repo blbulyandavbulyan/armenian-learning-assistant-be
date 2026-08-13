@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.blbulyandavbulyan.larm.dao.entities.StorageProvider;
+import com.blbulyandavbulyan.larm.storage.ObjectNotFoundException;
 import com.blbulyandavbulyan.larm.storage.ObjectStorageService;
 import com.blbulyandavbulyan.larm.storage.StoredObject;
 import io.micrometer.core.annotation.Timed;
@@ -45,10 +46,10 @@ class LocalObjectStorageService implements ObjectStorageService {
     public Resource loadAsResource(String storageKey) {
         Path filePath = storagePath.resolve(storageKey).normalize();
         if (!filePath.startsWith(storagePath.normalize())) {
-            throw new IllegalArgumentException("Invalid storage key (path traversal attempt): " + storageKey);
+            throw new PathTraversalDetectedException("Invalid storage key (path traversal attempt): " + storageKey);
         }
         if (!Files.exists(filePath)) {
-            throw new RuntimeException("File not found: " + storageKey);
+            throw new ObjectNotFoundException("File not found: " + storageKey);
         }
         return new FileSystemResource(filePath);
     }

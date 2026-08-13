@@ -1,0 +1,7 @@
+#Licence file for arcmutate mutation testing https://www.arcmutate.com
+#Thu Aug 13 10:46:33 BST 2026
+expires=15/08/2027
+keyVersion=1
+packages=com.blbulyandavbulyan.larm.*
+signature=czhnpZdmeN4webf/AXv7gx7DI+gXHSsENn535jCIyWJ48mZAiuCjDZfkhQvjtfOBGfNigrOh0fR2PCspbxOpChIRG8SMY9VuUg7y0ANIEdT/JDu3Gxhh/PdGp+gfhMGad2kd38O3k86nKgxP+QOQEdQULZrTOOamhUGKJkjsqgA\=
+type=OSSS

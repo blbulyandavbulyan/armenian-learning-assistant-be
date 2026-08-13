@@ -38,7 +38,7 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.projectKey>blbulyandavbulyan_armenian-learning-assistant-be</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.reporting.outputDirectory}/jacoco/jacoco.xml,${project.reporting.outputDirectory}/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <pitest.version>1.25.7</pitest.version>
+        <pitest.version>1.25.9</pitest.version>
     </properties>
 	<dependencies>
         <!--  Production dependencies      -->
@@ -425,13 +425,19 @@
                 <artifactId>pitest-maven</artifactId>
                 <version>${pitest.version}</version>
                 <configuration>
+                    <mutators>
+                        <mutator>DEFAULTS</mutator>
+                        <mutator>SPRING</mutator>
+                        <mutator>EXTENDED</mutator>
+                    </mutators>
                     <!-- 1. Fix the Memory/Timeout crashes -->
                     <jvmArgs>
                         <value>-Xmx2048m</value>
                     </jvmArgs>
                     <timeoutFactor>1.25</timeoutFactor>
-                    <timeoutConstant>5000</timeoutConstant>
+                    <timeoutConstant>30000</timeoutConstant>
                     <mutationThreshold>80</mutationThreshold>
+                    <threads>4</threads>
 
                     <!-- 2. Use History -->
                     <historyInputFile>${project.basedir}/.pitest/pitest-history.bin</historyInputFile>
@@ -465,6 +471,21 @@
                     <dependency>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>arcmutate-spring</artifactId>
+                        <version>1.1.3</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>base</artifactId>
+                        <version>1.7.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>pitest-accelerator-junit5</artifactId>
                         <version>1.2.3</version>
                     </dependency>
                 </dependencies>
