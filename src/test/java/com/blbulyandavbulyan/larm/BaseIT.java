@@ -1,6 +1,7 @@
 package com.blbulyandavbulyan.larm;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -27,6 +28,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.FileSystemUtils;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.wiremock.spring.ConfigureWireMock;
 import org.wiremock.spring.EnableWireMock;
@@ -106,6 +108,17 @@ public abstract class BaseIT {
                     cache.clear();
                 }
             });
+        }
+        cleanTempDirectory();
+    }
+
+    private void cleanTempDirectory() {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(TEMP_DIR)) {
+            for (Path entry : stream) {
+                FileSystemUtils.deleteRecursively(entry);
+            }
+        } catch (IOException e) {
+            LOG.warn("Failed to clean up TEMP_DIR", e);
         }
     }
 }
