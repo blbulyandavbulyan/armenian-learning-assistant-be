@@ -38,8 +38,6 @@ public class IsoLanguageCodeValidator implements ConstraintValidator<ValidIsoLan
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        // Good practice: let @NotNull or @NotBlank handle null checks if needed, 
-        // or return false if you want it to always fail on null.
         if (value == null) {
             return true; 
         }
@@ -48,7 +46,6 @@ public class IsoLanguageCodeValidator implements ConstraintValidator<ValidIsoLan
             return false;
         }
 
-        // Reusing your existing logic (negating isNotValid)
         return !isoLanguageValidator.isNotValid(value);
     }
 }
