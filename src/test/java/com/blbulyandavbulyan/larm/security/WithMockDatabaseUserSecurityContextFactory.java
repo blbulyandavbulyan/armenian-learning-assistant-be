@@ -1,5 +1,6 @@
 package com.blbulyandavbulyan.larm.security;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -14,7 +15,7 @@ public class WithMockDatabaseUserSecurityContextFactory
     private DatabaseUserJwtConverter jwtConverter;
 
     @Override
-    public SecurityContext createSecurityContext(WithMockDatabaseUser mockUser) {
+    public @NonNull SecurityContext createSecurityContext(WithMockDatabaseUser mockUser) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
 
         Jwt jwt = Jwt.withTokenValue("mock-test-token")

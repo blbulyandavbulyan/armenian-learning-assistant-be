@@ -18,7 +18,7 @@ public class DatabaseUserJwtConverter implements Converter<Jwt, AbstractAuthenti
     private final JwtGrantedAuthoritiesConverter defaultAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
     @Override
-    public AbstractAuthenticationToken convert(Jwt jwt) {
+    public DatabaseUserJwtAuthenticationToken convert(Jwt jwt) {
         String issuer = jwt.getIssuer().toString();
         String subject = jwt.getSubject();
         
