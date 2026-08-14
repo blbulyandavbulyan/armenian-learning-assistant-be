@@ -1,0 +1,29 @@
+package com.blbulyandavbulyan.larm.user;
+
+import java.util.UUID;
+
+import com.blbulyandavbulyan.larm.dao.entities.User;
+import com.blbulyandavbulyan.larm.dao.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+
+    @Cacheable(value = "userIdsByIssuerSubject", sync = true)
+    public UUID acquireUserId(String iss, String sub) {
+        return userRepository.findByIssuerAndSubject(iss, sub)
+                .orElseGet(() -> saveUser(iss, sub))
+                .getId();
+    }
+
+    private User saveUser(String iss, String sub) {
+        return userRepository.save(User.builder()
+                .issuer(iss)
+                .subject(sub)
+                .build());
+    }
+}

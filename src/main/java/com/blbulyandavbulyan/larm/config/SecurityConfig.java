@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.config;
 
 import java.util.List;
 
+import com.blbulyandavbulyan.larm.security.DatabaseUserJwtConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,25 +23,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AppSecurityProperties securityProperties;
+    private final DatabaseUserJwtConverter jwtConverter;
 
     @Bean
     @SuppressWarnings("java:S4502")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        // important to have cors configuration, cause otherwise ui does not work properly
-        http.cors(Customizer.withDefaults())
+        http.cors(Customizer.withDefaults()) // important to have cors configuration, cause otherwise ui does not work properly
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);
 
-        http.authorizeHttpRequests(auth -> {
-            if (securityProperties.enabled()) {
-                log.info("Security is enabled");
-                // TODO, this might be dumb, but it is better then no security, will be adjusted later when
-                //  real security is going to be implemented
-                auth.anyRequest().authenticated();
-            } else {
-                log.warn("Security is disabled");
-                auth.anyRequest().permitAll();
-            }
-        });
+        if (securityProperties.enabled()) {
+            log.info("Security is enabled");
+            http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
+            http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer ->
+                    jwtConfigurer.jwtAuthenticationConverter(jwtConverter)
+            ));
+        } else {
+            log.warn("Security is disabled");
+            http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+        }
 
         return http.build();
     }

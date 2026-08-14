@@ -81,6 +81,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>3.0.2</version>
@@ -207,6 +211,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-oauth2-resource-server-test</artifactId>
             <scope>test</scope>
         </dependency>
 	</dependencies>
@@ -442,20 +451,8 @@
                     <!-- 2. Use History -->
                     <historyInputFile>${project.basedir}/.pitest/pitest-history.bin</historyInputFile>
                     <historyOutputFile>${project.basedir}/.pitest/pitest-history.bin</historyOutputFile>
-
-                    <!-- 3. STOP mutating data objects and config (CRITICAL for ITs) -->
-                    <targetClasses>
-                        <!-- ONLY mutate your core business logic packages -->
-                        <param>com.blbulyandavbulyan.larm.core.*</param>
-                        <param>com.blbulyandavbulyan.larm.dialogue.*</param>
-                        <param>com.blbulyandavbulyan.larm.ai.*</param>
-                        <param>com.blbulyandavbulyan.larm.asset.*</param>
-                        <param>com.blbulyandavbulyan.larm.storage.*</param>
-                        <param>com.blbulyandavbulyan.larm.phrase.*</param>
-                        <param>com.blbulyandavbulyan.larm.validation.*</param>
-                    </targetClasses>
                     <excludedClasses>
-                        <param>com.blbulyandavbulyan.larm.dao.entities.*</param>
+                        <param>com.blbulyandavbulyan.larm.dao.*</param>
                         <param>com.blbulyandavbulyan.larm.api.*</param>
                         <param>com.blbulyandavbulyan.larm.config.*</param>
                         <param>com.blbulyandavbulyan.larm.ai.chat.config.*</param>

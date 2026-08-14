@@ -1,21 +1,22 @@
-package com.blbulyandavbulyan.larm.validation;
+package com.blbulyandavbulyan.larm.validation.validators;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.blbulyandavbulyan.larm.validation.ValidIsoLanguageCode;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class IsoLanguageCodeValidatorBridge implements ConstraintValidator<ValidIsoLanguageCode, String> {
+public class IsoLanguageCodeValidator implements ConstraintValidator<ValidIsoLanguageCode, String> {
 
     private static final String[] EMPTY_STRING_ARRAY = {};
     private final IsoLanguageValidator isoLanguageValidator;
     private List<String> supportedLanguages;
 
     @Autowired
-    public IsoLanguageCodeValidatorBridge(IsoLanguageValidator isoLanguageValidator) {
+    public IsoLanguageCodeValidator(IsoLanguageValidator isoLanguageValidator) {
         this.isoLanguageValidator = isoLanguageValidator;
     }
 
@@ -37,8 +38,6 @@ public class IsoLanguageCodeValidatorBridge implements ConstraintValidator<Valid
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        // Good practice: let @NotNull or @NotBlank handle null checks if needed, 
-        // or return false if you want it to always fail on null.
         if (value == null) {
             return true; 
         }
@@ -47,7 +46,6 @@ public class IsoLanguageCodeValidatorBridge implements ConstraintValidator<Valid
             return false;
         }
 
-        // Reusing your existing logic (negating isNotValid)
         return !isoLanguageValidator.isNotValid(value);
     }
 }

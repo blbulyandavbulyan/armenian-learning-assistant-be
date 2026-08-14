@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.blbulyandavbulyan.larm.validation.validators.ValidDialogueSpeakersValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

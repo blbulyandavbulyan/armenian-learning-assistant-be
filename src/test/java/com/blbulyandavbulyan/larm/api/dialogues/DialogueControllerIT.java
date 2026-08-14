@@ -10,6 +10,7 @@ import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseMother;
+import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import com.jayway.jsonpath.JsonPath;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
+@WithMockDatabaseUser
 class DialogueControllerIT extends BaseIT {
     interface RequestMapping {
         String SAVE_DIALOGUE = "/dialogues";

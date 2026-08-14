@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.blbulyandavbulyan.larm.BaseIT;
 import com.blbulyandavbulyan.larm.ai.StructuredDialogueResourceMother;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
+import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.json.JsonCompareMode;
 
 import static com.blbulyandavbulyan.larm.TestUtils.readResourceToString;
@@ -38,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Sql(scripts = "/sql-test-scripts/insert-user-for-chat-controller.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@WithMockDatabaseUser(subject = "c56b892e-a54d-46bb-bc79-abc02b19eb0c", issuer = "https://test-issuer2.com")
 class ChatControllerIT extends BaseIT {
 
     interface RequestMapping {
@@ -60,7 +64,9 @@ class ChatControllerIT extends BaseIT {
 
     @AfterEach
     void tearDown() {
-        chatMemory.clear("73c68128-48b4-4e2b-b6d3-13835e5d38cc");
+        final var userId = "160cb8d0-5d8d-4a42-b0b1-757f9a646b46";
+        final var chatId = "73c68128-48b4-4e2b-b6d3-13835e5d38cc";
+        chatMemory.clear(userId + ":" + chatId);
     }
 
     @Test

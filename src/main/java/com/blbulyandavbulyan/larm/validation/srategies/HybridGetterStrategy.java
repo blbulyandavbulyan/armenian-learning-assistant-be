@@ -1,4 +1,4 @@
-package com.blbulyandavbulyan.larm.config.validation;
+package com.blbulyandavbulyan.larm.validation.srategies;
 
 import java.util.ArrayList;
 import java.util.List;

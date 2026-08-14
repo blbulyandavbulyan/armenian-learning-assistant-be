@@ -1,10 +1,11 @@
-package com.blbulyandavbulyan.larm.validation;
+package com.blbulyandavbulyan.larm.validation.validators;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.dialogue.DraftGeneratedDialogue;
+import com.blbulyandavbulyan.larm.validation.ValidDialogueSpeakers;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

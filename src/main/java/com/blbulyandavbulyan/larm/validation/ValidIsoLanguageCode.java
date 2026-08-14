@@ -6,11 +6,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.blbulyandavbulyan.larm.validation.validators.IsoLanguageCodeValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = IsoLanguageCodeValidatorBridge.class)
+@Constraint(validatedBy = IsoLanguageCodeValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidIsoLanguageCode {

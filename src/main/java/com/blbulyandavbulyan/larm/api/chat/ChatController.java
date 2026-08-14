@@ -2,6 +2,7 @@ package com.blbulyandavbulyan.larm.api.chat;
 
 import com.blbulyandavbulyan.larm.ai.chat.DialogueChatService;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
+import com.blbulyandavbulyan.larm.security.DatabaseUserJwtAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +15,10 @@ class ChatController implements ChatApi {
     private final ChatMapper chatMapper;
 
     @Override
-    public DialogueChatResponse dialogueChat(ChatRequest request) {
-        StructuredDialogueResource structuredDialogueResource = dialogueChatService.dialogueChat(request.message(), request.chatId());
+    public DialogueChatResponse dialogueChat(DatabaseUserJwtAuthenticationToken auth, ChatRequest request) {
+        String secureChatId = auth.getUserId() + ":" + request.chatId();
+        StructuredDialogueResource structuredDialogueResource = dialogueChatService.dialogueChat(
+                request.message(), secureChatId);
         return chatMapper.mapToDialogueResponse(structuredDialogueResource);
     }
 
