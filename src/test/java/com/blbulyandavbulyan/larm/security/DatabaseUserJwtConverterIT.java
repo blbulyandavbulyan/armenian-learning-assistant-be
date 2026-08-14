@@ -35,7 +35,7 @@ class DatabaseUserJwtConverterIT extends BaseIT {
     }
 
     @Test
-    void shouldSaveUserToDatabase_whenUserIsNotPresent() {
+    void convert_forNotSavedUserInDb() {
         assertThat(userRepository.count()).isZero();
         Jwt jwtToken = createJwtToken("https://new-issuer.com", "new-subject");
         DatabaseUserJwtAuthenticationToken actualToken = converter.convert(jwtToken);
@@ -53,7 +53,7 @@ class DatabaseUserJwtConverterIT extends BaseIT {
 
     @Test
     @Sql(scripts = "/sql-test-scripts/insert-test-user-for-jwt.sql")
-    void shouldReturnExistingUserId_andNotSaveAnything_whenUserIsPresent() {
+    void convert_forAlreadySavedUserInDb() {
         assertThat(userRepository.count()).isEqualTo(1);
         Jwt jwtToken = createJwtToken("https://existing-issuer.com", "existing-subject");
         DatabaseUserJwtAuthenticationToken actualToken = converter.convert(jwtToken);
@@ -66,7 +66,8 @@ class DatabaseUserJwtConverterIT extends BaseIT {
     }
 
     @Test
-    void shouldHandleConcurrentRequestsForNewUser() throws Exception {
+    void convert_whenConcurrentRequestsSendForNotSavedUserInDb() throws Exception {
+        assertThat(userRepository.count()).isZero();
         int threadsCount = 5;
         try (ExecutorService executorService = Executors.newFixedThreadPool(threadsCount)) {
             CountDownLatch startLatch = new CountDownLatch(1);
@@ -86,8 +87,8 @@ class DatabaseUserJwtConverterIT extends BaseIT {
                 }));
             }
 
-            startLatch.countDown(); // Release all threads at once
-            endLatch.await(); // Wait for all threads to finish
+            startLatch.countDown();
+            endLatch.await();
 
             Set<UUID> uniqueIds = new HashSet<>();
             for (Future<DatabaseUserJwtAuthenticationToken> future : futures) {
@@ -95,9 +96,7 @@ class DatabaseUserJwtConverterIT extends BaseIT {
                 uniqueIds.add(future.get().getUserId());
             }
 
-            // All threads should have acquired the exact same UUID
             assertThat(uniqueIds).hasSize(1);
-            // And there should only be exactly one user in the database
             assertThat(userRepository.count()).isEqualTo(1);
 
             executorService.shutdown();

@@ -21,7 +21,7 @@ class IsoLanguageCodeValidatorIT extends BaseIT {
     }
 
     @Test
-    void shouldBeValid_whenValueIsNull() {
+    void validate_forNullLanguage() {
         var testRecord = new TestRecordNullValue(null);
 
         var violations = validator.validate(testRecord);
@@ -35,7 +35,7 @@ class IsoLanguageCodeValidatorIT extends BaseIT {
     }
 
     @Test
-    void shouldThrowIllegalArgumentException_whenAnnotationHasInvalidLanguage() {
+    void validate_whenAnnotationHasInvalidLanguage() {
         var testRecord = new TestRecordInvalidAnnotation("en");
 
         assertThatThrownBy(() -> validator.validate(testRecord))

@@ -16,11 +16,14 @@ public class UserService {
     @Cacheable(value = "userIdsByIssuerSubject", sync = true)
     public UUID acquireUserId(String iss, String sub) {
         return userRepository.findByIssuerAndSubject(iss, sub)
-                .orElseGet(() -> userRepository.save(User.builder()
-                        .id(UUID.randomUUID())
-                        .issuer(iss)
-                        .subject(sub)
-                        .build()))
+                .orElseGet(() -> saveUser(iss, sub))
                 .getId();
+    }
+
+    private User saveUser(String iss, String sub) {
+        return userRepository.save(User.builder()
+                .issuer(iss)
+                .subject(sub)
+                .build());
     }
 }

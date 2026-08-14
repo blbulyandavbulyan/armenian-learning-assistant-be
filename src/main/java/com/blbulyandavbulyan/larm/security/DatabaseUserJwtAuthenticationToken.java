@@ -14,7 +14,6 @@ public class DatabaseUserJwtAuthenticationToken extends JwtAuthenticationToken {
     private final UUID userId;
 
     public DatabaseUserJwtAuthenticationToken(Jwt jwt, Collection<? extends GrantedAuthority> authorities, UUID userId) {
-        // We set the principal name to the string representation of our internal UUID
         super(jwt, authorities, userId.toString());
         this.userId = userId;
     }
