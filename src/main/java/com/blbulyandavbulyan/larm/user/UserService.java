@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    @Cacheable(value = "users")// TODO is such value even ok here?
+    @Cacheable(value = "userIdsByIssuerSubject", sync = true)
     public UUID acquireUserId(String iss, String sub) {
         return userRepository.findByIssuerAndSubject(iss, sub)
                 .orElseGet(() -> userRepository.save(User.builder()
