@@ -7,10 +7,8 @@ exercise mode (GitHub Issue #49). The system introduces stateful exercise sessio
 server-side evaluation and immediate feedback, driven by the SM-2 spaced repetition algorithm.
 
 The design is intentionally generic: it supports any type of learnable content (dialogues,
-vocabulary, grammar rules) and any exercise type (typing, speaking, multiple-choice) without
-requiring API changes when new variants are added. However, **only the TYPING exercise type
-is in scope for Issue #49**. Infrastructure for other types (attachment upload) is built now,
-but evaluation logic for non-TYPING types returns `501 Not Implemented` until specified.
+vocabulary, grammar rules) and any exercise type without requiring API changes when new variants
+are added. **Only the TYPING exercise type is in scope for Issue #49.**
 
 ---
 
@@ -23,14 +21,13 @@ but evaluation logic for non-TYPING types returns `501 Not Implemented` until sp
 | **LearningItem** | A user-owned enrolment record — "I am studying *this* content item". Separate from the global content. The user can soft-delete it without touching global data. |
 | **LearningCard** | The SM-2 scheduling state for one `(user, LearningItem, exerciseType)` triple. Tracks interval, ease factor, repetition count, next review date. One card is auto-created per `ExerciseType` at enrolment time. |
 | **ExerciseSession** | One study attempt of a LearningCard, from creation to completion. Exists server-side from the moment it is started. |
-| **ExerciseAttempt** | One evaluated sub-item within a session (e.g. one dialogue phrase). Persisted the moment it is evaluated — this is what enables crash recovery. |
-| **SessionAttachment** | An uploaded binary file (audio, etc.) linked to a session, used when the answer cannot be sent as plain text. Infrastructure built for Issue #49; evaluation logic for audio is not yet implemented. |
+| **ExerciseAttempt** | One evaluation of a sub-item within a session (e.g. one dialogue phrase). Multiple attempts per sub-item are allowed within the same session — the user can retry a phrase to improve their score. Persisted immediately for crash recovery. |
 
 ### 2.2 Enums
 
 ```
 ContentItemType  — extensible: DIALOGUE | VOCABULARY | GRAMMAR_RULE | …
-ExerciseType     — extensible: TYPING | SPEAKING | MULTIPLE_CHOICE | …
+ExerciseType     — extensible: TYPING | …
 ```
 
 Both are stored as `VARCHAR` with a `CHECK` constraint in the database. The Java enum provides
@@ -114,11 +111,10 @@ One study attempt of a LearningCard.
 
 > `user_id` is denormalized here to avoid a 3-table join (`exercise_sessions → learning_cards → learning_items`)
 > on every authorization check. Every session-scoped endpoint (`POST /evaluate`, `GET /status`,
-> `POST /complete`, `POST /attachments`) validates ownership with a single
-> `WHERE id = ? AND user_id = ?` check on this table.
+> `POST /complete`) validates ownership with a single `WHERE id = ? AND user_id = ?` check on this table.
 
 ### `exercise_attempts`
-One evaluated sub-item inside a session. Persisted at evaluation time.
+One evaluation of a sub-item inside a session. Persisted at evaluation time.
 
 | column | type | notes |
 |---|---|---|
@@ -129,26 +125,9 @@ One evaluated sub-item inside a session. Persisted at evaluation time.
 | `quality` | INTEGER | 0–5 (SM-2 scale), computed server-side after hint penalty |
 | `evaluated_at` | TIMESTAMPTZ | |
 
-TODO DUMB CONSTRAINT! USER CAN REDO THE 'sub item' to get better score! IT DOES NOT MAKE SENSE TO WAIT UNTIL FULL EXERCISE FINISHES!
-FRONTEND WILL ALSO WONT ACCEPT 'too bad' answers, tehre will be 'minimal pass score'!
-Constraint: `UNIQUE (session_id, content_sub_item_id)` — a sub-item can only be evaluated once per session.
-
-### `session_attachments`
-Uploaded binary files (e.g. recorded audio for SPEAKING exercises) linked to a session.
-
-| column | type | notes |
-|---|---|---|
-| `id` | UUID PK | |
-| `session_id` | UUID FK → exercise_sessions | |
-| `content_type` | VARCHAR | MIME type (e.g. `audio/wav`, `audio/ogg`) |
-| `stored_object_key` | VARCHAR | key in `ObjectStorageService` |
-| `uploaded_at` | TIMESTAMPTZ | |
-
-**Attachment lifecycle**: Max file size is `10 MB` (enforced by Spring multipart config). MIME type
-is validated against a server-side allowlist (`audio/wav`, `audio/ogg`, `audio/mp4`, `audio/webm`).
-Attachments for completed sessions are retained. Attachments belonging to sessions abandoned for
-more than 7 days (no `completed_at`, `started_at < now() - 7 days`) are eligible for cleanup by a
-scheduled maintenance task (out of scope for this issue — noted for future work).
+**No unique constraint on `(session_id, content_sub_item_id)`** — the user can retry a sub-item
+within the same session to improve their score. All attempt rows are retained. SM-2 uses the
+average quality across all attempts for each sub-item (see §7).
 
 ### Required Indexes (Flyway migration)
 
@@ -234,21 +213,17 @@ client's `answerText`.
      ▼  POST /exercises/sessions
 [IN_PROGRESS]  ←──── GET /exercises/sessions/{id}/status  (crash recovery, any time)
      │
-     │  POST /exercises/sessions/{id}/attachments  (for SPEAKING — infrastructure only; 501 for now)
-     │  POST /exercises/sessions/{id}/evaluate     (one call per sub-item, or batched)
-     │  (repeat until all sub-items evaluated)
+     │  POST /exercises/sessions/{id}/evaluate  (one call per sub-item attempt; retries allowed)
+     │  (repeat until all sub-items have at least one attempt)
      │
      ▼  POST /exercises/sessions/{id}/complete
 [COMPLETED]
   (completed_at set; aggregate_score computed; SM-2 run; learning_card updated)
 ```
 
-- `POST /evaluate` with `attachmentId` returns `501 Not Implemented` (SPEAKING not in scope for #49).
-- `POST /complete` returns `409 Conflict` if any sub-items from the content item have not been evaluated.
+- `POST /complete` returns `409 Conflict` if any sub-items from the content item have zero attempts.
 - `POST /complete` uses `SELECT ... FOR UPDATE` on the `exercise_sessions` row to prevent concurrent
   completions. If `completed_at` is already set when the lock is acquired, returns `409 Conflict`.
-- `POST /evaluate` racing with a concurrent `POST /complete` is protected by the session row lock
-  in `complete` and the unique constraint in `exercise_attempts`.
 
 ---
 
@@ -272,7 +247,7 @@ If the item was previously excluded, `excluded_at` is cleared and existing cards
 { "contentItemId": "uuid", "contentItemType": "DIALOGUE" }
 
 // Response 201 — newly enrolled
-// Response 200 — re-enrolled (excluded_at cleared)
+// Response 200 — re-enrolled (excluded_at cleared, cards preserved)
 {
   "id": "uuid",
   "contentItemId": "uuid",
@@ -282,17 +257,22 @@ If the item was previously excluded, `excluded_at` is cleared and existing cards
 }
 ```
 
+---
+
 **`DELETE /learning-items/{learningItemId}`** — Soft-delete (exclude).
 
 Sets `excluded_at = now()`. Global content is untouched. `LearningCard`s are preserved.
 
 Response: `204 No Content`.
 
+---
+
 **`GET /learning-items?contentItemId={uuid}&contentItemType={type}`** — Look up by content.
 
-Allows clients to find a user's `LearningItem` for a known piece of content (e.g. the user
-is browsing their dialogue list and wants to check enrolment status or start an exercise).
-Returns `404` if the user has not enrolled this content item (or it is excluded).
+Allows clients to find a user's `LearningItem` for a known piece of content. For example:
+the user is browsing their dialogue list and wants to check enrolment status or retrieve the
+`learningItemId` needed to look up card state. Returns `404` if the user has not enrolled this
+content item, or if it is currently excluded.
 
 ```json
 // Response 200
@@ -304,10 +284,18 @@ Returns `404` if the user has not enrolled this content item (or it is excluded)
   "excludedAt": null
 }
 ```
-TODO what's the point of this endpoint ?????
+
+---
+
 **`GET /learning-items/{learningItemId}/card?exerciseType={type}`** — Get SR card state.
 
-Returns `404` if no card exists for the given `exerciseType` (e.g. unrecognised type).
+**Intent**: Display SR progress metadata on a content item detail screen — e.g. the user opens
+a specific dialogue and the UI shows "Next review in 3 days · Streak: 4 · Ease: 2.4". This data
+lives on the `LearningCard` and is separate from the due queue. Clients that already have a
+`learningCardId` from the queue do not need this endpoint; it exists for the browsing flow where
+the client knows the content but not the card ID.
+
+Returns `404` if no card exists for this `exerciseType` (unrecognised type, or item never studied in this mode).
 
 ```json
 // Response 200
@@ -375,32 +363,18 @@ Idempotent: if a session for the same `learningCardId` is already in progress
 
 ---
 
-**`POST /exercises/sessions/{sessionId}/attachments`** — Upload a binary answer.
-TODO SHOULD NOT BE IMPLEMENTED YET ! SHOULD RETURN 501 Not Implemeneted for now, because OUT OF SCOPE!
-
-Infrastructure only for Issue #49. Accepts `multipart/form-data` with a `file` field.
-Max file size: `10 MB`. Allowed MIME types: `audio/wav`, `audio/ogg`, `audio/mp4`, `audio/webm`.
-
-```json
-// Response 201
-{ "attachmentId": "uuid" }
-// Response 400 — unsupported MIME type or file too large
-// Response 403 — session does not belong to authenticated user
-```
-
----
-
 **`POST /exercises/sessions/{sessionId}/evaluate`** — Evaluate attempts (core gameplay loop).
 
-Each attempt provides **either** `answerText` (for TYPING) **or** `attachmentId` (for SPEAKING —
-returns `501 Not Implemented` in Issue #49). Never both. `usedHint` is a factual client-asserted flag.
+Each attempt provides `answerText` (TYPING). `usedHint` is a factual client-asserted flag.
 
-The server evaluates each answer, applies hint penalty, persists `ExerciseAttempt`, and returns
-immediate per-attempt feedback.
+The server evaluates each answer, applies hint penalty, persists an `ExerciseAttempt` row,
+and returns immediate per-attempt feedback. **Retries are allowed**: the client may submit
+another attempt for the same `contentSubItemId` within the same session (e.g. after a failed
+attempt that didn't meet the frontend's minimum pass score).
 
 **Atomicity**: the entire request is transactional. If any attempt in the array fails validation
-(e.g. `content_sub_item_id` already evaluated, or sub-item does not belong to the content item),
-the whole request is rejected with `409 Conflict` and no attempts are persisted.
+(e.g. `contentSubItemId` does not belong to this session's content item), the whole request is
+rejected with `409 Conflict` and no attempts are persisted.
 
 ```json
 // Request
@@ -431,9 +405,8 @@ the whole request is rejected with `409 Conflict` and no attempts are persisted.
   ]
 }
 
-// Response 409 — duplicate contentSubItemId, or sub-item doesn't belong to content item
+// Response 409 — contentSubItemId does not belong to this session's content item
 // Response 403 — session does not belong to authenticated user
-// Response 501 — attachmentId provided (SPEAKING not implemented)
 ```
 
 `expectedText` is non-null only when `correct = false`. Populated from the resolved Armenian text
@@ -447,8 +420,10 @@ the whole request is rejected with `409 Conflict` and no attempts are persisted.
 Returns the full current state of a session. Client calls this on app resume to reconstruct
 exercise UI state without data loss.
 
-`pendingSubItemIds` = all sub-item IDs from `ContentItemResolver.resolveSubItemIds()` minus
-those already present in `exercise_attempts` for this session.
+- `subItemStatuses` — all sub-items that have at least one attempt, grouped with full attempt history
+  so the client can determine which are "passed" by its own minimum score logic.
+- `pendingSubItemIds` — sub-items from `ContentItemResolver.resolveSubItemIds()` that have
+  **zero** attempts in this session. These are what the client needs to show next.
 
 ```json
 // Response 200
@@ -460,13 +435,13 @@ those already present in `exercise_attempts` for this session.
   "exerciseType": "TYPING",
   "startedAt": "2026-08-15T10:00:00Z",
   "completedAt": null,
-  "evaluatedAttempts": [
+  "subItemStatuses": [
     {
       "contentSubItemId": "uuid-phrase-1",
-      "quality": 5,
-      "usedHint": false,
-      "correct": true,
-      "evaluatedAt": "2026-08-15T10:02:00Z"
+      "attempts": [
+        { "quality": 2, "usedHint": false, "correct": false, "evaluatedAt": "2026-08-15T10:01:00Z" },
+        { "quality": 5, "usedHint": false, "correct": true,  "evaluatedAt": "2026-08-15T10:02:00Z" }
+      ]
     }
   ],
   "pendingSubItemIds": ["uuid-phrase-2", "uuid-phrase-3"]
@@ -478,11 +453,13 @@ those already present in `exercise_attempts` for this session.
 **`POST /exercises/sessions/{sessionId}/complete`** — Seal session and run SM-2.
 
 No request body. Uses `SELECT ... FOR UPDATE` on `exercise_sessions` to prevent concurrent
-completions. Returns `409 Conflict` if any sub-items remain unevaluated, or if the session
+completions. Returns `409 Conflict` if any sub-items have zero attempts, or if the session
 is already completed.
 
-Computes `aggregateScore = round((avgQuality / 5.0) * 100)` from all persisted `ExerciseAttempt`
-quality values. Runs SM-2. Updates the `LearningCard`. Stores `aggregateScore` on the session row.
+SM-2 input quality is computed as: for each sub-item, average its attempt qualities → then
+average across all sub-items → round to nearest integer. See §7 for full algorithm.
+
+`aggregateScore = round((perSessionAvgQuality / 5.0) * 100)` is stored on the session row.
 
 ```json
 // Response 200
@@ -497,7 +474,7 @@ quality values. Runs SM-2. Updates the `LearningCard`. Stores `aggregateScore` o
     "easeFactor": 2.36
   }
 }
-// Response 409 — pending sub-items remain, or session already completed
+// Response 409 — sub-items with zero attempts remain, or session already completed
 // Response 403 — session does not belong to authenticated user
 ```
 
@@ -532,12 +509,21 @@ Query params: `from`, `to` (Instant), `exerciseType`, `contentItemType`, `page`,
 
 ## 7. SM-2 Algorithm
 
-Run once per session on `POST /complete`. Input: the list of persisted `ExerciseAttempt.quality`
-values for the session.
+Run once per session on `POST /complete`.
 
+**Step 1 — Per-sub-item quality** (accounts for retries):
 ```
-aggregateQuality = round(average of all attempt.quality values)
+For each contentSubItemId in this session:
+    subItemQuality = round(average of all ExerciseAttempt.quality values for that sub-item)
+```
 
+**Step 2 — Session aggregate quality**:
+```
+aggregateQuality = round(average of all subItemQuality values)
+```
+
+**Step 3 — SM-2 update**:
+```
 if aggregateQuality >= 3:
     repetitionCount++
     if repetitionCount == 1:   intervalDays = 1
@@ -557,7 +543,12 @@ updated_at   = now()
 The penalty constant (1) is a server-side configuration value.
 
 **aggregateScore** (stored on session, shown to user):
-`aggregateScore = round((avgQuality / 5.0) * 100)` — a 0–100 percentage of maximum possible quality.
+`aggregateScore = round((aggregateQuality / 5.0) * 100)` — a 0–100 percentage of maximum possible quality.
+
+> **Rationale for per-sub-item averaging**: a user who retries a phrase three times (quality 2, 4, 5)
+> contributed more effort than one who passed first try (quality 5). The average (3.67 → 4) correctly
+> reflects that this phrase was harder, resulting in a slightly shorter next interval compared to a
+> clean first-attempt pass.
 
 ---
 
@@ -566,11 +557,11 @@ The penalty constant (1) is a server-side configuration value.
 | Package | Responsibility |
 |---|---|
 | `larm.learning` | `LearningItem` + `LearningCard` entities, repos, `LearningItemService` (enrol/exclude/lookup), `LearningItemController` |
-| `larm.exercise` | `ExerciseSession`, `ExerciseAttempt`, `SessionAttachment` entities + repos |
+| `larm.exercise` | `ExerciseSession`, `ExerciseAttempt` entities + repos |
 | `larm.exercise` | `ExerciseSessionService` (session lifecycle, evaluation, completion), `ExerciseQueueService`, `ExerciseHistoryService` |
 | `larm.exercise` | `ExerciseController` (session, queue, history endpoints) |
 | `larm.exercise` | `ContentItemResolver` interface (contract for cross-module sub-item resolution) |
-| `larm.exercise.srs` | `Sm2Algorithm` — pure function, no Spring dependencies; takes quality list, returns updated card state |
+| `larm.exercise.srs` | `Sm2Algorithm` — pure function, no Spring dependencies; takes per-sub-item quality lists, returns updated card state |
 | `larm.exercise.evaluation` | `AnswerEvaluator` interface + `TypingAnswerEvaluator` (text comparison, quality scoring) |
 | `larm.phrase` | `DialogueContentItemResolver implements ContentItemResolver` — registered as a Spring bean; resolves sub-items and expected answers for `DIALOGUE` type via `DialoguePhrase → Phrase` join |
 
@@ -609,28 +600,26 @@ Follows the project's testing conventions from `GEMINI.md`.
   exclude (204), lookup by contentItemId (200 / 404), get card state (200 / 404).
 
 - **`ExerciseControllerIT`**: Full stack. Covers the complete happy path:
-  start session → evaluate (TYPING) → get status (resumed state) → complete.
-  Also covers: idempotent session start, `409` on duplicate evaluate, `409` on complete with
-  pending items, `409` on concurrent complete (via sequential calls), `501` on attachmentId evaluate,
+  start session → evaluate → retry same sub-item → get status (resumed state with attempt history) → complete.
+  Also covers: idempotent session start, `409` on evaluate with unknown sub-item, `409` on complete
+  with pending sub-items, `409` on concurrent complete (via sequential calls),
   `403` when session belongs to a different user.
 
 - **`ExerciseQueueControllerIT`**: Due items appear; excluded items do not; filters by
   `exerciseType` and `contentItemType` work; items with `next_review_at > now()` do not appear.
 
-- Mock boundary: `ObjectStorageService` (binary storage) is mocked at the interface level.
-  No other internal layers are mocked.
-
 ### Unit Tests
 
-- **`Sm2AlgorithmTest`**: Parametrized over quality 0–5. Verifies: interval progression
+- **`Sm2AlgorithmTest`**: Parametrized over aggregate quality 0–5. Verifies: interval progression
   (1 → 6 → round(6 * easeFactor)), ease factor bounds (min 1.3), reset on quality < 3,
-  `updated_at` is set. No Spring context.
+  `updated_at` is set. Also verifies per-sub-item averaging: multiple attempts for the same
+  sub-item are averaged before being fed into the session aggregate. No Spring context.
 
 - **`TypingAnswerEvaluatorTest`**: Exact match → quality 5; minor typo → quality 3–4;
   major mismatch → quality 0–1; `usedHint = true` reduces quality by 1 (floor 0).
 
 - **`JpaEntitiesIT`**: Must cover `LearningItem`, `LearningCard`, `ExerciseSession`,
-  `ExerciseAttempt`, `SessionAttachment` — verifying `toString`/`equals`/`hashCode`
+  `ExerciseAttempt` — verifying `toString`/`equals`/`hashCode`
   do not trigger `LazyInitializationException` or `StackOverflowError`.
 
 ---
@@ -643,10 +632,6 @@ Uses existing project `RestControllerAdvice` / `EntityNotFoundException` convent
 |---|---|
 | `learningItemId`, `learningCardId`, or `sessionId` not found | `404 Not Found` |
 | Session / card / item belongs to a different user | `403 Forbidden` |
-| Attempt to evaluate an already-evaluated `contentSubItemId` | `409 Conflict` |
 | `contentSubItemId` does not belong to the session's content item | `409 Conflict` |
-| Attempt to `complete` with pending sub-items | `409 Conflict` |
+| Attempt to `complete` with sub-items that have zero attempts | `409 Conflict` |
 | Attempt to modify a completed session | `409 Conflict` |
-| Attachment MIME type not in allowlist | `400 Bad Request` |
-| Attachment exceeds 10 MB | `400 Bad Request` |
-| `attachmentId` provided in evaluate request (SPEAKING not implemented) | `501 Not Implemented` |
