@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import static com.blbulyandavbulyan.larm.srs.SrsTestData.CARD_A_ID;
+import static com.blbulyandavbulyan.larm.srs.SrsTestData.FIRST_ATTEMPT_ID;
+import static com.blbulyandavbulyan.larm.srs.SrsTestData.IN_PROGRESS_SESSION_ID;
+import static com.blbulyandavbulyan.larm.srs.SrsTestData.LEARNING_ITEM_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -27,7 +31,11 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @Sql(scripts = {
         "/sql-test-scripts/drop-all-data-after-test.sql",
-        "/sql-test-scripts/insert-dialogue.sql"
+        "/sql-test-scripts/insert-dialogue.sql",
+        "/sql-test-scripts/srs/insert-test-user.sql",
+        "/sql-test-scripts/srs/insert-active-learning-item.sql",
+        "/sql-test-scripts/srs/insert-in-progress-session.sql",
+        "/sql-test-scripts/srs/insert-first-line-attempts.sql"
 }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 class JpaEntitiesIT extends BaseIT {
@@ -470,4 +478,117 @@ class JpaEntitiesIT extends BaseIT {
         });
     }
 
+    @Test
+    void learningItemToString() {
+        LearningItem item = transactionTemplate.execute(_ -> entityManager.find(LearningItem.class, LEARNING_ITEM_ID));
+
+        assertThatCode(() -> assertThat(item.toString()).contains("LearningItem{id=" + LEARNING_ITEM_ID))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void learningItemEquals() {
+        LearningItem first = transactionTemplate.execute(_ -> entityManager.find(LearningItem.class, LEARNING_ITEM_ID));
+        LearningItem second = transactionTemplate.execute(_ -> entityManager.find(LearningItem.class, LEARNING_ITEM_ID));
+
+        assertThatCode(() -> {
+            assertThat(first).isEqualTo(second);
+            assertThat(first).isNotEqualTo(new LearningItem());
+            assertThat(new LearningItem()).isNotEqualTo(new LearningItem());
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    void learningItemHashCode() {
+        LearningItem item = transactionTemplate.execute(_ -> entityManager.find(LearningItem.class, LEARNING_ITEM_ID));
+
+        assertThatCode(() -> assertThat(item.hashCode()).isEqualTo("LearningItem".hashCode())).doesNotThrowAnyException();
+    }
+
+    @Test
+    void learningCardToString() {
+        LearningCard card = transactionTemplate.execute(_ -> entityManager.find(LearningCard.class, CARD_A_ID));
+
+        assertThatCode(() -> assertThat(card.toString())
+                .contains("LearningCard{id=" + CARD_A_ID)
+                .contains("(LAZY LOADING)"))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void learningCardEquals() {
+        LearningCard first = transactionTemplate.execute(_ -> entityManager.find(LearningCard.class, CARD_A_ID));
+        LearningCard second = transactionTemplate.execute(_ -> entityManager.find(LearningCard.class, CARD_A_ID));
+
+        assertThatCode(() -> {
+            assertThat(first).isEqualTo(second);
+            assertThat(first).isNotEqualTo(new LearningCard());
+            assertThat(new LearningCard()).isNotEqualTo(new LearningCard());
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    void learningCardHashCode() {
+        LearningCard card = transactionTemplate.execute(_ -> entityManager.find(LearningCard.class, CARD_A_ID));
+
+        assertThatCode(() -> assertThat(card.hashCode()).isEqualTo("LearningCard".hashCode())).doesNotThrowAnyException();
+    }
+
+    @Test
+    void exerciseSessionToString() {
+        ExerciseSession session = transactionTemplate.execute(_ -> entityManager.find(ExerciseSession.class, IN_PROGRESS_SESSION_ID));
+
+        assertThatCode(() -> assertThat(session.toString())
+                .contains("ExerciseSession{id=" + IN_PROGRESS_SESSION_ID)
+                .contains("(LAZY LOADING)"))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void exerciseSessionEquals() {
+        ExerciseSession first = transactionTemplate.execute(_ -> entityManager.find(ExerciseSession.class, IN_PROGRESS_SESSION_ID));
+        ExerciseSession second = transactionTemplate.execute(_ -> entityManager.find(ExerciseSession.class, IN_PROGRESS_SESSION_ID));
+
+        assertThatCode(() -> {
+            assertThat(first).isEqualTo(second);
+            assertThat(first).isNotEqualTo(new ExerciseSession());
+            assertThat(new ExerciseSession()).isNotEqualTo(new ExerciseSession());
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    void exerciseSessionHashCode() {
+        ExerciseSession session = transactionTemplate.execute(_ -> entityManager.find(ExerciseSession.class, IN_PROGRESS_SESSION_ID));
+
+        assertThatCode(() -> assertThat(session.hashCode()).isEqualTo("ExerciseSession".hashCode())).doesNotThrowAnyException();
+    }
+
+    @Test
+    void exerciseAttemptToString() {
+        ExerciseAttempt attempt = transactionTemplate.execute(_ -> entityManager.find(ExerciseAttempt.class, FIRST_ATTEMPT_ID));
+
+        assertThatCode(() -> assertThat(attempt.toString())
+                .contains("ExerciseAttempt{id=" + FIRST_ATTEMPT_ID)
+                .contains("(LAZY LOADING)"))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void exerciseAttemptEquals() {
+        ExerciseAttempt first = transactionTemplate.execute(_ -> entityManager.find(ExerciseAttempt.class, FIRST_ATTEMPT_ID));
+        ExerciseAttempt second = transactionTemplate.execute(_ -> entityManager.find(ExerciseAttempt.class, FIRST_ATTEMPT_ID));
+
+        assertThatCode(() -> {
+            assertThat(first).isEqualTo(second);
+            assertThat(first).isNotEqualTo(new ExerciseAttempt());
+            assertThat(new ExerciseAttempt()).isNotEqualTo(new ExerciseAttempt());
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    void exerciseAttemptHashCode() {
+        ExerciseAttempt attempt = transactionTemplate.execute(_ -> entityManager.find(ExerciseAttempt.class, FIRST_ATTEMPT_ID));
+
+        assertThatCode(() -> assertThat(attempt.hashCode()).isEqualTo("ExerciseAttempt".hashCode())).doesNotThrowAnyException();
+    }
 }
