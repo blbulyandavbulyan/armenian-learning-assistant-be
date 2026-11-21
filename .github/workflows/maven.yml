@@ -44,7 +44,8 @@ jobs:
         uses: actions/cache/restore@v6
         with:
           path: .pitest
-          # Unique key per commit; it never matches exactly, the prefixes below do the restoring.
+          # Key per commit: matches exactly only on a re-run of the same commit; otherwise the prefixes below
+          # restore the latest history from this ref, falling back to main.
           key: ${{ runner.os }}-pitest-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-pitest-${{ github.ref }}-
@@ -54,6 +55,7 @@ jobs:
         run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
 
       # Saved right after Pitest, so a failing later step (e.g. an expired SONAR_TOKEN) does not lose the history.
+      # On a re-run of a commit that already saved, this logs "Unable to reserve cache" — harmless, caches are immutable.
       - name: Save Pitest history
         if: ${{ !cancelled() }}
         uses: actions/cache/save@v6
@@ -80,5 +82,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: pitest-reports
+          # Attempt number keeps a re-run from overwriting the previous attempt's report.
+          name: pitest-reports-attempt-${{ github.run_attempt }}
           path: target/pit-reports/

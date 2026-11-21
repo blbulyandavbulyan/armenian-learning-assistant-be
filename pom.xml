@@ -447,6 +447,11 @@
                     <timeoutConstant>30000</timeoutConstant>
                     <mutationThreshold>80</mutationThreshold>
                     <threads>4</threads>
+                    <!-- XML alongside HTML, so reports from different runs can be diffed -->
+                    <outputFormats>
+                        <param>HTML</param>
+                        <param>XML</param>
+                    </outputFormats>
 
                     <!-- 2. Use History -->
                     <historyInputFile>${project.basedir}/.pitest/pitest-history.bin</historyInputFile>
