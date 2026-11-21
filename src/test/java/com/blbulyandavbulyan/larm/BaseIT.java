@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import javax.sql.DataSource;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
@@ -29,12 +32,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.json.JsonAssert;
+import org.springframework.test.json.JsonCompareMode;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileSystemUtils;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.wiremock.spring.ConfigureWireMock;
 import org.wiremock.spring.EnableWireMock;
 import org.wiremock.spring.InjectWireMock;
+
+import static org.mockito.Mockito.when;
 
 @Slf4j
 @SpringBootTest
@@ -52,6 +59,8 @@ public abstract class BaseIT {
     static {
         POSTGRES.start();
     }
+
+    protected static final Instant NOW = Instant.parse("2026-08-15T10:00:00Z");
 
     protected static final Path TEMP_DIR;
 
@@ -91,6 +100,9 @@ public abstract class BaseIT {
     @MockitoBean
     protected JwtDecoder jwtDecoder;
 
+    @MockitoBean
+    protected Clock clock;
+
     @InjectWireMock("piper-tts-service")
     protected WireMockServer wireMockServer;
 
@@ -99,6 +111,8 @@ public abstract class BaseIT {
     @BeforeEach
     protected void beforeEach(TestInfo testInfo) {
         log.info("Starting test: {}", testInfo);
+        when(clock.instant()).thenReturn(NOW);
+        when(clock.getZone()).thenReturn(ZoneOffset.UTC);
         this.piperWireMock = new PiperWireMock(wireMockServer);
     }
 
@@ -111,6 +125,10 @@ public abstract class BaseIT {
         clearCache();
         clearDb();
         cleanTempDirectory();
+    }
+
+    protected static void assertJsonEquals(String expectedJson, String actualJson) {
+        JsonAssert.comparator(JsonCompareMode.STRICT).assertIsMatch(expectedJson, actualJson);
     }
 
     private void clearCache() {
