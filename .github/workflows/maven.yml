@@ -40,21 +40,28 @@ jobs:
       - name: Verify
         run: mvn verify
 
-      - name: Cache Pitest history
-        uses: actions/cache@v6
+      - name: Restore Pitest history
+        uses: actions/cache/restore@v6
         with:
-          # Match the path you set in the pom.xml
           path: .pitest
-          # Use SHA so it successfully saves on every single commit
+          # Key per commit: matches exactly only on a re-run of the same commit; otherwise the prefixes below
+          # restore the latest history from this ref, falling back to main.
           key: ${{ runner.os }}-pitest-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
-            # 1st priority: Previous commits on this exact MR
             ${{ runner.os }}-pitest-${{ github.ref }}-
-            # 2nd priority: The main branch baseline
             ${{ runner.os }}-pitest-refs/heads/main-
 
       - name: Run Pitest
         run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
+
+      # Saved right after Pitest, so a failing later step (e.g. an expired SONAR_TOKEN) does not lose the history.
+      # On a re-run of a commit that already saved, this logs "Unable to reserve cache" — harmless, caches are immutable.
+      - name: Save Pitest history
+        if: ${{ !cancelled() }}
+        uses: actions/cache/save@v6
+        with:
+          path: .pitest
+          key: ${{ runner.os }}-pitest-${{ github.ref }}-${{ github.sha }}
 
       - name: SonarCloud Scan
         env:
@@ -75,5 +82,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: pitest-reports
+          # Attempt number keeps a re-run from overwriting the previous attempt's report.
+          name: pitest-reports-attempt-${{ github.run_attempt }}
           path: target/pit-reports/
