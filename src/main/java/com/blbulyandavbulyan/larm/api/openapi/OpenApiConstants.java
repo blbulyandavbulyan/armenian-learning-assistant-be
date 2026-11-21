@@ -39,6 +39,39 @@ public interface OpenApiConstants {
         String SPEAKERS_LIST = "List of speakers in the dialogue";
         String DIALOGUE_PHRASES = "List of phrases spoken in the dialogue in chronological order";
         String DIALOGUE_PHRASE_ID = "Id of this line of the dialogue (dialogue phrase), used as sub-item id in exercises";
+        String CONTENT_ITEM_ID = "Id of the learnable content item, e.g. the dialogue id";
+        String CONTENT_ITEM_TYPE = "Type of the content item";
+        String LEARNING_ITEM_ID = "Id of the user's enrolment of a content item";
+        String LEARNING_CARD_ID = "Id of the spaced repetition card (one per exercise type and variant)";
+        String ENROLLED_AT = "When the user first enrolled the content item";
+        String EXCLUDED_AT = "When the user excluded the item from studying; null while active";
+        String EXERCISE_TYPE = "Type of exercise, defines how answers are given and evaluated";
+        String VARIANT_ID = "Part of the content practised separately; for dialogues the id of the speaker the user plays";
+        String NEXT_REVIEW_AT = "When the card is due for its next review";
+        String INTERVAL_DAYS = "Current review interval in days";
+        String REPETITION_COUNT = "Number of successful reviews in a row";
+        String EASE_FACTOR = "SM-2 ease factor (minimum 1.3); higher means intervals grow faster";
+        String SESSION_ID = "Id of the exercise session";
+        String SUB_ITEM_ID = "Id of the sub-item being answered; for dialogues the dialogue phrase id";
+        String SUB_ITEM_IDS = "Sub-items the user has to answer in this session, in order";
+        String PENDING_SUB_ITEM_IDS = "Sub-items of the session without any attempt yet";
+        String STARTED_AT = "When the session was started";
+        String COMPLETED_AT = "When the session was completed; null while in progress";
+        String USED_HINT = "Whether the user looked at a hint; lowers the quality by one";
+        String ANSWER = "The answer; the type field selects the kind of answer";
+        String ANSWER_TYPE = "Kind of answer";
+        String ANSWER_TEXT = "The typed text";
+        String ATTEMPT_ID = "Id of the attempt";
+        String QUALITY = "SM-2 quality 0-5 after the hint penalty";
+        String CORRECT = "Whether the answer matched the expected answer exactly (independent of hints)";
+        String EXPECTED_TEXT = "Correct answer, only present when the answer was not correct";
+        String EVALUATED_AT = "When the attempt was evaluated";
+        String AGGREGATE_SCORE = "Session score 0-100";
+        String PREVIOUS_INTERVAL_DAYS = "Review interval in days before this session";
+        String NEXT_INTERVAL_DAYS = "Review interval in days after this session";
+        String PAGE = "Zero-based page index";
+        String PAGE_SIZE = "Page size";
+        String TOTAL_ELEMENTS = "Total number of matching elements";
     }
 
     /**
