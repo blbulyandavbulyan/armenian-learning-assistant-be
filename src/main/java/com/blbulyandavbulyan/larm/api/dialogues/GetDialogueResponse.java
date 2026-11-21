@@ -36,6 +36,9 @@ public record GetDialogueResponse(
     @Schema(name = "Get Dialogue Phrase Response")
     @Builder
     public record DialoguePhraseResponse(
+            @Schema(description = Descriptions.DIALOGUE_PHRASE_ID, requiredMode = Schema.RequiredMode.REQUIRED)
+            UUID id,
+
             @Schema(description = Descriptions.SPEAKER_ID, examples = Examples.SPEAKER_ID, requiredMode = Schema.RequiredMode.REQUIRED)
             UUID speakerId,
 

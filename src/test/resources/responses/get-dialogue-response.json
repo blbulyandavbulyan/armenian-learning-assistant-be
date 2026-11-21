@@ -67,6 +67,7 @@
   ],
   "dialoguePhrases": [
     {
+      "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
       "speakerId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
       "phrase": {
         "id": "44444444-4444-4444-4444-444444444444",
@@ -89,6 +90,7 @@
       }
     },
     {
+      "id": "dddddddd-dddd-dddd-dddd-dddddddddddd",
       "speakerId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
       "phrase": {
         "id": "55555555-5555-5555-5555-555555555555",
@@ -111,6 +113,7 @@
       }
     },
     {
+      "id": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
       "speakerId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
       "phrase": {
         "id": "66666666-6666-6666-6666-666666666666",
