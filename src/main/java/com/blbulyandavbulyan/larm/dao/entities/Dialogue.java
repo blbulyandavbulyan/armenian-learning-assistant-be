@@ -44,7 +44,7 @@ public class Dialogue {
     @JdbcTypeCode(SqlTypes.VECTOR)
     private float[] embedding;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "title_phrase_id")
     private Phrase title;
 

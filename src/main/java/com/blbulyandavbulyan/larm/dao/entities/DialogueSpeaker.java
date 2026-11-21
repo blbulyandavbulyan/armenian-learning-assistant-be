@@ -36,11 +36,11 @@ public class DialogueSpeaker {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "dialogue_id")
     private Dialogue dialogue;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "name_phrase_id")
     private Phrase namePhrase;
 

@@ -48,3 +48,40 @@ The `mvn test` command only runs unit tests, so it completely skips all integrat
 ```bash
 mvn verify
 ```
+
+## Configuring human review skill
+The [`/human-review`](https://github.com/victorrentea/human-review) Claude Code skill builds a single review page for a branch: review points, API contract diff, logging, tests and more.
+Setup on Debian:
+
+1. **Install the plugin** in Claude Code. Fork it first and install from your fork, so the code it runs only changes when you change it:
+   ```bash
+   gh repo fork victorrentea/human-review --clone=false
+   ```
+   ```
+   /plugin marketplace add <your-github-user>/human-review
+   /plugin install human-review@human-review
+   ```
+2. **Install the tools it drives**. Use apt only, never `pip install` into the system Python:
+   ```bash
+   sudo apt install git gh plantuml graphviz python3-pygments python3-pil python3-yaml
+   gh auth login
+   ```
+   `ast-grep` (for the Logging tab) is not packaged by Debian, so install it through npm:
+   ```bash
+   npm install -g @ast-grep/cli
+   ```
+3. **Docker** must be running, because the integration tests use Testcontainers.
+
+### What is already configured in this repo
+* `human-review.json` at the repo root: base branch, the OpenAPI spec, which CI workflow gates the review (`maven.yml`), generated files, and the logging and test-coverage steps.
+* `.human-review/` (the generated page) is git-ignored.
+* Generated files that **must be committed**, because the skill diffs them against `main`. All of them are regenerated on every `mvn verify`:
+  * `openapi.yaml`, by `OpenApiSpecIT`, for the API tab.
+  * `docs/generated/DomainModel.puml` (JPA entities and associations) and `docs/generated/DB.puml` (the PostgreSQL schema after Flyway migrations), by `DataModelDiagramsIT`, for the Data tab.
+
+  CI regenerates them and fails if a committed copy is stale. If that happens, run `mvn verify` locally and commit `openapi.yaml` and `docs/generated/`.
+
+### Usage
+1. Implement a change and run `/record-review` **in the same Claude conversation**. It reviews the work and commits `review-points.md`.
+2. Run `mvn verify`, commit, and push. The skill waits for CI to go green.
+3. Run `/human-review` to build `.human-review/review.html`.
