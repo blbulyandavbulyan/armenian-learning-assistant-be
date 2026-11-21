@@ -1,0 +1,11 @@
+{
+  "sessionId": "3c3c3c3c-0000-0000-0000-000000000001",
+  "completedAt": "2026-08-15T10:00:00Z",
+  "aggregateScore": 75,
+  "cardUpdate": {
+    "previousIntervalDays": 6,
+    "nextIntervalDays": 15,
+    "nextReviewAt": "2026-08-30T10:00:00Z",
+    "easeFactor": 2.5
+  }
+}

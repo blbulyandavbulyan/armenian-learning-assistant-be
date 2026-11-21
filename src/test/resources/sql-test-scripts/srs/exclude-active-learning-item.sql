@@ -1,0 +1,1 @@
+UPDATE learning_items SET excluded_at = '2026-08-10T12:00:00Z' WHERE id = '1a1a1a1a-0000-0000-0000-000000000001';

@@ -1,0 +1,40 @@
+{
+  "session": {
+    "sessionId": "3c3c3c3c-0000-0000-0000-000000000001",
+    "learningCardId": "2b2b2b2b-0000-0000-0000-0000000000aa",
+    "learningItemId": "1a1a1a1a-0000-0000-0000-000000000001",
+    "contentItemId": "99999999-9999-9999-9999-999999999999",
+    "contentItemType": "DIALOGUE",
+    "exerciseType": "TYPING",
+    "variantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "subItemIds": ["cccccccc-cccc-cccc-cccc-cccccccccccc", "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"],
+    "startedAt": "2026-08-15T09:50:00Z",
+    "completedAt": null
+  },
+  "attemptedSubItems": [
+    {
+      "contentSubItemId": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "attempts": [
+        {
+          "attemptId": "4d4d4d4d-0000-0000-0000-000000000001",
+          "answerType": "TEXT",
+          "answerText": "Բարև",
+          "usedHint": false,
+          "quality": 2,
+          "correct": false,
+          "evaluatedAt": "2026-08-15T09:51:00Z"
+        },
+        {
+          "attemptId": "4d4d4d4d-0000-0000-0000-000000000002",
+          "answerType": "TEXT",
+          "answerText": "Բարեւ ձեզ",
+          "usedHint": false,
+          "quality": 5,
+          "correct": true,
+          "evaluatedAt": "2026-08-15T09:52:00Z"
+        }
+      ]
+    }
+  ],
+  "pendingSubItemIds": ["eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"]
+}
