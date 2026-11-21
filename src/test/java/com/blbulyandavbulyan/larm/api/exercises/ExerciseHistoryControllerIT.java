@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 @Sql({Fixtures.DIALOGUE, Fixtures.TEST_USER, Fixtures.ACTIVE_LEARNING_ITEM, Fixtures.IN_PROGRESS_SESSION,
-        Fixtures.COMPLETED_SESSION})
+        Fixtures.COMPLETED_SESSION, Fixtures.OTHER_USER_LEARNING_ITEM, Fixtures.OTHER_USER_COMPLETED_SESSION})
 @WithMockDatabaseUser
 class ExerciseHistoryControllerIT extends BaseIT {
 

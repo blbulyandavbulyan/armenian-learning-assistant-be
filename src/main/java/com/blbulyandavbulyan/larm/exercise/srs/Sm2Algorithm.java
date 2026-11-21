@@ -12,6 +12,8 @@ public class Sm2Algorithm {
 
     public static final double INITIAL_EASE_FACTOR = 2.5;
 
+    public static final int MAX_INTERVAL_DAYS = 3650;
+
     private static final double MIN_EASE_FACTOR = 1.3;
 
     private static final int MAX_QUALITY = 5;
@@ -37,7 +39,7 @@ public class Sm2Algorithm {
         int intervalDays = switch (repetitionCount) {
             case 1 -> 1;
             case 2 -> 6;
-            default -> (int) Math.round(input.intervalDays() * input.easeFactor());
+            default -> (int) Math.min(MAX_INTERVAL_DAYS, Math.round(input.intervalDays() * input.easeFactor()));
         };
         int lapse = MAX_QUALITY - quality;
         double easeFactor = Math.max(MIN_EASE_FACTOR, input.easeFactor() + 0.1 - lapse * (0.08 + lapse * 0.02));

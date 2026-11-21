@@ -1,0 +1,166 @@
+{
+  "schema": "review-cost/1",
+  "harness": "claude-code",
+  "recordedAt": "2026-11-21T14:22:59+00:00",
+  "base": "ac2ebeae0513cc1ee30f9c240aa2f8971448d945",
+  "implementation": "8031e0b1b4ff7bef3b67e4615c55d663f5b6082b",
+  "rounds": [
+    "2026-11-21T14:22:59+00:00"
+  ],
+  "aicUsd": 0.01,
+  "components": [
+    {
+      "key": "implementation",
+      "label": "implementation",
+      "measured": true,
+      "reason": null,
+      "source": "recorded",
+      "window": [
+        "2026-11-21T13:10:04+00:00",
+        "2026-11-21T14:09:08+00:00"
+      ],
+      "harnesses": [
+        "claude-code"
+      ],
+      "entries": [
+        {
+          "harness": "claude-code",
+          "session": "f166b484-514d-42dd-b047-3541829f58e4",
+          "what": "the implementing session, fork \u2192 prepare",
+          "window": [
+            "2026-11-21T13:10:04+00:00",
+            "2026-11-21T14:09:08+00:00"
+          ],
+          "tokens": 11590879,
+          "models": {
+            "Sonnet 5.5": 10569516,
+            "Opus 5.5": 1021363
+          },
+          "usd": 4.1255,
+          "aic": null,
+          "calls": 92,
+          "modelSeconds": 444.0,
+          "subagentModels": [
+            "Opus 5.5"
+          ],
+          "efforts": {
+            "Sonnet 5.5": {
+              "medium": 78
+            },
+            "Opus 5.5": {
+              "medium": 14
+            }
+          },
+          "peakContext": {
+            "Sonnet 5.5": 221485,
+            "Opus 5.5": 94506
+          },
+          "subagents": 1
+        }
+      ],
+      "tokens": 11590879,
+      "usd": 4.1255,
+      "aic": null,
+      "modelSeconds": 444.0
+    },
+    {
+      "key": "review",
+      "label": "review",
+      "measured": true,
+      "reason": null,
+      "source": "recorded",
+      "window": [
+        "2026-11-21T14:09:08+00:00",
+        "2026-11-21T14:10:44+00:00"
+      ],
+      "harnesses": [
+        "claude-code"
+      ],
+      "entries": [
+        {
+          "harness": "claude-code",
+          "session": "f166b484-514d-42dd-b047-3541829f58e4",
+          "what": "the reviewers and their brief",
+          "window": [
+            "2026-11-21T14:09:08+00:00",
+            "2026-11-21T14:10:44+00:00"
+          ],
+          "tokens": 4732287,
+          "models": {
+            "Opus 5.5": 2675381,
+            "Sonnet 5.5": 2056906
+          },
+          "usd": 3.7012,
+          "aic": null,
+          "calls": 41,
+          "modelSeconds": 93.0,
+          "subagentModels": [
+            "Opus 5.5"
+          ],
+          "efforts": {
+            "Sonnet 5.5": {
+              "medium": 9
+            },
+            "Opus 5.5": {
+              "medium": 32
+            }
+          },
+          "peakContext": {
+            "Sonnet 5.5": 232990,
+            "Opus 5.5": 151006
+          },
+          "subagents": 4
+        }
+      ],
+      "tokens": 4732287,
+      "usd": 3.7012,
+      "aic": null,
+      "modelSeconds": 93.0
+    },
+    {
+      "key": "autofix",
+      "label": "auto-fixes",
+      "measured": true,
+      "reason": null,
+      "source": "recorded",
+      "window": [
+        "2026-11-21T14:10:44+00:00",
+        "2026-11-21T14:22:59+00:00"
+      ],
+      "harnesses": [
+        "claude-code"
+      ],
+      "entries": [
+        {
+          "harness": "claude-code",
+          "session": "f166b484-514d-42dd-b047-3541829f58e4",
+          "what": "deciding and fixing",
+          "window": [
+            "2026-11-21T14:10:44+00:00",
+            "2026-11-21T14:22:58+00:00"
+          ],
+          "tokens": 2171458,
+          "models": {
+            "Sonnet 5.5": 2171458
+          },
+          "usd": 0.5842,
+          "aic": null,
+          "calls": 9,
+          "modelSeconds": 70.4,
+          "efforts": {
+            "Sonnet 5.5": {
+              "medium": 9
+            }
+          },
+          "peakContext": {
+            "Sonnet 5.5": 247465
+          }
+        }
+      ],
+      "tokens": 2171458,
+      "usd": 0.5842,
+      "aic": null,
+      "modelSeconds": 70.4
+    }
+  ]
+}

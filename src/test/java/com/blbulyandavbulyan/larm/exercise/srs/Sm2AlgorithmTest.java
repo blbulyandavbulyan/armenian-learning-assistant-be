@@ -88,4 +88,11 @@ class Sm2AlgorithmTest {
 
         assertThatThrownBy(() -> sm2Algorithm.apply(input)).isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void apply_capsIntervalSoRepeatedEarlyReviewsCannotOverflow() {
+        Sm2Result result = applySingle(5, 2_000_000_000, 2.5, 5);
+
+        assertThat(result.intervalDays()).isEqualTo(Sm2Algorithm.MAX_INTERVAL_DAYS);
+    }
 }

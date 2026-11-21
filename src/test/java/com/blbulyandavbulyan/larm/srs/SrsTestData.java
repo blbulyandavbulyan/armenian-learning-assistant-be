@@ -42,6 +42,7 @@ public final class SrsTestData {
         String FIRST_LINE_ATTEMPTS = "/sql-test-scripts/srs/insert-first-line-attempts.sql";
         String LAST_LINE_ATTEMPT = "/sql-test-scripts/srs/insert-last-line-attempt.sql";
         String COMPLETED_SESSION = "/sql-test-scripts/srs/insert-completed-session.sql";
+        String OTHER_USER_COMPLETED_SESSION = "/sql-test-scripts/srs/insert-other-user-completed-session.sql";
         String OTHER_USER_SESSION = "/sql-test-scripts/srs/insert-other-user-session.sql";
     }
 

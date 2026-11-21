@@ -33,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
@@ -178,6 +179,24 @@ class ExerciseSessionControllerIT extends BaseIT {
                 .andExpect(status().isBadRequest());
 
         assertThat(exerciseAttemptRepository.count()).isZero();
+    }
+
+    @Test
+    @Sql(Fixtures.IN_PROGRESS_SESSION)
+    void submitAttempt_withTooLongAnswerText() throws Exception {
+        submitTextAttempt(IN_PROGRESS_SESSION_ID, LINE_1_ID, false, "ա".repeat(1001))
+                .andExpect(status().isBadRequest());
+
+        assertThat(exerciseAttemptRepository.count()).isZero();
+    }
+
+    @Test
+    @Sql(Fixtures.IN_PROGRESS_SESSION)
+    void submitAttempt_withHintOnEmptyAnswerKeepsQualityAtZero() throws Exception {
+        submitTextAttempt(IN_PROGRESS_SESSION_ID, LINE_1_ID, true, "")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.quality").value(0))
+                .andExpect(jsonPath("$.correct").value(false));
     }
 
     @Test
