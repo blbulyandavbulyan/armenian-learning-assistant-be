@@ -1,11 +1,11 @@
 {
   "schema": "review-cost/1",
   "harness": "claude-code",
-  "recordedAt": "2026-11-21T14:22:59+00:00",
+  "recordedAt": "2026-11-21T14:24:20+00:00",
   "base": "ac2ebeae0513cc1ee30f9c240aa2f8971448d945",
   "implementation": "8031e0b1b4ff7bef3b67e4615c55d663f5b6082b",
   "rounds": [
-    "2026-11-21T14:22:59+00:00"
+    "2026-11-21T14:24:20+00:00"
   ],
   "aicUsd": 0.01,
   "components": [
@@ -125,7 +125,7 @@
       "source": "recorded",
       "window": [
         "2026-11-21T14:10:44+00:00",
-        "2026-11-21T14:22:59+00:00"
+        "2026-11-21T14:24:20+00:00"
       ],
       "harnesses": [
         "claude-code"
@@ -137,30 +137,30 @@
           "what": "deciding and fixing",
           "window": [
             "2026-11-21T14:10:44+00:00",
-            "2026-11-21T14:22:58+00:00"
+            "2026-11-21T14:24:19+00:00"
           ],
-          "tokens": 2171458,
+          "tokens": 3169561,
           "models": {
-            "Sonnet 5.5": 2171458
+            "Sonnet 5.5": 3169561
           },
-          "usd": 0.5842,
+          "usd": 0.8064,
           "aic": null,
-          "calls": 9,
-          "modelSeconds": 70.4,
+          "calls": 13,
+          "modelSeconds": 82.8,
           "efforts": {
             "Sonnet 5.5": {
-              "medium": 9
+              "medium": 13
             }
           },
           "peakContext": {
-            "Sonnet 5.5": 247465
+            "Sonnet 5.5": 250472
           }
         }
       ],
-      "tokens": 2171458,
-      "usd": 0.5842,
+      "tokens": 3169561,
+      "usd": 0.8064,
       "aic": null,
-      "modelSeconds": 70.4
+      "modelSeconds": 82.8
     }
   ]
 }
