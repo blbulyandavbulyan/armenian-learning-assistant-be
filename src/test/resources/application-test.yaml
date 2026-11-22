@@ -21,3 +21,9 @@ management:
   tracing:
     sampling:
       probability: 1.0
+spring:
+  autoconfigure:
+    exclude:
+      # Modulith caches its module interceptors statically, so with several cached contexts in one JVM its module
+      # spans reach the first context's registry and break parent chains in later ones.
+      - org.springframework.modulith.observability.autoconfigure.ModuleObservabilityAutoConfiguration

@@ -10,6 +10,7 @@ import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseMother;
 import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.SpanId;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,66 @@ class TracingIT extends BaseIT {
                 .toList();
         assertThat(sqls).anyMatch(sql -> sql.toLowerCase(Locale.ROOT).startsWith("insert into"));
         assertThat(sqls).noneMatch(sql -> UUID_PREFIX.matcher(sql).find());
+    }
+
+    @Test
+    void saveDialogue_producesComponentSpans() throws Exception {
+        saveDialogue();
+
+        List<SpanData> spans = TracingTestConfiguration.finishedSpans(applicationContext);
+        SpanData orchestrator = componentSpan(spans, "DialogueOrchestrator", "saveDialogue");
+        SpanData processor = spans.stream()
+                .filter(s -> "PhraseProcessor".equals(namespace(s)))
+                .findFirst().orElseThrow();
+        assertThat(hasAncestor(spans, processor, orchestrator)).isTrue();
+        assertThat(spans).anyMatch(s -> namespace(s) != null && namespace(s).endsWith("Repository"));
+    }
+
+    @Test
+    void saveDialogue_producesEmbeddingSpan() throws Exception {
+        saveDialogue();
+
+        List<SpanData> spans = TracingTestConfiguration.finishedSpans(applicationContext);
+        SpanData server = spans.stream().filter(s -> s.getKind() == SpanKind.SERVER).findFirst().orElseThrow();
+        assertThat(spans).anyMatch(s -> SpanNames.EMBEDDING_SPAN.equals(s.getName())
+                && s.getTraceId().equals(server.getTraceId()));
+    }
+
+    @Test
+    void componentSpans_excludeMappersAndConfiguration() throws Exception {
+        saveDialogue();
+
+        List<SpanData> spans = TracingTestConfiguration.finishedSpans(applicationContext);
+        List<String> namespaces = spans.stream()
+                .filter(s -> SpanNames.COMPONENT_SPAN.equals(s.getName()))
+                .map(TracingIT::namespace)
+                .toList();
+        assertThat(namespaces).isNotEmpty()
+                .noneMatch(n -> n.endsWith("Mapper") || n.contains("Configuration") || n.contains("Security"));
+    }
+
+    private static String namespace(SpanData span) {
+        return span.getAttributes().get(AttributeKey.stringKey(SpanNames.NAMESPACE_KEY));
+    }
+
+    private static SpanData componentSpan(List<SpanData> spans, String namespace, String function) {
+        return spans.stream()
+                .filter(s -> namespace.equals(namespace(s))
+                        && function.equals(s.getAttributes().get(AttributeKey.stringKey(SpanNames.FUNCTION_KEY))))
+                .findFirst().orElseThrow();
+    }
+
+    private static boolean hasAncestor(List<SpanData> spans, SpanData span, SpanData ancestor) {
+        String parentId = span.getParentSpanId();
+        while (SpanId.isValid(parentId)) {
+            if (parentId.equals(ancestor.getSpanId())) {
+                return true;
+            }
+            String current = parentId;
+            parentId = spans.stream().filter(s -> s.getSpanId().equals(current))
+                    .map(SpanData::getParentSpanId).findFirst().orElse(SpanId.getInvalid());
+        }
+        return false;
     }
 
     private void saveDialogue() throws Exception {

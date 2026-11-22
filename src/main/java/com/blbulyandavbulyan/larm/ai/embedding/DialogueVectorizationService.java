@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import com.blbulyandavbulyan.larm.core.SaveDialogueParameters;
 import io.micrometer.core.annotation.Timed;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -18,6 +20,7 @@ import static com.blbulyandavbulyan.larm.ai.embedding.util.TranslationUtils.extr
 public class DialogueVectorizationService {
 
     private final EmbeddingModel embeddingModel;
+    private final ObservationRegistry observationRegistry;
 
     @Timed(value = "dialogue.vectorization.latency", description = "Time taken to vectorize dialogue")
     public float[] vectorize(SaveDialogueParameters params) {
@@ -46,6 +49,7 @@ public class DialogueVectorizationService {
         final var embeddingText = textBuilder.toString();
         
         log.trace("Converted dialogue parameters: {} into embedding text:\n {}", params, embeddingText);
-        return embeddingModel.embed(embeddingText);
+        return Observation.createNotStarted("gen_ai.embedding", observationRegistry)
+                .observe(() -> embeddingModel.embed(embeddingText));
     }
 }
