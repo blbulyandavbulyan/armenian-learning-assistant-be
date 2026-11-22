@@ -22,6 +22,11 @@ management:
   tracing:
     export:
       otlp:
+        # Enabling trace export needs management.opentelemetry.tracing.export.otlp.endpoint AND this flag
+        enabled: false
+  otlp:
+    metrics:
+      export:
         enabled: false
   endpoints:
     web:
