@@ -15,9 +15,10 @@ public class PiperTextToSpeechRestService implements TextToSpeechService {
     private final PiperConfigurationProperties piperConfigurationProperties;
     private final RestClient restClient;
 
-    public PiperTextToSpeechRestService(PiperConfigurationProperties piperConfigurationProperties) {
+    public PiperTextToSpeechRestService(PiperConfigurationProperties piperConfigurationProperties,
+                                         RestClient.Builder restClientBuilder) {
         this.piperConfigurationProperties = piperConfigurationProperties;
-        this.restClient = RestClient.builder()
+        this.restClient = restClientBuilder
                 .baseUrl(piperConfigurationProperties.url())
                 .build();
     }

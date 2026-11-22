@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
+import com.blbulyandavbulyan.larm.genseq.TracingTestConfiguration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -43,7 +45,7 @@ import org.wiremock.spring.InjectWireMock;
 @EnableWireMock({
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "app.piper.url")
 })
-@Import({DialogueRecordAssertHelper.class})
+@Import({DialogueRecordAssertHelper.class, TracingTestConfiguration.class})
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -77,6 +79,9 @@ public abstract class BaseIT {
     protected MockMvc mockMvc;
 
     @Autowired
+    protected ApplicationContext applicationContext;
+
+    @Autowired
     protected DialogueRecordAssertHelper dialogueRecordAssertHelper;
 
     @MockitoBean
@@ -100,6 +105,7 @@ public abstract class BaseIT {
     protected void beforeEach(TestInfo testInfo) {
         log.info("Starting test: {}", testInfo);
         this.piperWireMock = new PiperWireMock(wireMockServer);
+        TracingTestConfiguration.reset(applicationContext);
     }
 
     @Autowired(required = false)

@@ -17,3 +17,7 @@ logging:
 springdoc:
   # deterministic key order, so the committed openapi.yaml only changes when the API does
   writer-with-order-by-keys: true
+management:
+  tracing:
+    sampling:
+      probability: 1.0
