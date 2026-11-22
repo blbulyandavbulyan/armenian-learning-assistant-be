@@ -40,6 +40,17 @@ jobs:
       - name: Verify
         run: mvn verify
 
+      - name: Check generated files are up to date
+        # `mvn verify` regenerates openapi.yaml (OpenApiSpecIT) and docs/generated/*.puml (DataModelDiagramsIT).
+        # A diff here means the API or data model changed but the regenerated files were not committed.
+        run: |
+          if [ -n "$(git status --porcelain -- openapi.yaml docs/generated)" ]; then
+            echo "::error::Generated files are stale. Run 'mvn verify' locally and commit openapi.yaml and docs/generated/."
+            git status --porcelain -- openapi.yaml docs/generated
+            git --no-pager diff -- openapi.yaml docs/generated
+            exit 1
+          fi
+
       - name: Restore Pitest history
         uses: actions/cache/restore@v6
         with:

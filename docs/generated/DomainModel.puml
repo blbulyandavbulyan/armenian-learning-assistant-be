@@ -1,0 +1,73 @@
+@startuml
+!pragma layout smetana
+
+title Domain Model
+caption Generated from JPA entities by DataModelDiagramsIT
+
+hide empty members
+skinparam classAttributeIconSize 0
+
+class Dialogue {
+  id : UUID
+  createdAt : Instant
+  embedding : float[]
+}
+class DialoguePhrase {
+  id : UUID
+  createdAt : Instant
+  orderIndex : int
+}
+class DialoguePhraseTranslation {
+  id : UUID
+  isoLanguageCode : String
+  translationText : String
+}
+class DialogueSpeaker {
+  id : UUID
+  createdAt : Instant
+}
+class DialogueSpeakerTranslation {
+  id : UUID
+  isoLanguageCode : String
+  translationText : String
+}
+class DialogueTitleTranslation {
+  id : UUID
+  isoLanguageCode : String
+  translationText : String
+}
+class Media {
+  id : UUID
+  aiModelUsed : String
+  contentType : String
+  createdAt : Instant
+  sizeInBytes : int
+  storageBucket : String
+  storageKey : String
+  storageProvider : StorageProvider
+  voiceIdentifier : String
+}
+class Phrase {
+  id : UUID
+  isoLanguageCode : String
+  phrase : String
+  transcription : String
+}
+class User {
+  id : UUID
+  issuer : String
+  subject : String
+}
+
+Dialogue "1" -- "0..*" DialoguePhrase : dialogue
+Dialogue "1" -- "0..*" DialogueSpeaker : dialogue
+Dialogue "1" -- "0..*" DialogueTitleTranslation : dialogue
+DialoguePhrase "1" -- "0..*" DialoguePhraseTranslation : dialoguePhrase
+DialogueSpeaker "1" -- "0..*" DialoguePhrase : speaker
+DialogueSpeaker "1" -- "0..*" DialogueSpeakerTranslation : dialogueSpeaker
+Phrase "1" -- "0..*" Dialogue : title
+Phrase "1" -- "0..*" DialoguePhrase : phrase
+Phrase "1" -- "0..*" DialogueSpeaker : namePhrase
+Phrase "1" -- "0..*" Media : phrase
+
+@enduml

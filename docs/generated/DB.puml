@@ -1,0 +1,84 @@
+@startuml
+!pragma layout smetana
+
+title DB
+caption Generated from the PostgreSQL schema after Flyway migrations by DataModelDiagramsIT
+
+hide empty members
+skinparam classAttributeIconSize 0
+
+entity dialogue_phrase_translations {
+  id : uuid NOT NULL <<PK>>
+  dialogue_phrase_id : uuid NOT NULL <<FK>>
+  iso_language_code : character(2) NOT NULL
+  translation_text : text NOT NULL
+}
+entity dialogue_phrases {
+  id : uuid NOT NULL <<PK>>
+  dialogue_id : uuid NOT NULL <<FK>>
+  phrase_id : uuid NOT NULL <<FK>>
+  speaker_id : uuid NOT NULL <<FK>>
+  order_index : integer NOT NULL
+  created_at : timestamp with time zone NOT NULL
+}
+entity dialogue_speaker_translations {
+  id : uuid NOT NULL <<PK>>
+  dialogue_speaker_id : uuid NOT NULL <<FK>>
+  iso_language_code : character(2) NOT NULL
+  translation_text : text NOT NULL
+}
+entity dialogue_speakers {
+  id : uuid NOT NULL <<PK>>
+  dialogue_id : uuid NOT NULL <<FK>>
+  name_phrase_id : uuid NOT NULL <<FK>>
+  created_at : timestamp with time zone NOT NULL
+}
+entity dialogue_title_translations {
+  id : uuid NOT NULL <<PK>>
+  dialogue_id : uuid NOT NULL <<FK>>
+  iso_language_code : character(2) NOT NULL
+  translation_text : text NOT NULL
+}
+entity dialogues {
+  id : uuid NOT NULL <<PK>>
+  title_phrase_id : uuid NOT NULL <<FK>>
+  embedding : vector(3072) NOT NULL
+  created_at : timestamp with time zone NOT NULL
+}
+entity medias {
+  id : uuid NOT NULL <<PK>>
+  phrase_id : uuid NOT NULL <<FK>>
+  storage_provider : character varying(50) NOT NULL
+  storage_bucket : character varying(255) NOT NULL
+  storage_key : character varying(512) NOT NULL
+  content_type : character varying(100) NOT NULL
+  file_size_bytes : integer NOT NULL
+  ai_model_used : character varying(100)
+  voice_identifier : character varying(100)
+  created_at : timestamp with time zone NOT NULL
+}
+entity phrases {
+  id : uuid NOT NULL <<PK>>
+  iso_language_code : character(2) NOT NULL
+  phrase : text NOT NULL
+  transcription : text
+  created_at : timestamp with time zone
+}
+entity users {
+  id : uuid NOT NULL <<PK>>
+  issuer : character varying(255) NOT NULL
+  subject : character varying(255) NOT NULL
+}
+
+dialogue_phrase_translations }o--|| dialogue_phrases : dialogue_phrase_id (on delete cascade)
+dialogue_phrases }o--|| dialogues : dialogue_id (on delete cascade)
+dialogue_phrases }o--|| phrases : phrase_id
+dialogue_phrases }o--|| dialogue_speakers : speaker_id
+dialogue_speaker_translations }o--|| dialogue_speakers : dialogue_speaker_id (on delete cascade)
+dialogue_speakers }o--|| dialogues : dialogue_id (on delete cascade)
+dialogue_speakers }o--|| phrases : name_phrase_id
+dialogue_title_translations }o--|| dialogues : dialogue_id (on delete cascade)
+dialogues }o--|| phrases : title_phrase_id
+medias }o--|| phrases : phrase_id (on delete cascade)
+
+@enduml

@@ -39,7 +39,7 @@ public class DialogueSpeakerTranslation implements ContextualTranslation {
     @Getter(onMethod_ = {@Override})
     private String translationText;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "dialogue_speaker_id")
     private DialogueSpeaker dialogueSpeaker;
 

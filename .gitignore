@@ -41,3 +41,6 @@ build/
 
 ### Pitest cache
 .pitest
+
+### human-review skill output (regenerated, never committed)
+.human-review/
