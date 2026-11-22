@@ -126,7 +126,7 @@ class DataModelDiagramsIT extends BaseIT {
             if (rs.getBoolean("foreign_key")) {
                 column.append(" <<FK>>");
             }
-            tables.computeIfAbsent(rs.getString("table_name"), name -> new ArrayList<>()).add(column.toString());
+            tables.computeIfAbsent(rs.getString("table_name"), _ -> new ArrayList<>()).add(column.toString());
         });
         assertThat(tables).isNotEmpty();
 
@@ -165,7 +165,7 @@ class DataModelDiagramsIT extends BaseIT {
     private static List<Attribute<?, ?>> sortedIdFirst(EntityType<?> entity) {
         return entity.getAttributes().stream()
                 .<Attribute<?, ?>>map(attribute -> attribute)
-                .sorted(Comparator.<Attribute<?, ?>, Boolean>comparing(DataModelDiagramsIT::isNotId)
+                .sorted(Comparator.comparing(DataModelDiagramsIT::isNotId)
                         .thenComparing(Attribute::getName))
                 .toList();
     }
