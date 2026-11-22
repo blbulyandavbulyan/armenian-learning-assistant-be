@@ -115,6 +115,13 @@ class GenseqWriterTest {
     }
 
     @Test
+    void routeTemplateBracesAreEmittedVerbatim() {
+        Call req = new Call(Kind.REQUEST, "getDialogue", "GET /dialogues/{id}", Map.of("status", "200"), List.of());
+        String puml = GenseqWriter.render(REF, List.of(req)).puml();
+        assertThat(puml).contains("GET /dialogues/{id} ⊕]]").doesNotContain("{id)");
+    }
+
+    @Test
     void renderingTwiceIsByteIdentical() {
         List<Call> calls = List.of(request(sql("select 1"), call(Kind.PIPER, "POST /x", "", Map.of())));
         Diagram first = GenseqWriter.render(REF, calls);

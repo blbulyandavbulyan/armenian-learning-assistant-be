@@ -112,9 +112,9 @@ final class GenseqWriter {
         return text.replaceAll("\\s+", " ").trim();
     }
 
-    /** Text safe inside {@code [[...]]}: one line, no premature link end, no tooltip end. */
+    /** Text safe inside {@code [[...]]}: one line, no premature link end; braces stay, the tooltip is a fixed text. */
     private static String safe(String text) {
-        return oneLine(text).replace("]]", "] ]").replace("}", ")");
+        return oneLine(text).replace("]]", "] ]");
     }
 
     private static String truncate(String sql) {

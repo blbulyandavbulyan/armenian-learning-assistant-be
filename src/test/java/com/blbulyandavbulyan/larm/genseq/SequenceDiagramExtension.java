@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -61,8 +60,8 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
         Class<?> testClass = context.getRequiredTestClass();
         String method = context.getRequiredTestMethod().getName();
         String path = TEST_SOURCES + testClass.getName().replace('.', '/') + ".java";
-        OptionalInt line = declarationLine(path, method);
-        GenseqWriter.TestRef ref = new GenseqWriter.TestRef(path, line.orElse(1), testClass.getSimpleName(),
+        int line = declarationLine(testClass, path, method);
+        GenseqWriter.TestRef ref = new GenseqWriter.TestRef(path, line, testClass.getSimpleName(),
                 scenario(method), selection.annotated() ? TAGGED_FOOTER : SELECTED_FOOTER);
         GenseqWriter.Diagram diagram = GenseqWriter.render(ref, requests);
         String base = testClass.getSimpleName() + ".java." + GenseqWriter.slug(method) + ".genseq";
@@ -87,17 +86,17 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
         return isSelected(testClass, method.getName(), annotated, select) ? new Selection(annotated) : null;
     }
 
-    private static OptionalInt declarationLine(String path, String method) {
+    private static int declarationLine(Class<?> testClass, String path, String method) {
         Pattern declaration = Pattern.compile("^\\s*(?:(?:public|protected|private|static|final)\\s+)*void\\s+"
                 + Pattern.quote(method) + "\\s*\\(");
         try {
             List<String> lines = Files.readAllLines(Path.of(path));
             for (int i = 0; i < lines.size(); i++) {
                 if (declaration.matcher(lines.get(i)).find()) {
-                    return OptionalInt.of(i + 1);
+                    return i + 1;
                 }
             }
-            return OptionalInt.empty();
+            throw new IllegalStateException("No declaration of void " + method + "( found in " + testClass.getName());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
