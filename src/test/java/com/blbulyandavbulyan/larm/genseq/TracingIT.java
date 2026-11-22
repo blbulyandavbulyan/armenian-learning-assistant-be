@@ -68,6 +68,21 @@ class TracingIT extends BaseIT {
     }
 
     @Test
+    void saveDialogue_insertSpansAreInsideDialogueSavingServiceSpan() throws Exception {
+        saveDialogue();
+
+        List<SpanData> spans = TracingTestConfiguration.finishedSpans(applicationContext);
+        SpanData saving = componentSpan(spans, "DialogueSavingService", "saveDialogue");
+        List<SpanData> inserts = spans.stream()
+                .filter(s -> {
+                    String sql = s.getAttributes().get(AttributeKey.stringKey(SpanNames.JDBC_SQL_KEY));
+                    return sql != null && sql.toLowerCase(Locale.ROOT).startsWith("insert into");
+                })
+                .toList();
+        assertThat(inserts).isNotEmpty().allSatisfy(insert -> assertThat(hasAncestor(spans, insert, saving)).isTrue());
+    }
+
+    @Test
     void saveDialogue_producesEmbeddingSpan() throws Exception {
         saveDialogue();
 

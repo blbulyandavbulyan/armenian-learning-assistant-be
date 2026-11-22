@@ -64,6 +64,12 @@ This project is the backend service for the Armenian Learning Assistant. It leve
 - All schema changes MUST be done via Flyway migrations in `src/main/resources/db/migration`.
 - The `phrases` table uses `pgvector` (`vector(3072)`) for embeddings.
 
+### Tracing and sequence diagrams
+- **`observability` package:** `ComponentObservationAspect` creates one observation (span `larm.component`) per public method of our own components/repositories; embedding calls get their own observations. It runs with highest precedence so it wraps transaction/cache proxies.
+- **Export:** OTLP trace and metrics export are disabled by default. To export traces set both `management.opentelemetry.tracing.export.otlp.endpoint` and `management.tracing.export.otlp.enabled: true` (metrics: `management.otlp.metrics.export.enabled`).
+- **Sequence diagrams:** ITs tagged `@GenerateSequence` (or listed in `GENSEQ_SELECT`, e.g. `GENSEQ_SELECT=DialogueControllerIT#saveDialogue`) write PlantUML + JSON from their real spans to `docs/generated/sequence/` (`SequenceDiagramExtension`).
+- **Generated links:** diagrams contain `src://…:<line>` links to traced main classes, so editing one (even just moving a method) changes committed files. Re-run `mvn verify` and commit `docs/generated/` before pushing; CI fails on a diff.
+
 ### Text-to-Speech (TTS)
 - Currently, only Armenian (`hy`) is supported.
 - The `PiperTextToSpeechService` communicates with the Piper binary via a subprocess. Ensure the paths in `application-local.yaml` match your local environment.

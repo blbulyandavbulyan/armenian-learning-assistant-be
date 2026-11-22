@@ -35,4 +35,24 @@ class SequenceDiagramExtensionTest {
         assertThat(SequenceDiagramExtension.isSelected(TEST_CLASS, "foo", false, null)).isFalse();
         assertThat(SequenceDiagramExtension.isSelected(TEST_CLASS, "foo", false, "")).isFalse();
     }
+
+    @Test
+    void failedTestIsNotWritten() {
+        assertThat(SequenceDiagramExtension.shouldWrite(true, true, 3)).isFalse();
+    }
+
+    @Test
+    void zeroRequestsAreNotWritten() {
+        assertThat(SequenceDiagramExtension.shouldWrite(true, false, 0)).isFalse();
+    }
+
+    @Test
+    void selectedPassedWithRequestsIsWritten() {
+        assertThat(SequenceDiagramExtension.shouldWrite(true, false, 1)).isTrue();
+    }
+
+    @Test
+    void notSelectedIsNotWritten() {
+        assertThat(SequenceDiagramExtension.shouldWrite(false, false, 2)).isFalse();
+    }
 }

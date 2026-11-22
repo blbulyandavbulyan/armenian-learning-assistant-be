@@ -79,7 +79,6 @@ deactivate Backend
 Backend -> Backend: PhraseRepository.saveAll
 deactivate Backend
 Backend -> Backend: DialogueRepository.save
-deactivate Backend
 Backend -> DB: [[genseq://1shz0sg{Click for the statement behind this call} insert into phrases (iso_language_code,phrase,transcription,id) values (?,?,?,?) ⊕]]
 Backend -> DB: [[genseq://1udjz1e{Click for the statement behind this call} insert into medias (ai_model_used,content_type,created_at,phrase_id,file_size_bytes,storage_bucket,storage_key,storage_p … ⊕]]
 Backend -> DB: [[genseq://2v9rsfu{Click for the statement behind this call} insert into dialogues (created_at,embedding,title_phrase_id,id) values (?,cast(? as vector),?,?) ⊕]]
@@ -88,6 +87,7 @@ Backend -> DB: [[genseq://5d4o9wh{Click for the statement behind this call} inse
 Backend -> DB: [[genseq://5c1caed{Click for the statement behind this call} insert into dialogue_phrases (created_at,dialogue_id,order_index,phrase_id,speaker_id,id) values (?,?,?,?,?,?) ⊕]]
 Backend -> DB: [[genseq://1ve7d9l{Click for the statement behind this call} insert into dialogue_phrase_translations (dialogue_phrase_id,iso_language_code,translation_text,id) values (?,?,?,?) ⊕]]
 Backend -> DB: [[genseq://65bleid{Click for the statement behind this call} insert into dialogue_title_translations (dialogue_id,iso_language_code,translation_text,id) values (?,?,?,?) ⊕]]
+deactivate Backend
 deactivate Backend
 Backend --> Test: 201
 deactivate Backend

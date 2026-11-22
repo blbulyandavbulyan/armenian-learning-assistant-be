@@ -8,14 +8,20 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
  * Wraps calls to the application's own components and repositories into observations, so that traces show who
  * called whom. Spans are named {@code larm.component}; the callee is described by {@code code.namespace} and
  * {@code code.function}.
+ *
+ * <p>The highest precedence makes the observation wrap the transaction, cache and logging proxies, so that work done
+ * at transaction commit (flush) is still inside the span of the component that opened the transaction.
  */
 @Aspect
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
 @RequiredArgsConstructor
 public class ComponentObservationAspect {

@@ -40,6 +40,10 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
                         || entry.equals(testClass.getName() + "#" + method));
     }
 
+    static boolean shouldWrite(boolean selected, boolean testFailed, int requestCount) {
+        return selected && !testFailed && requestCount > 0;
+    }
+
     @Override
     public void beforeEach(ExtensionContext context) {
         if (selected(context) != null) {
@@ -50,11 +54,12 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
     @Override
     public void afterEach(ExtensionContext context) {
         Selection selection = selected(context);
-        if (selection == null || context.getExecutionException().isPresent()) {
+        boolean failed = context.getExecutionException().isPresent();
+        if (selection == null || failed) {
             return;
         }
         List<Call> requests = SpanTree.requests(TracingTestConfiguration.finishedSpans(applicationContext(context)));
-        if (requests.isEmpty()) {
+        if (!shouldWrite(true, failed, requests.size())) {
             return;
         }
         Class<?> testClass = context.getRequiredTestClass();
