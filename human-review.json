@@ -40,6 +40,34 @@
           "include": ["com/blbulyandavbulyan/larm/"]
         }
       ]
+    },
+
+    "//sequence": "Sequence diagrams from traces of the ITs. First run: ITs tagged @GenerateSequence (@Tag genseq). Second: ITs this branch added/edited, untagged; GENSEQ_SELECT is forwarded to the Failsafe JVM as an env var.",
+    "sequence": {
+      "select": {
+        "max": 6,
+        "suites": {
+          "java": {"files": ["src/test/java/**/*IT.java"], "item": "{class}#{name}", "join": ",", "max": 6}
+        }
+      },
+      "//trace": "No Grafana here: the tab shows the skill's example trace.",
+      "trace": false,
+      "commands": [
+        "mvn -B clean verify -Dcheckstyle.skip -Dpmd.skip -Dtest=NONE -Dsurefire.failIfNoSpecifiedTests=false -Dgroups=genseq",
+        {"run": "GENSEQ_SELECT={tests.java} mvn -B verify -Dcheckstyle.skip -Dpmd.skip -Dtest=NONE -Dsurefire.failIfNoSpecifiedTests=false -Dit.test={tests.java}",
+         "when": "java"}
+      ]
+    },
+
+    "//c2": "Container view projected from the sequence diagrams. Test is the MockMvc harness: deployed nowhere, so dropped.",
+    "c2": {
+      "containers": {
+        "Test": {"drop": true},
+        "Backend": {"kind": "container"},
+        "DB": {"kind": "db"},
+        "Piper": {"kind": "external"},
+        "Gemini": {"kind": "external"}
+      }
     }
   }
 }
