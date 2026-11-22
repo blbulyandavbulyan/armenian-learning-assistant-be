@@ -45,6 +45,46 @@ entity dialogues {
   embedding : vector(3072) NOT NULL
   created_at : timestamp with time zone NOT NULL
 }
+entity exercise_attempts {
+  id : uuid NOT NULL <<PK>>
+  session_id : uuid NOT NULL <<FK>>
+  content_sub_item_id : uuid NOT NULL
+  answer_type : character varying(32) NOT NULL
+  answer_text : text
+  used_hint : boolean NOT NULL
+  raw_quality : integer NOT NULL
+  quality : integer NOT NULL
+  correct : boolean NOT NULL
+  evaluated_at : timestamp with time zone NOT NULL
+}
+entity exercise_sessions {
+  id : uuid NOT NULL <<PK>>
+  learning_card_id : uuid NOT NULL <<FK>>
+  user_id : uuid NOT NULL <<FK>>
+  aggregate_score : integer
+  started_at : timestamp with time zone NOT NULL
+  completed_at : timestamp with time zone
+}
+entity learning_cards {
+  id : uuid NOT NULL <<PK>>
+  learning_item_id : uuid NOT NULL <<FK>>
+  exercise_type : character varying(32) NOT NULL
+  variant_id : uuid
+  next_review_at : timestamp with time zone NOT NULL
+  interval_days : integer NOT NULL
+  ease_factor : double precision NOT NULL
+  repetition_count : integer NOT NULL
+  created_at : timestamp with time zone NOT NULL
+  updated_at : timestamp with time zone NOT NULL
+}
+entity learning_items {
+  id : uuid NOT NULL <<PK>>
+  user_id : uuid NOT NULL <<FK>>
+  content_item_id : uuid NOT NULL
+  content_item_type : character varying(32) NOT NULL
+  enrolled_at : timestamp with time zone NOT NULL
+  excluded_at : timestamp with time zone
+}
 entity medias {
   id : uuid NOT NULL <<PK>>
   phrase_id : uuid NOT NULL <<FK>>
@@ -79,6 +119,11 @@ dialogue_speakers }o--|| dialogues : dialogue_id (on delete cascade)
 dialogue_speakers }o--|| phrases : name_phrase_id
 dialogue_title_translations }o--|| dialogues : dialogue_id (on delete cascade)
 dialogues }o--|| phrases : title_phrase_id
+exercise_attempts }o--|| exercise_sessions : session_id
+exercise_sessions }o--|| learning_cards : learning_card_id
+exercise_sessions }o--|| users : user_id
+learning_cards }o--|| learning_items : learning_item_id
+learning_items }o--|| users : user_id
 medias }o--|| phrases : phrase_id (on delete cascade)
 
 @enduml

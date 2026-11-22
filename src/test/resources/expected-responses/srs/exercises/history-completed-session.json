@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "sessionId": "3c3c3c3c-0000-0000-0000-000000000002",
+      "learningCardId": "2b2b2b2b-0000-0000-0000-0000000000bb",
+      "learningItemId": "1a1a1a1a-0000-0000-0000-000000000001",
+      "contentItemId": "99999999-9999-9999-9999-999999999999",
+      "contentItemType": "DIALOGUE",
+      "exerciseType": "TYPING",
+      "variantId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "startedAt": "2026-08-14T09:00:00Z",
+      "completedAt": "2026-08-14T09:10:00Z",
+      "aggregateScore": 80
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 1
+}

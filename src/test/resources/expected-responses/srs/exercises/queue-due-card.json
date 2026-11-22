@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "learningCardId": "2b2b2b2b-0000-0000-0000-0000000000aa",
+      "learningItemId": "1a1a1a1a-0000-0000-0000-000000000001",
+      "contentItemId": "99999999-9999-9999-9999-999999999999",
+      "contentItemType": "DIALOGUE",
+      "exerciseType": "TYPING",
+      "variantId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "nextReviewAt": "2026-08-14T00:00:00Z",
+      "intervalDays": 6,
+      "repetitionCount": 2
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 1
+}

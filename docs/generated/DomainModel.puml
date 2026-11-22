@@ -36,6 +36,43 @@ class DialogueTitleTranslation {
   isoLanguageCode : String
   translationText : String
 }
+class ExerciseAttempt {
+  id : UUID
+  answerText : String
+  answerType : AnswerType
+  contentSubItemId : UUID
+  correct : boolean
+  evaluatedAt : Instant
+  quality : int
+  rawQuality : int
+  usedHint : boolean
+}
+class ExerciseSession {
+  id : UUID
+  aggregateScore : Integer
+  completedAt : Instant
+  startedAt : Instant
+  userId : UUID
+}
+class LearningCard {
+  id : UUID
+  createdAt : Instant
+  easeFactor : double
+  exerciseType : ExerciseType
+  intervalDays : int
+  nextReviewAt : Instant
+  repetitionCount : int
+  updatedAt : Instant
+  variantId : UUID
+}
+class LearningItem {
+  id : UUID
+  contentItemId : UUID
+  contentItemType : ContentItemType
+  enrolledAt : Instant
+  excludedAt : Instant
+  userId : UUID
+}
 class Media {
   id : UUID
   aiModelUsed : String
@@ -65,6 +102,9 @@ Dialogue "1" -- "0..*" DialogueTitleTranslation : dialogue
 DialoguePhrase "1" -- "0..*" DialoguePhraseTranslation : dialoguePhrase
 DialogueSpeaker "1" -- "0..*" DialoguePhrase : speaker
 DialogueSpeaker "1" -- "0..*" DialogueSpeakerTranslation : dialogueSpeaker
+ExerciseSession "1" -- "0..*" ExerciseAttempt : session
+LearningCard "1" -- "0..*" ExerciseSession : learningCard
+LearningItem "1" -- "0..*" LearningCard : learningItem
 Phrase "1" -- "0..*" Dialogue : title
 Phrase "1" -- "0..*" DialoguePhrase : phrase
 Phrase "1" -- "0..*" DialogueSpeaker : namePhrase

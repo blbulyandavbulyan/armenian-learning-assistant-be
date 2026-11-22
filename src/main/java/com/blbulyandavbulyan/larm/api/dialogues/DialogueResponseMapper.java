@@ -37,6 +37,7 @@ class DialogueResponseMapper {
         return Stream.ofNullable(dialogue.getDialoguePhrases())
                 .flatMap(Collection::stream)
                 .map(dialoguePhrase -> GetDialogueResponse.DialoguePhraseResponse.builder()
+                        .id(dialoguePhrase.getId())
                         .speakerId(dialoguePhrase.getSpeaker().getId())
                         .phrase(phraseResponseMapper.mapToPhraseResponse(dialoguePhrase.getPhrase(), dialoguePhrase.getTranslations()))
                         .build())
