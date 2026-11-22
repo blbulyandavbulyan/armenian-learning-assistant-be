@@ -19,9 +19,9 @@ spring:
 
 management:
   # Nothing is exported by default; enable explicitly where a collector exists
-  otlp:
-    tracing:
-      export:
+  tracing:
+    export:
+      otlp:
         enabled: false
   endpoints:
     web:
