@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
+import com.blbulyandavbulyan.larm.genseq.SequenceDiagramExtension;
 import com.blbulyandavbulyan.larm.genseq.TracingTestConfiguration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.google.genai.GoogleGenAiEmbeddingConnectionDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,7 @@ import org.wiremock.spring.InjectWireMock;
 
 @Slf4j
 @SpringBootTest
+@ExtendWith(SequenceDiagramExtension.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @EnableWireMock({

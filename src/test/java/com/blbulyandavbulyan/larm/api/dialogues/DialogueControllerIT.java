@@ -9,6 +9,7 @@ import com.blbulyandavbulyan.larm.dao.entities.Media;
 import com.blbulyandavbulyan.larm.dao.repository.DialogueRepository;
 import com.blbulyandavbulyan.larm.dialogue.dao.DialogueMother;
 import com.blbulyandavbulyan.larm.dialogue.dao.TestDialogueRepository;
+import com.blbulyandavbulyan.larm.genseq.GenerateSequence;
 import com.blbulyandavbulyan.larm.phrase.dao.PhraseMother;
 import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import com.jayway.jsonpath.JsonPath;
@@ -57,6 +58,7 @@ class DialogueControllerIT extends BaseIT {
     private JdbcTemplate jdbcTemplate;
 
     @Test
+    @GenerateSequence
     void saveDialogue() throws Exception {
         piperWireMock.stubTtsWithAudio(PhraseMother.DialogueTitlePhrase.PHRASE, new byte[]{1});
         piperWireMock.stubTtsWithAudio(PhraseMother.DialogueSpeaker1NamePhrase.PHRASE, new byte[]{2, 3});
@@ -360,6 +362,7 @@ class DialogueControllerIT extends BaseIT {
     }
 
     @Test
+    @GenerateSequence
     @Sql("/sql-test-scripts/insert-dialogue.sql")
     void getDialogue() throws Exception {
         String expectedJson = readResourceToString("/responses/get-dialogue-response.json");

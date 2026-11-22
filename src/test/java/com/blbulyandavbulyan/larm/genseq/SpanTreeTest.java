@@ -129,6 +129,20 @@ class SpanTreeTest {
     }
 
     @Test
+    void springAiChatClientSpanIsAGeminiCallAndMockitoSuffixIsDropped() {
+        var spans = List.of(
+                server("m1", "POST", "/chat", "200"),
+                component("m2", "m1", "DialogueRepository$MockitoMock$EuHcSi1w", "save"),
+                span("m3", "m1", "spring_ai chat_client", SpanKind.INTERNAL, "spring.ai.kind", "chat_client"));
+
+        var children = SpanTree.requests(spans).getFirst().children();
+
+        assertThat(children).extracting(Call::kind, Call::label)
+                .containsExactly(org.assertj.core.groups.Tuple.tuple(Call.Kind.COMPONENT, "DialogueRepository.save"),
+                        org.assertj.core.groups.Tuple.tuple(Call.Kind.GEMINI_CHAT, "spring_ai chat_client"));
+    }
+
+    @Test
     void chatClientDescendantsAreOneGeminiCall() {
         var spans = List.of(
                 server("g1", "POST", "/chat", "200"),

@@ -1,0 +1,95 @@
+{
+  "details": {
+    "184kno9": {
+      "steps": [
+        {
+          "label": "",
+          "text": "select p1_0.id,p1_0.iso_language_code,p1_0.phrase,p1_0.transcription from phrases p1_0 where p1_0.phrase in (?,?,?,?,?,?)"
+        }
+      ],
+      "title": "select p1_0.id,p1_0.iso_language_code,p1_0.phrase,p1_0.transcription from phrases p1_0 where p1_0.phrase in (?,?,?,?,?,? …"
+    },
+    "1shz0sg": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into phrases (iso_language_code,phrase,transcription,id) values (?,?,?,?)"
+        }
+      ],
+      "title": "insert into phrases (iso_language_code,phrase,transcription,id) values (?,?,?,?)"
+    },
+    "1udjz1e": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into medias (ai_model_used,content_type,created_at,phrase_id,file_size_bytes,storage_bucket,storage_key,storage_provider,voice_identifier,id) values (?,?,?,?,?,?,?,?,?,?)"
+        }
+      ],
+      "title": "insert into medias (ai_model_used,content_type,created_at,phrase_id,file_size_bytes,storage_bucket,storage_key,storage_p …"
+    },
+    "1ve7d9l": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into dialogue_phrase_translations (dialogue_phrase_id,iso_language_code,translation_text,id) values (?,?,?,?)"
+        }
+      ],
+      "title": "insert into dialogue_phrase_translations (dialogue_phrase_id,iso_language_code,translation_text,id) values (?,?,?,?)"
+    },
+    "2t3nzgs": {
+      "steps": [
+        {
+          "label": "request",
+          "text": "POST /dialogues"
+        }
+      ],
+      "title": "Test → Backend: POST /dialogues"
+    },
+    "2v9rsfu": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into dialogues (created_at,embedding,title_phrase_id,id) values (?,cast(? as vector),?,?)"
+        }
+      ],
+      "title": "insert into dialogues (created_at,embedding,title_phrase_id,id) values (?,cast(? as vector),?,?)"
+    },
+    "58f2ikd": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into dialogue_speakers (created_at,dialogue_id,name_phrase_id,id) values (?,?,?,?)"
+        }
+      ],
+      "title": "insert into dialogue_speakers (created_at,dialogue_id,name_phrase_id,id) values (?,?,?,?)"
+    },
+    "5c1caed": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into dialogue_phrases (created_at,dialogue_id,order_index,phrase_id,speaker_id,id) values (?,?,?,?,?,?)"
+        }
+      ],
+      "title": "insert into dialogue_phrases (created_at,dialogue_id,order_index,phrase_id,speaker_id,id) values (?,?,?,?,?,?)"
+    },
+    "5d4o9wh": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into dialogue_speaker_translations (dialogue_speaker_id,iso_language_code,translation_text,id) values (?,?,?,?)"
+        }
+      ],
+      "title": "insert into dialogue_speaker_translations (dialogue_speaker_id,iso_language_code,translation_text,id) values (?,?,?,?)"
+    },
+    "65bleid": {
+      "steps": [
+        {
+          "label": "",
+          "text": "insert into dialogue_title_translations (dialogue_id,iso_language_code,translation_text,id) values (?,?,?,?)"
+        }
+      ],
+      "title": "insert into dialogue_title_translations (dialogue_id,iso_language_code,translation_text,id) values (?,?,?,?)"
+    }
+  },
+  "version": 3
+}

@@ -24,6 +24,7 @@ public final class SpanTree {
     private static final String HTTP_URL_KEY = "http.url";
     private static final String JDBC_PREFIX = "jdbc.query[";
     private static final String CHAT_CLIENT_PREFIX = "spring.ai.chat.client";
+    private static final String AI_KIND_KEY = "spring.ai.kind";
     private static final String OPERATION_KEY = "gen_ai.operation.name";
     private static final String CONTROLLER_SUFFIX = "Controller";
     private static final String COUNT = "count";
@@ -109,7 +110,9 @@ public final class SpanTree {
             return List.of(leaf(Call.Kind.GEMINI_EMBED, name, Map.of()));
         }
         if (SpanNames.COMPONENT_SPAN.equals(name)) {
-            var label = attr(span, SpanNames.NAMESPACE_KEY) + "." + attr(span, SpanNames.FUNCTION_KEY);
+            // Mockito subclasses carry a random suffix; it would make the diagram differ between runs
+            var namespace = Objects.toString(attr(span, SpanNames.NAMESPACE_KEY), "").replaceAll("\\$MockitoMock\\$\\w+", "");
+            var label = namespace + "." + attr(span, SpanNames.FUNCTION_KEY);
             return List.of(new Call(Call.Kind.COMPONENT, label, "", Map.of(), collapse(convertChildren(span))));
         }
         var sql = sqlStatements(span);
@@ -142,7 +145,8 @@ public final class SpanTree {
     }
 
     private static boolean isChat(SpanData span) {
-        return span.getName().startsWith(CHAT_CLIENT_PREFIX) || "chat".equals(attr(span, OPERATION_KEY));
+        return span.getName().startsWith(CHAT_CLIENT_PREFIX) || "chat_client".equals(attr(span, AI_KIND_KEY))
+                || "chat".equals(attr(span, OPERATION_KEY));
     }
 
     private static List<String> sqlStatements(SpanData span) {

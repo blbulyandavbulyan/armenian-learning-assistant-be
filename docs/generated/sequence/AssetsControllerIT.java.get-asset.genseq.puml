@@ -1,0 +1,28 @@
+@startuml
+' ⚠️  GENERATED FILE — DO NOT EDIT. Every edit is lost on the next run.
+hide footbox
+skinparam hyperlinkUnderline false
+skinparam hyperlinkColor #1A4FA0
+skinparam sequenceGroupFontColor #888888
+skinparam sequenceGroupFontStyle plain
+title [[src://src/test/java/com/blbulyandavbulyan/larm/api/assets/AssetsControllerIT.java:32{Click to open the test} Test: AssetsControllerIT: get asset]]
+footer traced because it is tagged @GenerateSequence
+participant Test
+participant Backend
+participant DB
+Test -> Backend: [[genseq://44po6ol{Click for the request as it was sent} getAsset\nGET /assets/{mediaId) ⊕]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/asset/AssetService.java:18{Click to open AssetService.findAssetByMediaId} AssetService.findAssetByMediaId ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/phrase/PhraseMediaService.java:16{Click to open PhraseMediaService.findById} PhraseMediaService.findById ↗]]
+activate Backend
+Backend -> Backend: MediaRepository.findById
+activate Backend
+Backend -> DB: [[genseq://2x3efmh{Click for the statement behind this call} select m1_0.id,m1_0.ai_model_used,m1_0.content_type,m1_0.created_at,m1_0.phrase_id,m1_0.file_size_bytes,m1_0.storage_buc … ⊕]]
+deactivate Backend
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:46{Click to open LocalObjectStorageService.loadAsResource} LocalObjectStorageService.loadAsResource ↗]]
+deactivate Backend
+Backend --> Test: 200
+deactivate Backend
+@enduml

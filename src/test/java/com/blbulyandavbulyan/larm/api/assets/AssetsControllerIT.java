@@ -3,6 +3,7 @@ package com.blbulyandavbulyan.larm.api.assets;
 import java.nio.file.Files;
 
 import com.blbulyandavbulyan.larm.BaseIT;
+import com.blbulyandavbulyan.larm.genseq.GenerateSequence;
 import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ class AssetsControllerIT extends BaseIT {
     }
 
     @Test
+    @GenerateSequence
     @Transactional
     @Sql(scripts = "/sql-test-scripts/insert-phrases-asset-controller.sql")
     void getAsset() throws Exception {

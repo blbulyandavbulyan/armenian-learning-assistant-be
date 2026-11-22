@@ -1,0 +1,23 @@
+{
+  "details": {
+    "3kn22qw": {
+      "steps": [
+        {
+          "label": "",
+          "text": "select d1_0.id,d1_0.created_at,dp1_0.dialogue_id,dp1_0.id,dp1_0.created_at,dp1_0.order_index,dp1_0.phrase_id,p1_0.id,p1_0.iso_language_code,ms1_0.phrase_id,ms1_0.id,ms1_0.ai_model_used,ms1_0.content_type,ms1_0.created_at,ms1_0.file_size_bytes,ms1_0.storage_bucket,ms1_0.storage_key,ms1_0.storage_provider,ms1_0.voice_identifier,p1_0.phrase,p1_0.transcription,dp1_0.speaker_id,t1_0.dialogue_phrase_id,t1_0.id,t1_0.iso_language_code,t1_0.translation_text,s2_0.dialogue_id,s2_0.id,s2_0.created_at,s2_0.name_phrase_id,np1_0.id,np1_0.iso_language_code,ms2_0.phrase_id,ms2_0.id,ms2_0.ai_model_used,ms2_0.content_type,ms2_0.created_at,ms2_0.file_size_bytes,ms2_0.storage_bucket,ms2_0.storage_key,ms2_0.storage_provider,ms2_0.voice_identifier,np1_0.phrase,np1_0.transcription,t2_0.dialogue_speaker_id,t2_0.id,t2_0.iso_language_code,t2_0.translation_text,d1_0.title_phrase_id,t3_0.id,t3_0.iso_language_code,ms3_0.phrase_id,ms3_0.id,ms3_0.ai_model_used,ms3_0.content_type,ms3_0.created_at,ms3_0.file_size_bytes,ms3_0.storage_bucket,ms3_0.storage_key,ms3_0.storage_provider,ms3_0.voice_identifier,t3_0.phrase,t3_0.transcription,tt1_0.dialogue_id,tt1_0.id,tt1_0.iso_language_code,tt1_0.translation_text from dialogues d1_0 left join dialogue_phrases dp1_0 on d1_0.id=dp1_0.dialogue_id left join phrases p1_0 on p1_0.id=dp1_0.phrase_id left join medias ms1_0 on p1_0.id=ms1_0.phrase_id left join dialogue_phrase_translations t1_0 on dp1_0.id=t1_0.dialogue_phrase_id left join dialogue_speakers s2_0 on d1_0.id=s2_0.dialogue_id left join phrases np1_0 on np1_0.id=s2_0.name_phrase_id left join medias ms2_0 on np1_0.id=ms2_0.phrase_id left join dialogue_speaker_translations t2_0 on s2_0.id=t2_0.dialogue_speaker_id join phrases t3_0 on t3_0.id=d1_0.title_phrase_id left join medias ms3_0 on t3_0.id=ms3_0.phrase_id left join dialogue_title_translations tt1_0 on d1_0.id=tt1_0.dialogue_id where d1_0.id=? order by dp1_0.order_index,ms1_0.created_at,s2_0.created_at,ms2_0.created_at,ms3_0.created_at"
+        }
+      ],
+      "title": "select d1_0.id,d1_0.created_at,dp1_0.dialogue_id,dp1_0.id,dp1_0.created_at,dp1_0.order_index,dp1_0.phrase_id,p1_0.id,p1_ …"
+    },
+    "5clhy8d": {
+      "steps": [
+        {
+          "label": "request",
+          "text": "GET /dialogues/{id}"
+        }
+      ],
+      "title": "Test → Backend: GET /dialogues/{id}"
+    }
+  },
+  "version": 3
+}
