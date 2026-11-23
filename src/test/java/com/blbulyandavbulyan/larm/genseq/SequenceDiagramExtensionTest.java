@@ -52,6 +52,18 @@ class SequenceDiagramExtensionTest {
     }
 
     @Test
+    void pitestMinionIsAMutationRun() {
+        assertThat(SequenceDiagramExtension.isMutationRun("org.pitest.mutationtest.execute.MutationTestMinion 42")).isTrue();
+    }
+
+    @Test
+    void regularTestRunIsNotAMutationRun() {
+        assertThat(SequenceDiagramExtension.isMutationRun(
+                "/usr/share/maven/boot/surefire/surefirebooter.jar /tmp/surefire 2026 surefire.tmp")).isFalse();
+        assertThat(SequenceDiagramExtension.isMutationRun(null)).isFalse();
+    }
+
+    @Test
     void notSelectedIsNotWritten() {
         assertThat(SequenceDiagramExtension.shouldWrite(false, false, 2)).isFalse();
     }

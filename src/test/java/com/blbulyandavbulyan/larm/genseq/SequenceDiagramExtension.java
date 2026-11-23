@@ -40,6 +40,13 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
                         || entry.equals(testClass.getName() + "#" + method));
     }
 
+    /**
+     * Pitest runs the tests against mutated code in minion JVMs; a surviving mutant must not overwrite the diagrams.
+     */
+    static boolean isMutationRun(String javaCommand) {
+        return javaCommand != null && javaCommand.startsWith("org.pitest.");
+    }
+
     static boolean shouldWrite(boolean selected, boolean testFailed, int requestCount) {
         return selected && !testFailed && requestCount > 0;
     }
@@ -83,6 +90,9 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
     }
 
     private static Selection selected(ExtensionContext context) {
+        if (isMutationRun(System.getProperty("sun.java.command"))) {
+            return null;
+        }
         Method method = context.getRequiredTestMethod();
         Class<?> testClass = context.getRequiredTestClass();
         boolean annotated = method.isAnnotationPresent(GenerateSequence.class)
