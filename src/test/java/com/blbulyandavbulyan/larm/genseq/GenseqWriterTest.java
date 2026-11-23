@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GenseqWriterTest {
     private static final Pattern HEADER = Pattern.compile(
-            "^(?:title|==)\\s*\\[\\[src://(?<path>[^\\s:{\\]]+):(?<line>\\d+)(?:\\{(?<tip>[^}]*)\\})?\\s*(?:Test:\\s*)?(?<title>[^\\]]*?)\\s*\\]\\]");
+            "^(?:title|==)\\s*\\[\\[src://(?<path>[^\\s:{\\]]+):(?<line>\\d+)(?:\\{(?<tip>[^}]*)\\})?\\s*+(?:Test:\\s*+)?(?<title>[^\\]]*+)\\]\\]");
     private static final String TEST_PATH = "src/test/java/com/blbulyandavbulyan/larm/api/dialogues/DialogueControllerIT.java";
     private static final TestRef REF = new TestRef(TEST_PATH, 42, "DialogueControllerIT", "saves dialogue", "traced from a real run");
 
@@ -41,7 +41,7 @@ class GenseqWriterTest {
         assertThat(matcher.find()).isTrue();
         assertThat(matcher.group("path")).isEqualTo(TEST_PATH);
         assertThat(matcher.group("line")).isEqualTo("42");
-        assertThat(matcher.group("title")).isEqualTo("DialogueControllerIT: saves dialogue");
+        assertThat(matcher.group("title").strip()).isEqualTo("DialogueControllerIT: saves dialogue");
     }
 
     @Test

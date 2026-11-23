@@ -55,7 +55,10 @@ public class ComponentObservationAspect {
                 }
             }
         }
-        final Object target = joinPoint.getTarget();
-        return AopUtils.getTargetClass(target != null ? target : proxy).getSimpleName();
+        final Object target = joinPoint.getTarget() != null ? joinPoint.getTarget() : proxy;
+        if (target == null) {
+            return joinPoint.getSignature().getDeclaringType().getSimpleName();
+        }
+        return AopUtils.getTargetClass(target).getSimpleName();
     }
 }

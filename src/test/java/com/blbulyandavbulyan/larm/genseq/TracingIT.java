@@ -50,8 +50,9 @@ class TracingIT extends BaseIT {
                 .map(s -> s.getAttributes().get(AttributeKey.stringKey(SpanNames.JDBC_SQL_KEY)))
                 .filter(Objects::nonNull)
                 .toList();
-        assertThat(sqls).anyMatch(sql -> sql.toLowerCase(Locale.ROOT).startsWith("insert into"));
-        assertThat(sqls).noneMatch(sql -> UUID_PREFIX.matcher(sql).find());
+        assertThat(sqls)
+                .anyMatch(sql -> sql.toLowerCase(Locale.ROOT).startsWith("insert into"))
+                .noneMatch(sql -> UUID_PREFIX.matcher(sql).find());
     }
 
     @Test
