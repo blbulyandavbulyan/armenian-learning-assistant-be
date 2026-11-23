@@ -154,10 +154,18 @@ public final class SpanTree {
         span.getAttributes().forEach((key, value) -> {
             var k = key.getKey();
             if (k.startsWith(JDBC_PREFIX) && k.endsWith("]")) {
-                byIndex.put(Integer.parseInt(k.substring(JDBC_PREFIX.length(), k.length() - 1)), String.valueOf(value));
+                byIndex.put(jdbcQueryIndex(k), String.valueOf(value));
             }
         });
         return List.copyOf(byIndex.values());
+    }
+
+    private static int jdbcQueryIndex(String key) {
+        try {
+            return Integer.parseInt(key.substring(JDBC_PREFIX.length(), key.length() - 1));
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("Malformed JDBC query attribute key: " + key, e);
+        }
     }
 
     private static List<Call> collapse(List<Call> calls) {

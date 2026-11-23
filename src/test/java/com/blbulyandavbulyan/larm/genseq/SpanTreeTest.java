@@ -30,7 +30,10 @@ class SpanTreeTest {
 
     private SpanData span(String id, String parent, String name, SpanKind kind, String... attrs) {
         AttributesBuilder builder = Attributes.builder();
-        for (int i = 0; i < attrs.length; i += 2) {
+        if (attrs.length % 2 != 0) {
+            throw new IllegalArgumentException("attrs must be key/value pairs, got " + attrs.length + " elements");
+        }
+        for (int i = 0; i + 1 < attrs.length; i += 2) {
             builder.put(attrs[i], attrs[i + 1]);
         }
         long start = ++clock;
