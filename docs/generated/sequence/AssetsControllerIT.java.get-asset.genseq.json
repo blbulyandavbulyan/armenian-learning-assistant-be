@@ -1,0 +1,23 @@
+{
+  "details": {
+    "2x3efmh": {
+      "steps": [
+        {
+          "label": "",
+          "text": "select m1_0.id,m1_0.ai_model_used,m1_0.content_type,m1_0.created_at,m1_0.phrase_id,m1_0.file_size_bytes,m1_0.storage_bucket,m1_0.storage_key,m1_0.storage_provider,m1_0.voice_identifier from medias m1_0 where m1_0.id=?"
+        }
+      ],
+      "title": "select m1_0.id,m1_0.ai_model_used,m1_0.content_type,m1_0.created_at,m1_0.phrase_id,m1_0.file_size_bytes,m1_0.storage_buc …"
+    },
+    "44po6ol": {
+      "steps": [
+        {
+          "label": "request",
+          "text": "GET /assets/{mediaId}"
+        }
+      ],
+      "title": "Test → Backend: GET /assets/{mediaId}"
+    }
+  },
+  "version": 3
+}

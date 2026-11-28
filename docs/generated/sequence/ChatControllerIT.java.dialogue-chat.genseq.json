@@ -1,0 +1,14 @@
+{
+  "details": {
+    "2ys4cp4": {
+      "steps": [
+        {
+          "label": "request",
+          "text": "POST /chat/dialogue"
+        }
+      ],
+      "title": "Test → Backend: POST /chat/dialogue"
+    }
+  },
+  "version": 3
+}

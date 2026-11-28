@@ -1,0 +1,21 @@
+@startuml
+' ⚠️  GENERATED FILE — DO NOT EDIT. Every edit is lost on the next run.
+hide footbox
+skinparam hyperlinkUnderline false
+skinparam hyperlinkColor #1A4FA0
+skinparam sequenceGroupFontColor #888888
+skinparam sequenceGroupFontStyle plain
+title [[src://src/test/java/com/blbulyandavbulyan/larm/api/chat/ChatControllerIT.java:75{Click to open the test} Test: ChatControllerIT: dialogue chat]]
+footer traced because it is tagged @GenerateSequence
+participant Test
+participant Backend
+participant Gemini
+Test -> Backend: [[genseq://2ys4cp4{Click for the request as it was sent} dialogueChat\nPOST /chat/dialogue ⊕]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/chat/DialogueChatService.java:37{Click to open DialogueChatService.dialogueChat} DialogueChatService.dialogueChat ↗]]
+activate Backend
+Backend -> Gemini: chat
+deactivate Backend
+Backend --> Test: 200
+deactivate Backend
+@enduml

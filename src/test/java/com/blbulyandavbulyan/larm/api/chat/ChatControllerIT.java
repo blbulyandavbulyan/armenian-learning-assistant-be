@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.blbulyandavbulyan.larm.BaseIT;
 import com.blbulyandavbulyan.larm.ai.StructuredDialogueResourceMother;
 import com.blbulyandavbulyan.larm.ai.chat.StructuredDialogueResource;
+import com.blbulyandavbulyan.larm.genseq.GenerateSequence;
 import com.blbulyandavbulyan.larm.security.WithMockDatabaseUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -70,6 +71,7 @@ class ChatControllerIT extends BaseIT {
     }
 
     @Test
+    @GenerateSequence
     void dialogueChat() throws Exception {
         StructuredDialogueResource serviceResponse = StructuredDialogueResourceMother.DefaultStructuredDialogueResource.build();
         String jsonResponse = objectMapper.writeValueAsString(serviceResponse);

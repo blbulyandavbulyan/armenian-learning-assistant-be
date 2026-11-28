@@ -38,14 +38,19 @@ jobs:
         run: mvn test
 
       - name: Verify
-        run: mvn verify
+        # Committed sequence diagrams are deleted first, so one that mvn verify no longer regenerates (renamed,
+        # deleted or untagged test) shows up as a deletion in the check below instead of staying silently stale.
+        run: |
+          rm -f docs/generated/sequence/*.genseq.*
+          mvn verify
 
       - name: Check generated files are up to date
-        # `mvn verify` regenerates openapi.yaml (OpenApiSpecIT) and docs/generated/*.puml (DataModelDiagramsIT).
-        # A diff here means the API or data model changed but the regenerated files were not committed.
+        # `mvn verify` regenerates openapi.yaml (OpenApiSpecIT) and docs/generated/*.puml (DataModelDiagramsIT)
+        # and the sequence diagrams in docs/generated/sequence/ (SequenceDiagramExtension).
+        # A diff here means the API, data model or traced call flow changed but the regenerated files were not committed.
         run: |
           if [ -n "$(git status --porcelain -- openapi.yaml docs/generated)" ]; then
-            echo "::error::Generated files are stale. Run 'mvn verify' locally and commit openapi.yaml and docs/generated/."
+            echo "::error::Generated files are stale. Merge the latest main, run 'mvn verify' locally and commit openapi.yaml and docs/generated/ (src:// links carry line numbers, so a change on main can also make them stale)."
             git status --porcelain -- openapi.yaml docs/generated
             git --no-pager diff -- openapi.yaml docs/generated
             exit 1

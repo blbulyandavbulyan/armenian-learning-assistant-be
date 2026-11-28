@@ -8,12 +8,15 @@ import javax.sql.DataSource;
 
 import com.blbulyandavbulyan.larm.ai.tts.PiperWireMock;
 import com.blbulyandavbulyan.larm.dialogue.util.DialogueRecordAssertHelper;
+import com.blbulyandavbulyan.larm.genseq.SequenceDiagramExtension;
+import com.blbulyandavbulyan.larm.genseq.TracingTestConfiguration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.google.genai.Client;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.google.genai.GoogleGenAiEmbeddingConnectionDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -38,12 +42,13 @@ import org.wiremock.spring.InjectWireMock;
 
 @Slf4j
 @SpringBootTest
+@ExtendWith(SequenceDiagramExtension.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @EnableWireMock({
     @ConfigureWireMock(name = "piper-tts-service", baseUrlProperties = "app.piper.url")
 })
-@Import({DialogueRecordAssertHelper.class})
+@Import({DialogueRecordAssertHelper.class, TracingTestConfiguration.class})
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -77,6 +82,9 @@ public abstract class BaseIT {
     protected MockMvc mockMvc;
 
     @Autowired
+    protected ApplicationContext applicationContext;
+
+    @Autowired
     protected DialogueRecordAssertHelper dialogueRecordAssertHelper;
 
     @MockitoBean
@@ -85,7 +93,9 @@ public abstract class BaseIT {
     @MockitoBean
     protected GoogleGenAiEmbeddingConnectionDetails embeddingConnectionDetails;
 
-    @MockitoBean
+    // Named so that TracingTestConfiguration's observing @Primary EmbeddingModel wraps it; real Spring AI embedding
+    // calls are observed by Spring AI itself.
+    @MockitoBean(name = TracingTestConfiguration.MOCK_EMBEDDING_MODEL)
     protected EmbeddingModel embeddingModel;
 
     @MockitoBean
@@ -100,6 +110,7 @@ public abstract class BaseIT {
     protected void beforeEach(TestInfo testInfo) {
         log.info("Starting test: {}", testInfo);
         this.piperWireMock = new PiperWireMock(wireMockServer);
+        TracingTestConfiguration.reset(applicationContext);
     }
 
     @Autowired(required = false)

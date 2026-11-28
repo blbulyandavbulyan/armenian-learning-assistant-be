@@ -1,0 +1,24 @@
+@startuml
+' ⚠️  GENERATED FILE — DO NOT EDIT. Every edit is lost on the next run.
+hide footbox
+skinparam hyperlinkUnderline false
+skinparam hyperlinkColor #1A4FA0
+skinparam sequenceGroupFontColor #888888
+skinparam sequenceGroupFontStyle plain
+title [[src://src/test/java/com/blbulyandavbulyan/larm/api/dialogues/DialogueControllerIT.java:367{Click to open the test} Test: DialogueControllerIT: get dialogue]]
+footer traced because it is tagged @GenerateSequence
+participant Test
+participant Backend
+participant DB
+Test -> Backend: [[genseq://5clhy8d{Click for the request as it was sent} getDialogue\nGET /dialogues/<U+007B>id<U+007D> ⊕]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/dialogue/DialogueRetrievalService.java:20{Click to open DialogueRetrievalService.getDialogue} DialogueRetrievalService.getDialogue ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/dao/repository/DialogueRepository.java:19{Click to open DialogueRepository.findByIdEagerly} DialogueRepository.findByIdEagerly ↗]]
+activate Backend
+Backend -> DB: [[genseq://3kn22qw{Click for the statement behind this call} select d1_0.id,d1_0.created_at,dp1_0.dialogue_id,dp1_0.id,dp1_0.created_at,dp1_0.order_index,dp1_0.phrase_id,p1_0.id,p1_ … ⊕]]
+deactivate Backend
+deactivate Backend
+Backend --> Test: 200
+deactivate Backend
+@enduml

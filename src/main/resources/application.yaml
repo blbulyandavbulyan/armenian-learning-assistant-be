@@ -18,6 +18,16 @@ spring:
     open-in-view: false
 
 management:
+  # Nothing is exported by default; enable explicitly where a collector exists
+  tracing:
+    export:
+      otlp:
+        # Enabling trace export needs management.opentelemetry.tracing.export.otlp.endpoint AND this flag
+        enabled: false
+  otlp:
+    metrics:
+      export:
+        enabled: false
   endpoints:
     web:
       exposure:
@@ -32,3 +42,8 @@ management:
     tags:
       # Optional: Automatically tags all metrics with your application name
       application: ${spring.application.name:armenian-learning-assistant}
+
+jdbc:
+  datasource-proxy:
+    include-parameter-values: false
+  includes: QUERY

@@ -1,0 +1,94 @@
+@startuml
+' ⚠️  GENERATED FILE — DO NOT EDIT. Every edit is lost on the next run.
+hide footbox
+skinparam hyperlinkUnderline false
+skinparam hyperlinkColor #1A4FA0
+skinparam sequenceGroupFontColor #888888
+skinparam sequenceGroupFontStyle plain
+title [[src://src/test/java/com/blbulyandavbulyan/larm/api/dialogues/DialogueControllerIT.java:62{Click to open the test} Test: DialogueControllerIT: save dialogue]]
+footer traced because it is tagged @GenerateSequence
+participant Test
+participant Backend
+participant DB
+participant Piper
+participant Gemini
+Test -> Backend: [[genseq://2t3nzgs{Click for the request as it was sent} saveDialogue\nPOST /dialogues ⊕]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/DialogueOrchestrator.java:21{Click to open DialogueOrchestrator.saveDialogue} DialogueOrchestrator.saveDialogue ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/embedding/DialogueVectorizationService.java:23{Click to open DialogueVectorizationService.vectorize} DialogueVectorizationService.vectorize ↗]]
+activate Backend
+Backend -> Gemini: embed
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+activate Backend
+Backend -> Piper: POST /
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:29{Click to open LocalObjectStorageService.storeObject} LocalObjectStorageService.storeObject ↗]]
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+activate Backend
+Backend -> Piper: POST /
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:29{Click to open LocalObjectStorageService.storeObject} LocalObjectStorageService.storeObject ↗]]
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+activate Backend
+Backend -> Piper: POST /
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:29{Click to open LocalObjectStorageService.storeObject} LocalObjectStorageService.storeObject ↗]]
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+activate Backend
+Backend -> Piper: POST /
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:29{Click to open LocalObjectStorageService.storeObject} LocalObjectStorageService.storeObject ↗]]
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+activate Backend
+Backend -> Piper: POST /
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:29{Click to open LocalObjectStorageService.storeObject} LocalObjectStorageService.storeObject ↗]]
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+activate Backend
+Backend -> Piper: POST /
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/local/LocalObjectStorageService.java:29{Click to open LocalObjectStorageService.storeObject} LocalObjectStorageService.storeObject ↗]]
+deactivate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/dialogue/DialogueSavingService.java:44{Click to open DialogueSavingService.saveDialogue} DialogueSavingService.saveDialogue ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/phrase/PhraseStoringService.java:30{Click to open PhraseStoringService.batchSavePhrases} PhraseStoringService.batchSavePhrases ↗]]
+activate Backend
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/dao/repository/PhraseRepository.java:14{Click to open PhraseRepository.findByPhraseIn} PhraseRepository.findByPhraseIn ↗]]
+activate Backend
+Backend -> DB: [[genseq://184kno9{Click for the statement behind this call} select p1_0.id,p1_0.iso_language_code,p1_0.phrase,p1_0.transcription from phrases p1_0 where p1_0.phrase in (?,?,?,?,?,? … ⊕]]
+deactivate Backend
+Backend -> Backend: PhraseRepository.saveAll
+deactivate Backend
+Backend -> Backend: DialogueRepository.save
+Backend -> DB: [[genseq://1shz0sg{Click for the statement behind this call} insert into phrases (iso_language_code,phrase,transcription,id) values (?,?,?,?) ⊕]]
+Backend -> DB: [[genseq://1udjz1e{Click for the statement behind this call} insert into medias (ai_model_used,content_type,created_at,phrase_id,file_size_bytes,storage_bucket,storage_key,storage_p … ⊕]]
+Backend -> DB: [[genseq://2v9rsfu{Click for the statement behind this call} insert into dialogues (created_at,embedding,title_phrase_id,id) values (?,cast(? as vector),?,?) ⊕]]
+Backend -> DB: [[genseq://58f2ikd{Click for the statement behind this call} insert into dialogue_speakers (created_at,dialogue_id,name_phrase_id,id) values (?,?,?,?) ⊕]]
+Backend -> DB: [[genseq://5d4o9wh{Click for the statement behind this call} insert into dialogue_speaker_translations (dialogue_speaker_id,iso_language_code,translation_text,id) values (?,?,?,?) ⊕]]
+Backend -> DB: [[genseq://5c1caed{Click for the statement behind this call} insert into dialogue_phrases (created_at,dialogue_id,order_index,phrase_id,speaker_id,id) values (?,?,?,?,?,?) ⊕]]
+Backend -> DB: [[genseq://1ve7d9l{Click for the statement behind this call} insert into dialogue_phrase_translations (dialogue_phrase_id,iso_language_code,translation_text,id) values (?,?,?,?) ⊕]]
+Backend -> DB: [[genseq://65bleid{Click for the statement behind this call} insert into dialogue_title_translations (dialogue_id,iso_language_code,translation_text,id) values (?,?,?,?) ⊕]]
+deactivate Backend
+deactivate Backend
+Backend --> Test: 201
+deactivate Backend
+@enduml
