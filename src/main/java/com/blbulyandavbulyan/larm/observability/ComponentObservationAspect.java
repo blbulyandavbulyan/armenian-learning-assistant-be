@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Wraps calls to the application's own components and repositories into observations, so that traces show who
- * called whom. Spans are titled {@code Namespace.function}; the observation is named {@code larm.component} and the callee is described by {@code code.namespace} and
- * {@code code.function}.
+ * called whom. Spans are titled {@code Namespace.function};
+ * the observation is named {@code larm.component} and the callee is described by {@code code.namespace} and {@code code.function}.
  *
  * <p>The highest precedence makes the observation wrap the transaction, cache and logging proxies, so that work done
  * at transaction commit (flush) is still inside the span of the component that opened the transaction.

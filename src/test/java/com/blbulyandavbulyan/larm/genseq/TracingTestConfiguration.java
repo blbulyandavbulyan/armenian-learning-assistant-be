@@ -3,11 +3,11 @@ package com.blbulyandavbulyan.larm.genseq;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationRegistry;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.micrometer.observation.Observation;
-import io.micrometer.observation.ObservationRegistry;
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;

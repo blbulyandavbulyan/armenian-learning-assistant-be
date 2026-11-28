@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GenseqWriterTest {
     private static final Pattern HEADER = Pattern.compile(
-            "^(?:title|==)\\s*\\[\\[src://(?<path>[^\\s:{\\]]+):(?<line>\\d+)(?:\\{(?<tip>[^}]*)\\})?\\s*+(?:Test:\\s*+)?(?<title>[^\\]]*+)\\]\\]");
+            "^(?:title|==)\\s*\\[\\[src://(?<path>[^\\s:{\\]]+):(?<line>\\d+)(?:\\{(?<tip>[^}]*)\\})?\\s*+(?:Test:\\s*+)?(?<title>[^]]*+)]]");
     private static final String TEST_PATH = "src/test/java/com/blbulyandavbulyan/larm/api/dialogues/DialogueControllerIT.java";
     private static final TestRef REF = new TestRef(TEST_PATH, 42, "DialogueControllerIT", "saves dialogue", "traced from a real run");
 
@@ -151,7 +151,7 @@ class GenseqWriterTest {
     void jsonKeysAreSorted() {
         String json = GenseqWriter.render(REF, List.of(request(sql("select 1"), sql("select 2")))).json();
         assertThat(json).startsWith("{\n  \"details\": ").contains("\"version\": 3");
-        Matcher ids = Pattern.compile("^    \"([0-9a-z]{7})\": \\{$", Pattern.MULTILINE).matcher(json);
+        Matcher ids = Pattern.compile("^ {4}\"([0-9a-z]{7})\": \\{$", Pattern.MULTILINE).matcher(json);
         List<String> found = new java.util.ArrayList<>();
         while (ids.find()) {
             found.add(ids.group(1));
@@ -168,9 +168,10 @@ class GenseqWriterTest {
 
     @Test
     void truncationDoesNotSplitASurrogatePair() {
-        String sql = "x".repeat(119) + "\uD83D\uDE00" + "y".repeat(20);
+        String emoji = Character.toString(0x1F600);
+        String sql = "x".repeat(119) + emoji + "y".repeat(20);
         String puml = GenseqWriter.render(REF, List.of(request(sql(sql)))).puml();
-        assertThat(puml).doesNotContain("\uD83D").contains(" …");
+        assertThat(puml).doesNotContain(emoji).contains(" …");
         assertThat(java.nio.charset.StandardCharsets.UTF_8.newEncoder().canEncode(puml)).isTrue();
     }
 }
