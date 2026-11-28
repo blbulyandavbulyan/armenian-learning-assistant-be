@@ -115,10 +115,10 @@ class GenseqWriterTest {
     }
 
     @Test
-    void routeTemplateBracesAreEmittedVerbatim() {
+    void routeTemplateBracesAreEncoded() {
         Call req = new Call(Kind.REQUEST, "getDialogue", "GET /dialogues/{id}", Map.of("status", "200"), List.of());
         String puml = GenseqWriter.render(REF, List.of(req)).puml();
-        assertThat(puml).contains("GET /dialogues/{id} ⊕]]").doesNotContain("{id)");
+        assertThat(puml).contains("GET /dialogues/<U+007B>id<U+007D> ⊕]]").doesNotContain("{id}");
     }
 
     @Test
@@ -164,5 +164,13 @@ class GenseqWriterTest {
     void slugOfCamelCaseAndUnderscores() {
         assertThat(GenseqWriter.slug("saveDialogue_withEmptyTranslations")).isEqualTo("save-dialogue-with-empty-translations");
         assertThat(GenseqWriter.slug("serves")).isEqualTo("serves");
+    }
+
+    @Test
+    void truncationDoesNotSplitASurrogatePair() {
+        String sql = "x".repeat(119) + "\uD83D\uDE00" + "y".repeat(20);
+        String puml = GenseqWriter.render(REF, List.of(request(sql(sql)))).puml();
+        assertThat(puml).doesNotContain("\uD83D").contains(" …");
+        assertThat(java.nio.charset.StandardCharsets.UTF_8.newEncoder().canEncode(puml)).isTrue();
     }
 }

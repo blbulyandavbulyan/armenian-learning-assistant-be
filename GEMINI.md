@@ -65,10 +65,10 @@ This project is the backend service for the Armenian Learning Assistant. It leve
 - The `phrases` table uses `pgvector` (`vector(3072)`) for embeddings.
 
 ### Tracing and sequence diagrams
-- **`observability` package:** `ComponentObservationAspect` creates one observation (span `larm.component`) per public method of our own components/repositories; embedding calls get their own observations. It runs with highest precedence so it wraps transaction/cache proxies.
+- **`observability` package:** `ComponentObservationAspect` creates one observation (span `larm.component`) per public method of our own components/repositories; embedding calls are observed by Spring AI itself (ITs wrap the mocked `EmbeddingModel` in a test-only decorator). It runs with highest precedence so it wraps transaction/cache proxies.
 - **Export:** OTLP trace and metrics export are disabled by default. To export traces set both `management.opentelemetry.tracing.export.otlp.endpoint` and `management.tracing.export.otlp.enabled: true` (metrics: `management.otlp.metrics.export.enabled`).
 - **Sequence diagrams:** ITs tagged `@GenerateSequence` (or listed in `GENSEQ_SELECT`, e.g. `GENSEQ_SELECT=DialogueControllerIT#saveDialogue`) write PlantUML + JSON from their real spans to `docs/generated/sequence/` (`SequenceDiagramExtension`).
-- **Generated links:** diagrams contain `src://…:<line>` links to traced main classes, so editing one (even just moving a method) changes committed files. Re-run `mvn verify` and commit `docs/generated/` before pushing; CI fails on a diff.
+- **Generated links:** diagrams contain `src://…:<line>` links to traced main classes, so editing one (even just moving a method) changes committed files. Merge `main`, re-run `mvn verify` and commit `docs/generated/` before pushing; CI deletes the committed diagrams before `mvn verify`, so it fails on any diff, and diagrams of tests that are not tagged `@GenerateSequence` (e.g. written via `GENSEQ_SELECT`) must not be committed.
 
 ### Text-to-Speech (TTS)
 - Currently, only Armenian (`hy`) is supported.

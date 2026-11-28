@@ -10,8 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,7 +22,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 /**
  * Writes a sequence diagram from the real spans of each selected integration test that passed.
  */
-public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCallback {
+@Slf4j
+public class SequenceDiagramExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback, AfterEachCallback {
+    private static final String REQUESTS_KEY = "requests";
     static final String OUTPUT_DIR = "docs/generated/sequence";
     private static final String SELECT_KEY = "GENSEQ_SELECT";
     private static final String TEST_SOURCES = "src/test/java/";
@@ -52,33 +57,62 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
     }
 
     @Override
-    public void beforeEach(ExtensionContext context) {
+    public void beforeTestExecution(@NonNull ExtensionContext context) {
         if (selected(context) != null) {
             TracingTestConfiguration.reset(applicationContext(context));
         }
     }
 
+    /**
+     * Captures the spans right after the test body, so calls made by fixtures in {@code @BeforeEach} or
+     * {@code @AfterEach} methods never reach the diagram.
+     */
     @Override
-    public void afterEach(ExtensionContext context) {
-        Selection selection = selected(context);
-        boolean failed = context.getExecutionException().isPresent();
-        if (selection == null || failed) {
+    public void afterTestExecution(@NonNull ExtensionContext context) {
+        if (selected(context) == null || context.getExecutionException().isPresent()) {
             return;
         }
-        List<Call> requests = SpanTree.requests(TracingTestConfiguration.finishedSpans(applicationContext(context)));
-        if (!shouldWrite(true, failed, requests.size())) {
+        try {
+            List<Call> requests = SpanTree.requests(TracingTestConfiguration.finishedSpans(applicationContext(context)));
+            store(context).put(REQUESTS_KEY, requests);
+        } catch (RuntimeException e) {
+            log.warn("Not writing a sequence diagram for {}: {}", context.getDisplayName(), e.getMessage());
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void afterEach(@NonNull ExtensionContext context) {
+        List<Call> requests = (List<Call>) store(context).remove(REQUESTS_KEY);
+        Selection selection = selected(context);
+        boolean failed = context.getExecutionException().isPresent();
+        if (selection == null || requests == null || !shouldWrite(true, failed, requests.size())) {
             return;
         }
         Class<?> testClass = context.getRequiredTestClass();
-        String method = context.getRequiredTestMethod().getName();
-        String path = TEST_SOURCES + testClass.getName().replace('.', '/') + ".java";
-        int line = declarationLine(testClass, path, method);
+        Method testMethod = context.getRequiredTestMethod();
+        String method = testMethod.getName();
+        Class<?> declaring = topLevel(testMethod.getDeclaringClass());
+        String path = TEST_SOURCES + declaring.getName().replace('.', '/') + ".java";
+        int line = declarationLine(path, method);
         GenseqWriter.TestRef ref = new GenseqWriter.TestRef(path, line, testClass.getSimpleName(),
                 scenario(method), selection.annotated() ? TAGGED_FOOTER : SELECTED_FOOTER);
         GenseqWriter.Diagram diagram = GenseqWriter.render(ref, requests);
         String base = testClass.getSimpleName() + ".java." + GenseqWriter.slug(method) + ".genseq";
         write(Path.of(OUTPUT_DIR, base + ".puml"), diagram.puml());
         write(Path.of(OUTPUT_DIR, base + ".json"), diagram.json());
+    }
+
+    private static ExtensionContext.Store store(ExtensionContext context) {
+        return context.getStore(ExtensionContext.Namespace.create(SequenceDiagramExtension.class, context.getUniqueId()));
+    }
+
+    private static Class<?> topLevel(Class<?> type) {
+        Class<?> current = type;
+        while (current.getEnclosingClass() != null) {
+            current = current.getEnclosingClass();
+        }
+        return current;
     }
 
     private static String scenario(String method) {
@@ -101,20 +135,26 @@ public class SequenceDiagramExtension implements BeforeEachCallback, AfterEachCa
         return isSelected(testClass, method.getName(), annotated, select) ? new Selection(annotated) : null;
     }
 
-    private static int declarationLine(Class<?> testClass, String path, String method) {
-        Pattern declaration = Pattern.compile("^\\s*(?:(?:public|protected|private|static|final)\\s+)*void\\s+"
-                + Pattern.quote(method) + "\\s*\\(");
+    /** Line of the test method, or 1 (with a warning) when the declaration cannot be found. */
+    private static int declarationLine(String path, String method) {
         try {
             List<String> lines = Files.readAllLines(Path.of(path));
             for (int i = 0; i < lines.size(); i++) {
-                if (declaration.matcher(lines.get(i)).find()) {
+                if (declarationPattern(method).matcher(lines.get(i)).find()) {
                     return i + 1;
                 }
             }
-            throw new IllegalStateException("No declaration of void " + method + "( found in " + testClass.getName());
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            log.warn("Cannot read {}: {}", path, e.getMessage());
+            return 1;
         }
+        log.warn("No declaration of void {}( found in {}", method, path);
+        return 1;
+    }
+
+    static Pattern declarationPattern(String method) {
+        return Pattern.compile("^\\s*(?:(?:@\\w+(?:\\([^)]*\\))?|public|protected|private|static|final)\\s+)*void\\s+"
+                + Pattern.quote(method) + "\\s*\\(");
     }
 
     private static void write(Path file, String content) {

@@ -16,13 +16,13 @@ Test -> Backend: [[genseq://2t3nzgs{Click for the request as it was sent} saveDi
 activate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/DialogueOrchestrator.java:21{Click to open DialogueOrchestrator.saveDialogue} DialogueOrchestrator.saveDialogue ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/embedding/DialogueVectorizationService.java:26{Click to open DialogueVectorizationService.vectorize} DialogueVectorizationService.vectorize ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/embedding/DialogueVectorizationService.java:23{Click to open DialogueVectorizationService.vectorize} DialogueVectorizationService.vectorize ↗]]
 activate Backend
 Backend -> Gemini: embed
 deactivate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:28{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
 activate Backend
 Backend -> Piper: POST /
 deactivate Backend
@@ -30,7 +30,7 @@ Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/loc
 deactivate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:28{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
 activate Backend
 Backend -> Piper: POST /
 deactivate Backend
@@ -38,7 +38,7 @@ Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/loc
 deactivate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:28{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
 activate Backend
 Backend -> Piper: POST /
 deactivate Backend
@@ -46,7 +46,7 @@ Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/loc
 deactivate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:28{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
 activate Backend
 Backend -> Piper: POST /
 deactivate Backend
@@ -54,7 +54,7 @@ Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/loc
 deactivate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:28{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
 activate Backend
 Backend -> Piper: POST /
 deactivate Backend
@@ -62,7 +62,7 @@ Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/storage/loc
 deactivate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/core/PhraseProcessor.java:25{Click to open PhraseProcessor.process} PhraseProcessor.process ↗]]
 activate Backend
-Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:28{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
+Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:31{Click to open PiperTextToSpeechRestService.convert} PiperTextToSpeechRestService.convert ↗]]
 activate Backend
 Backend -> Piper: POST /
 deactivate Backend

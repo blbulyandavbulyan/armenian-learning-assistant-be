@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Wraps calls to the application's own components and repositories into observations, so that traces show who
- * called whom. Spans are named {@code larm.component}; the callee is described by {@code code.namespace} and
+ * called whom. Spans are titled {@code Namespace.function}; the observation is named {@code larm.component} and the callee is described by {@code code.namespace} and
  * {@code code.function}.
  *
  * <p>The highest precedence makes the observation wrap the transaction, cache and logging proxies, so that work done
@@ -40,9 +40,12 @@ public class ComponentObservationAspect {
             + " && !within(com.blbulyandavbulyan.larm..observability..*)"
             + " && !within(com.blbulyandavbulyan.larm..*Mapper)")
     public Object observe(ProceedingJoinPoint joinPoint) throws Throwable {
+        final String namespace = namespace(joinPoint);
+        final String function = joinPoint.getSignature().getName();
         return Observation.createNotStarted("larm.component", observationRegistry)
-                .lowCardinalityKeyValue("code.namespace", namespace(joinPoint))
-                .lowCardinalityKeyValue("code.function", joinPoint.getSignature().getName())
+                .contextualName(namespace + "." + function)
+                .lowCardinalityKeyValue("code.namespace", namespace)
+                .lowCardinalityKeyValue("code.function", function)
                 .observeChecked((Observation.CheckedCallable<Object, Throwable>) joinPoint::proceed);
     }
 

@@ -112,14 +112,21 @@ final class GenseqWriter {
         return text.replaceAll("\\s+", " ").trim();
     }
 
-    /** Text safe inside {@code [[...]]}: one line, no premature link end; braces stay, the tooltip is a fixed text. */
+    /**
+     * Text safe inside {@code [[...]]}: one line, no premature link end. Braces are written as {@code <U+007B>} and
+     * {@code <U+007D>}, because PlantUML 1.2020.02 ends the {@code {tooltip}} at the last closing brace of the link.
+     */
     private static String safe(String text) {
-        return oneLine(text).replace("]]", "] ]");
+        return oneLine(text).replace("]]", "] ]").replace("{", "<U+007B>").replace("}", "<U+007D>");
     }
 
     private static String truncate(String sql) {
         String line = oneLine(sql);
-        return line.length() > SQL_LIMIT ? line.substring(0, SQL_LIMIT) + " …" : line;
+        if (line.length() <= SQL_LIMIT) {
+            return line;
+        }
+        int end = Character.isHighSurrogate(line.charAt(SQL_LIMIT - 1)) ? SQL_LIMIT - 1 : SQL_LIMIT;
+        return line.substring(0, end) + " …";
     }
 
     private static final class Rendering {

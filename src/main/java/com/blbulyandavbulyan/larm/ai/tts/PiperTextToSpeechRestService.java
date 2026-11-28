@@ -3,6 +3,7 @@ package com.blbulyandavbulyan.larm.ai.tts;
 import com.blbulyandavbulyan.larm.ai.SpeechResource;
 import com.blbulyandavbulyan.larm.ai.TextToSpeechService;
 import io.micrometer.core.annotation.Timed;
+import io.micrometer.observation.ObservationRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -16,9 +17,11 @@ public class PiperTextToSpeechRestService implements TextToSpeechService {
     private final RestClient restClient;
 
     public PiperTextToSpeechRestService(PiperConfigurationProperties piperConfigurationProperties,
-                                         RestClient.Builder restClientBuilder) {
+                                         ObservationRegistry observationRegistry) {
         this.piperConfigurationProperties = piperConfigurationProperties;
-        this.restClient = restClientBuilder
+        // Not the auto-configured builder: its defaults (e.g. following redirects) would change how Piper is called
+        this.restClient = RestClient.builder()
+                .observationRegistry(observationRegistry)
                 .baseUrl(piperConfigurationProperties.url())
                 .build();
     }

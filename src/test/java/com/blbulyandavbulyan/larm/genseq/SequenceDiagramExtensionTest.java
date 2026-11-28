@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("ConstantValue")
 class SequenceDiagramExtensionTest {
     private static final Class<?> TEST_CLASS = SequenceDiagramExtensionTest.class;
 
@@ -66,5 +67,13 @@ class SequenceDiagramExtensionTest {
     @Test
     void notSelectedIsNotWritten() {
         assertThat(SequenceDiagramExtension.shouldWrite(false, false, 2)).isFalse();
+    }
+
+    @Test
+    void declarationPatternAcceptsLeadingAnnotationsOnTheSameLine() {
+        var pattern = SequenceDiagramExtension.declarationPattern("x");
+        assertThat(pattern.matcher("    @Test @GenerateSequence void x() {").find()).isTrue();
+        assertThat(pattern.matcher("    @Test\n").find()).isFalse();
+        assertThat(pattern.matcher("    public void y() {").find()).isFalse();
     }
 }

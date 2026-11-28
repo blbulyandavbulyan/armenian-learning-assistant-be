@@ -10,7 +10,7 @@ footer traced because it is tagged @GenerateSequence
 participant Test
 participant Backend
 participant DB
-Test -> Backend: [[genseq://44po6ol{Click for the request as it was sent} getAsset\nGET /assets/{mediaId} ⊕]]
+Test -> Backend: [[genseq://44po6ol{Click for the request as it was sent} getAsset\nGET /assets/<U+007B>mediaId<U+007D> ⊕]]
 activate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/asset/AssetService.java:18{Click to open AssetService.findAssetByMediaId} AssetService.findAssetByMediaId ↗]]
 activate Backend

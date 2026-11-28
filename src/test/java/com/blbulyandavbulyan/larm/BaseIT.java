@@ -93,7 +93,9 @@ public abstract class BaseIT {
     @MockitoBean
     protected GoogleGenAiEmbeddingConnectionDetails embeddingConnectionDetails;
 
-    @MockitoBean
+    // Named so that TracingTestConfiguration's observing @Primary EmbeddingModel wraps it; real Spring AI embedding
+    // calls are observed by Spring AI itself.
+    @MockitoBean(name = TracingTestConfiguration.MOCK_EMBEDDING_MODEL)
     protected EmbeddingModel embeddingModel;
 
     @MockitoBean

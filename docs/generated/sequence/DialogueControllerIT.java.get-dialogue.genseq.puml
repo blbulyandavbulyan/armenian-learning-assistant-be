@@ -10,7 +10,7 @@ footer traced because it is tagged @GenerateSequence
 participant Test
 participant Backend
 participant DB
-Test -> Backend: [[genseq://5clhy8d{Click for the request as it was sent} getDialogue\nGET /dialogues/{id} ⊕]]
+Test -> Backend: [[genseq://5clhy8d{Click for the request as it was sent} getDialogue\nGET /dialogues/<U+007B>id<U+007D> ⊕]]
 activate Backend
 Backend -> Backend: [[src://src/main/java/com/blbulyandavbulyan/larm/dialogue/DialogueRetrievalService.java:20{Click to open DialogueRetrievalService.getDialogue} DialogueRetrievalService.getDialogue ↗]]
 activate Backend

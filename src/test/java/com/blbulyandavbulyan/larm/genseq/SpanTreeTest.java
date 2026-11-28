@@ -191,4 +191,31 @@ class SpanTreeTest {
         assertThat(children).extracting(Call::label).containsExactly(SERVICE + ".work");
         assertThat(children.getFirst().children()).extracting(Call::label).containsExactly("select 1");
     }
+
+    @Test
+    void sqlCountsAreAddedWhenControllerChildrenAreFoldedIntoTheRequest() {
+        var spans = List.of(
+                server("k1", "GET", "/x", "200"),
+                component("k2", "k1", CONTROLLER, "get"),
+                span("k3", "k2", SpanNames.JDBC_SPAN_NAME, SpanKind.CLIENT, SpanNames.JDBC_SQL_KEY, "select a"),
+                span("k4", "k2", SpanNames.JDBC_SPAN_NAME, SpanKind.CLIENT, SpanNames.JDBC_SQL_KEY, "select a"),
+                span("k5", "k2", SpanNames.JDBC_SPAN_NAME, SpanKind.CLIENT, SpanNames.JDBC_SQL_KEY, "select a"),
+                span("k6", "k1", SpanNames.JDBC_SPAN_NAME, SpanKind.CLIENT, SpanNames.JDBC_SQL_KEY, "select a"));
+
+        var children = SpanTree.requests(spans).getFirst().children();
+
+        assertThat(children).hasSize(1);
+        assertThat(children.getFirst().attributes()).containsEntry("count", "4");
+    }
+
+    @Test
+    void clientSpanWithoutHttpMethodIsLookedThrough() {
+        var spans = List.of(
+                server("m1", "GET", "/x", "200"),
+                span("m2", "m1", "connection", SpanKind.CLIENT),
+                span("m3", "m2", SpanNames.JDBC_SPAN_NAME, SpanKind.CLIENT, SpanNames.JDBC_SQL_KEY, "select 1"));
+
+        assertThat(SpanTree.requests(spans).getFirst().children()).extracting(Call::kind, Call::label)
+                .containsExactly(org.assertj.core.groups.Tuple.tuple(Call.Kind.SQL, "select 1"));
+    }
 }

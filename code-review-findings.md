@@ -8,7 +8,7 @@
 
 ## Important
 
-- [ ] **1. Request arrows lose their label when the route has a path variable.**
+- [x] **1. Request arrows lose their label when the route has a path variable.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/GenseqWriter.java:117`
   - Problem: `safe()` keeps `{` and `}` in link labels. The Debian PlantUML 1.2020.02 that the README installs
     (human-review runs `plantuml` from PATH) matches the `{tooltip}` up to the *last* `}`. So in `request()`
@@ -21,7 +21,7 @@
   - Fix: encode braces in label text as `<U+007B>`/`<U+007D>`, which renders correctly on 1.2020.02 (`~{` does
     not). Replace the text-only `routeTemplateBracesAreEmittedVerbatim` test with one that renders the diagram.
 
-- [ ] **2. A passing IT is reported as failed when its declaration can't be found.**
+- [x] **2. A passing IT is reported as failed when its declaration can't be found.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/SequenceDiagramExtension.java:74`
   - Problem: `afterEach` builds the source path from `getRequiredTestClass().getName()`. `declarationLine`
     (lines 104-117) then throws in three cases:
@@ -33,7 +33,7 @@
   - Fix: resolve the top-level class of `method.getDeclaringClass()` and allow leading annotations. Never throw
     from afterEach: fall back to line 1, or skip the diagram and log a warning.
 
-- [ ] **3. The stale-files gate never catches an orphaned sequence diagram.**
+- [x] **3. (CI deletes committed diagrams before verify; GENSEQ_SELECT output still goes to the same dir, human-review reads it there) The stale-files gate never catches an orphaned sequence diagram.**
   `.github/workflows/maven.yml:48`
   - Problem: `git status --porcelain -- openapi.yaml docs/generated` reports only the files that `mvn verify`
     rewrote or created, and nothing ever deletes files in `docs/generated/sequence`. Diagrams of renamed,
@@ -48,7 +48,7 @@
 
 ## Nits
 
-- [ ] **4. On PRs, the stale-files gate can fail in a way its own advice cannot fix.**
+- [x] **4. (error message only; line numbers still volatile) On PRs, the stale-files gate can fail in a way its own advice cannot fix.**
   `.github/workflows/maven.yml:48`
   - Problem: on pull requests, `actions/checkout` checks out the merge commit `refs/pull/N/merge`. The
     diagrams' `src://…:<line>` numbers are recomputed from main classes on every run, so a diagram added on
@@ -59,7 +59,7 @@
   - Fix: keep volatile line numbers out of committed files (for example, resolve links by method name at render
     time). Otherwise make the error message say to merge `main` and regenerate, and require up-to-date branches.
 
-- [ ] **5. Every production embedding call is recorded twice.**
+- [x] **5. Every production embedding call is recorded twice.**
   `src/main/java/com/blbulyandavbulyan/larm/ai/embedding/DialogueVectorizationService.java:52` (also
   `src/main/java/com/blbulyandavbulyan/larm/dialogue/DialogueSearchService.java:26`)
   - Problem: `GoogleGenAiTextEmbeddingModel.call()` already wraps itself in Spring AI's embedding observation,
@@ -70,7 +70,7 @@
   - Fix: drop the manual observations and make SpanTree recognise Spring AI's embedding span
     (`gen_ai.operation.name=embedding`), or wrap only the test mock.
 
-- [ ] **6. Any unrecognised CLIENT span is drawn as a Piper call, and its children are dropped.**
+- [x] **6. (HTTP client spans only; jdbc.includes left in main) Any unrecognised CLIENT span is drawn as a Piper call, and its children are dropped.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/SpanTree.java:125`
   - Problem: datasource-micrometer's connection and result-set spans are also CLIENT spans, and connection spans
     are the parents of query spans. Diagrams only come out right because the main `application.yaml` sets
@@ -81,7 +81,7 @@
   - Fix: identify Piper by its base URL or client name, and recurse into unclassified CLIENT spans. Move
     `jdbc.includes` to `application-test.yaml` if only the diagrams need it.
 
-- [ ] **7. The TracingIT "Piper client span" test passes with no Piper span at all.**
+- [x] **7. The TracingIT "Piper client span" test passes with no Piper span at all.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/TracingIT.java:36`
   - Problem: every JDBC query span is a CLIENT span (`QueryContext` is a `SenderContext`), so it satisfies
     `anySatisfy(kind == CLIENT && same trace)`.
@@ -89,7 +89,7 @@
     test stays green.
   - Fix: require `http.url` to point at the WireMock base URL, or exclude spans that carry `jdbc.query[...]`.
 
-- [ ] **8. Fixture HTTP calls show up in a test's diagram.**
+- [x] **8. Fixture HTTP calls show up in a test's diagram.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/SequenceDiagramExtension.java:57`
   - Problem: spans are reset in beforeEach (here and in BaseIT's superclass `@BeforeEach`) and collected in
     afterEach. MockMvc calls made in a subclass `@BeforeEach` or in any `@AfterEach` are drawn as if the test
@@ -99,14 +99,14 @@
   - Fix: reset in `BeforeTestExecutionCallback`, capture the spans in `AfterTestExecutionCallback` (keep them in
     the ExtensionContext store), and write in afterEach only if the test passed.
 
-- [ ] **9. Collapsed SQL can show the wrong `×N` count.**
+- [x] **9. Collapsed SQL can show the wrong `×N` count.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/SpanTree.java:179`
   - Problem: `request()` folds the controller's already-collapsed children into the server-level list and
     collapses it again. `run` restarts at 1 and drops the existing count.
   - Failure: `server → [FooController{select a ×3}, select a]` renders `select a ×2` instead of `×4`.
   - Fix: start `run` from `last.attributes().get("count")` (default 1) and add the incoming call's count.
 
-- [ ] **10. `src://` links can point at a call site, or be missing.**
+- [x] **10. `src://` links can point at a call site, or be missing.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/SourceLines.java:68`
   - Problem: `isDeclaration` cuts the line at `line.indexOf(method)`, the first substring match, not where the
     regex matched. It then accepts any text before the name that has no `=` or `(` and does not end in `.`.
@@ -118,7 +118,7 @@
   - Fix: take the text before the name from `call.matcher(line).start()`, and require a type or modifier token
     right before the name. Reject `->`, `yield` and lines that start with an operator.
 
-- [ ] **11. Writing a diagram can fail a passing test (surrogate pair split).**
+- [x] **11. Writing a diagram can fail a passing test (surrogate pair split).**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/GenseqWriter.java:122`
   - Problem: `truncate()` uses `substring(0, 120)`, which can split a surrogate pair. `Files.writeString(..., UTF_8)`
     in `SequenceDiagramExtension.write` then throws `UnmappableCharacterException` out of afterEach.
@@ -127,7 +127,7 @@
   - Fix: cut on a code-point boundary, for example step back one char when
     `Character.isHighSurrogate(line.charAt(119))`.
 
-- [ ] **12. A diagram can be written from an incomplete span list with no warning.**
+- [x] **12. A diagram can be written from an incomplete span list with no warning.**
   `src/test/java/com/blbulyandavbulyan/larm/genseq/TracingTestConfiguration.java:36`
   - Problem: `forceFlush().join(5, SECONDS)` discards the returned `CompletableResultCode`. A timed-out or failed
     BatchSpanProcessor export leaves `finishedSpans()` incomplete.
@@ -136,7 +136,7 @@
   - Fix: check `isSuccess()` after `join` and fail or skip writing, or use a SimpleSpanProcessor for the
     in-memory exporter in tests.
 
-- [ ] **13. Every component span is titled `larm.component` in tracing backends.**
+- [x] **13. Every component span is titled `larm.component` in tracing backends.**
   `src/main/java/com/blbulyandavbulyan/larm/observability/ComponentObservationAspect.java:43`
   - Problem: no `contextualName` is set, so Micrometer's TracingObservationHandler falls back to the
     observation name.
@@ -145,7 +145,7 @@
   - Fix: add `.contextualName(namespace + "." + function)`, and have SpanTree match on the `code.*` attributes
     instead of the span name.
 
-- [ ] **14. The auto-configured `RestClient.Builder` changes how Piper's HTTP client behaves.**
+- [x] **14. The auto-configured `RestClient.Builder` changes how Piper's HTTP client behaves.**
   `src/main/java/com/blbulyandavbulyan/larm/ai/tts/PiperTextToSpeechRestService.java:21`
   - Problem: both before and after, the JDK HTTP client is used. Boot's default settings now follow redirects
     (`Redirect.NORMAL`, which turns a POST into a GET on 301/302). Before, `RestClient.builder()` used
@@ -156,7 +156,7 @@
   - Fix: if only tracing is wanted, use `RestClient.builder().observationRegistry(registry)`, or set the redirect
     policy explicitly on the injected builder.
 
-- [ ] **15. The blanket pointcut now CGLIB-proxies every matched bean.**
+- [x] **15. The blanket pointcut now CGLIB-proxies every matched bean.**
   `src/main/java/com/blbulyandavbulyan/larm/observability/ComponentObservationAspect.java:32`
   - Problem: `AssetsController`, `AssetService`, `PhraseMediaService` and `PhraseProcessor` are proxied for the
     first time. Every future component is now constrained:

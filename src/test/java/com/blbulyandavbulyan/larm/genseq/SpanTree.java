@@ -33,7 +33,7 @@ public final class SpanTree {
 
     private SpanTree(List<SpanData> spans) {
         for (SpanData span : spans) {
-            childrenByParent.computeIfAbsent(span.getParentSpanId(), k -> new ArrayList<>()).add(span);
+            childrenByParent.computeIfAbsent(span.getParentSpanId(), _ -> new ArrayList<>()).add(span);
         }
         childrenByParent.values().forEach(list -> list.sort(Comparator.comparingLong(SpanData::getStartEpochNanos)));
     }
@@ -106,10 +106,10 @@ public final class SpanTree {
         if (isChat(span)) {
             return List.of(leaf(Call.Kind.GEMINI_CHAT, name, Map.of()));
         }
-        if (SpanNames.EMBEDDING_SPAN.equals(name)) {
+        if (SpanNames.EMBEDDING_SPAN.equals(name) || "embedding".equals(attr(span, OPERATION_KEY))) {
             return List.of(leaf(Call.Kind.GEMINI_EMBED, name, Map.of()));
         }
-        if (SpanNames.COMPONENT_SPAN.equals(name)) {
+        if (attr(span, SpanNames.NAMESPACE_KEY) != null && attr(span, SpanNames.FUNCTION_KEY) != null) {
             // Mockito subclasses carry a random suffix; it would make the diagram differ between runs
             var namespace = Objects.toString(attr(span, SpanNames.NAMESPACE_KEY), "").replaceAll("\\$MockitoMock\\$\\w+", "");
             var label = namespace + "." + attr(span, SpanNames.FUNCTION_KEY);
@@ -122,7 +122,9 @@ public final class SpanTree {
             calls.addAll(convertChildren(span));
             return calls;
         }
-        if (span.getKind() == SpanKind.CLIENT) {
+        // Only HTTP client spans (they carry the HTTP method) are Piper calls; other client spans, such as JDBC
+        // connection spans, are looked through so that their children still show up.
+        if (span.getKind() == SpanKind.CLIENT && attr(span, METHOD_KEY) != null) {
             return List.of(piper(span));
         }
         return convertChildren(span);
@@ -170,19 +172,22 @@ public final class SpanTree {
 
     private static List<Call> collapse(List<Call> calls) {
         var result = new ArrayList<Call>();
-        int run = 0;
         for (Call call : calls) {
             var last = result.isEmpty() ? null : result.getLast();
             if (call.kind() == Call.Kind.SQL && last != null && last.kind() == Call.Kind.SQL
                     && last.label().equals(call.label())) {
-                run++;
-                result.set(result.size() - 1, new Call(Call.Kind.SQL, last.label(), "", Map.of(COUNT, String.valueOf(run)), List.of()));
+                int total = count(last) + count(call);
+                result.set(result.size() - 1,
+                        new Call(Call.Kind.SQL, last.label(), "", Map.of(COUNT, String.valueOf(total)), List.of()));
             } else {
-                run = 1;
                 result.add(call);
             }
         }
         return List.copyOf(result);
+    }
+
+    private static int count(Call call) {
+        return Integer.parseInt(call.attributes().getOrDefault(COUNT, "1"));
     }
 
     private static String attr(SpanData span, String key) {

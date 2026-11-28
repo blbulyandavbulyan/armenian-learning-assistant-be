@@ -35,6 +35,7 @@ class TracingIT extends BaseIT {
         assertThat(server.getAttributes().get(AttributeKey.stringKey(SpanNames.ROUTE_KEY))).isEqualTo("/dialogues");
         assertThat(spans).anySatisfy(s -> {
             assertThat(s.getKind()).isEqualTo(SpanKind.CLIENT);
+            assertThat(s.getAttributes().get(AttributeKey.stringKey("method"))).isEqualTo("POST");
             assertThat(s.getTraceId()).isEqualTo(server.getTraceId());
         });
     }
@@ -99,8 +100,8 @@ class TracingIT extends BaseIT {
 
         List<SpanData> spans = TracingTestConfiguration.finishedSpans(applicationContext);
         List<String> namespaces = spans.stream()
-                .filter(s -> SpanNames.COMPONENT_SPAN.equals(s.getName()))
                 .map(TracingIT::namespace)
+                .filter(Objects::nonNull)
                 .toList();
         assertThat(namespaces).isNotEmpty()
                 .noneMatch(n -> n.endsWith("Mapper") || n.contains("Configuration") || n.contains("Security"));
